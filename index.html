@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,12 +46,39 @@
       margin-top: 10px;
       border: 1px solid #f0ad4e;
     }
+    .disclaimer {
+      background: #fff89a;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ffeeba;
+      margin-top: 10px;
+      font-size: 0.95em;
+    }
+    .footer-disclaimer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+    }
+    .plan-link {
+      color: blue;
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Weekly Credit Calculator</h2>
-    <label for="totalCredits">How many credits do you need?</label>
+    <div class="disclaimer">
+      This calculator is designed for students who plan to graduate this school year.
+      <br><br>
+      If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.
+      <br><br>
+      Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.
+    </div>
+
+    <label for="totalCredits">How many credits do you need to finish?</label>
     <input type="number" id="totalCredits" min="1" max="100" required>
 
     <label for="startWeek">What week are you starting from? (1–52)</label>
@@ -61,12 +87,66 @@
     <label for="endWeek">Which week do you want to finish by? (1–52)</label>
     <input type="number" id="endWeek" min="1" max="52" value="46">
 
-    <button onclick="calculateCredits()" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
+    <button onclick="calculateCredits()" id="calculateBtn" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
 
     <div class="output" id="result"></div>
+
+    <div class="footer-disclaimer">
+      <strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.
+    </div>
   </div>
 
   <script>
+    function openPlanSchedule(planType, totalCredits, startWeek, endWeek) {
+      const newTab = window.open('', '_blank');
+      const title = `My Credit Plan - ${planType}`;
+      const weeks = endWeek - startWeek + 1;
+      let tableRows = '';
+
+      for (let i = 0; i < weeks; i++) {
+        const weekNum = startWeek + i;
+        tableRows += `
+          <tr>
+            <td>Week ${weekNum}</td>
+            <td><input type="checkbox"> Packet 1</td>
+            <td><input type="checkbox"> Packet 2</td>
+            <td><input type="checkbox"> Packet 3</td>
+            <td><input type="checkbox"> Packet 4</td>
+          </tr>
+        `;
+      }
+
+      newTab.document.write(`
+        <html>
+          <head>
+            <title>${title}</title>
+            <style>
+              body { font-family: Arial; padding: 20px; }
+              table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+              td, th { border: 1px solid #ccc; padding: 8px; text-align: center; }
+              th { background: #f0f0f0; }
+              h3 { text-align: center; }
+            </style>
+          </head>
+          <body>
+            <h3>${title}</h3>
+            <p><strong>Credits Needed:</strong> ${totalCredits}</p>
+            <p><strong>Start Week:</strong> ${startWeek} &nbsp; <strong>End Week:</strong> ${endWeek}</p>
+            <table>
+              <thead>
+                <tr><th>Week</th><th>Packet 1</th><th>Packet 2</th><th>Packet 3</th><th>Packet 4</th></tr>
+              </thead>
+              <tbody>
+                ${tableRows}
+              </tbody>
+            </table>
+            <script>window.print();<\/script>
+          </body>
+        </html>
+      `);
+      newTab.document.close();
+    }
+
     function calculateCredits() {
       const totalCredits = parseInt(document.getElementById("totalCredits").value);
       const startWeek = parseInt(document.getElementById("startWeek").value);
@@ -79,58 +159,28 @@
       }
 
       const weeklyAvg = (totalCredits / weeksRemaining).toFixed(2);
-      let suggestion = "";
-
-      if (weeklyAvg <= 1) {
-        suggestion = `✅ You can average ${weeklyAvg} credits/week. A slow & steady plan will work well.`;
-      } else if (weeklyAvg <= 2) {
-        suggestion = `✅ You need to complete around ${weeklyAvg} credits/week. Stay consistent at 2/week.`;
-      } else if (weeklyAvg <= 3) {
-        suggestion = `⚠️ You need ${weeklyAvg} credits/week. You must complete close to 3 each week.`;
-      } else {
-        suggestion = `🚨 You need ${weeklyAvg} credits/week. This is more than the normal weekly max. Speak with your teacher.`;
-      }
-
-      let warning = "";
-      if (endWeek > 46) {
-        warning = `<div class='warning'>⚠️ You selected a week beyond the graduation deadline (Week 46). If you're trying to finish after graduation, please speak with your teacher about your plan.</div>`;
-      }
-
-      const bufferWeeks = endWeek <= 46 ? 46 - endWeek : 99;
-      let bufferWarning = bufferWeeks < 2 ? `<div class='warning'>⚠️ You are planning to finish very close to the graduation deadline. Consider building in 2+ buffer weeks in case something comes up.</div>` : "";
-
-      const oneCreditWeeks = Math.max(Math.floor((weeksRemaining * 2 - totalCredits)), 0);
-
-      let riskLevel = "✅ Low Risk";
-      if (weeklyAvg > 2.5 && weeklyAvg <= 3) {
-        riskLevel = "⚠️ Moderate Risk";
-      } else if (weeklyAvg > 3) {
-        riskLevel = "🚨 High Risk";
-      }
-
-      const strongStart = startWeek <= 10 ? `<p><strong>Strong Start Tip:</strong> Try completing 3 credits/week for the first 6 weeks. You can slow down later.</p>` : "";
-
       const result = `
         <p><strong>Credits Needed:</strong> ${totalCredits}</p>
         <p><strong>Weeks Remaining:</strong> ${weeksRemaining}</p>
         <p><strong>Average Credits per Week:</strong> ${weeklyAvg}</p>
-        <p><strong>Risk Level:</strong> ${riskLevel}</p>
-        <p><strong>Suggestion:</strong> ${suggestion}</p>
-        ${warning}
         <hr>
-        ${bufferWarning}
-        ${strongStart}
         <p><strong>Workflow Options:</strong></p>
         <ul>
-          <li>Plan A: 2 credits/week for ${Math.ceil(totalCredits / 2)} weeks</li>
-          <li>Plan B: 3 credits/week for ${Math.floor(totalCredits / 3)} weeks</li>
-          <li>Plan C: 3/week for 8 weeks (to unlock 4 credit max), then adjust</li>
-          <li>Plan D: You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+</li>
+          <li><strong>Plan A:</strong> 2 credits/week for ${Math.ceil(totalCredits / 2)} weeks
+            <br><span class='plan-link' onclick="openPlanSchedule('Plan A', ${totalCredits}, ${startWeek}, ${endWeek})">🖨️ Open Plan A Schedule</span></li>
         </ul>
       `;
 
       document.getElementById("result").innerHTML = result;
     }
+
+    document.getElementById("calculateBtn").addEventListener("click", calculateCredits);
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        calculateCredits();
+      }
+    });
   </script>
 </body>
 </html>
