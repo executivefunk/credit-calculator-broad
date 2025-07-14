@@ -168,6 +168,7 @@
       const fullWeeksAt3 = Math.floor(totalCredits / 3);
       const remainder = totalCredits % 3;
       let planB = remainder === 0 ? `3 credits/week for ${fullWeeksAt3} weeks - (${fullWeeksAt3} weeks total)` : `3 credits/week for ${fullWeeksAt3} weeks + 1 week of ${remainder} credit${remainder > 1 ? 's' : ''} - (${fullWeeksAt3 + 1} weeks total)`;
+      const planBWeeks = remainder === 0 ? fullWeeksAt3 : fullWeeksAt3 + 1;
 
       const creditsAfter3PerWeek = 3 * 8;
       const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
@@ -180,6 +181,34 @@
       const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
       planD += ` - (${totalWeeksD} weeks total)`;
 
+      const planAWeeks = Math.ceil(totalCredits / 2);
+      let planANote = `<li><strong>Plan A:</strong> 2 credits/week for ${planAWeeks} weeks`;
+      if (planAWeeks > weeksRemaining) {
+        const diff = planAWeeks - weeksRemaining;
+        planANote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
+      }
+      planANote += `</li>`;
+
+      let planBNote = `<li><strong>Plan B:</strong> ${planB}`;
+      if (planBWeeks > weeksRemaining) {
+        const diff = planBWeeks - weeksRemaining;
+        planBNote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
+      }
+      planBNote += `</li>`;
+
+      let planCNote = `<li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+</li>`;
+      if (weeksRemaining < oneCreditWeeks + (weeksRemaining - oneCreditWeeks)) {
+        const diff = (oneCreditWeeks + (weeksRemaining - oneCreditWeeks)) - weeksRemaining;
+        planCNote = `<li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+ <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span></li>`;
+      }
+
+      let planDNote = `<li>${planD}`;
+      if (totalWeeksD > weeksRemaining) {
+        const diff = totalWeeksD - weeksRemaining;
+        planDNote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
+      }
+      planDNote += `</li>`;
+
       const result = `
         <p><strong>Credits Needed:</strong> ${totalCredits}</p>
         <p><strong>Weeks Remaining:</strong> ${weeksRemaining}</p>
@@ -191,10 +220,10 @@
         <hr>
         <p><strong>Workflow Options:</strong></p>
         <ul>
-          <li><strong>Plan A:</strong> 2 credits/week for ${Math.ceil(totalCredits / 2)} weeks</li><br>
-          <li><strong>Plan B:</strong> ${planB}</li><br>
-          <li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+</li><br>
-          <li>${planD}</li>
+          ${planANote}<br>
+          ${planBNote}<br>
+          ${planCNote}<br>
+          ${planDNote}
         </ul>
       `;
 
