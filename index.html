@@ -46,20 +46,40 @@
       margin-top: 10px;
       border: 1px solid #f0ad4e;
     }
-    .checkbox-group {
+    .disclaimer {
+      background: #fff89a;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ffeeba;
       margin-top: 10px;
+      font-size: 0.95em;
     }
-    .checkbox-group label {
+    .footer-disclaimer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+    }
+    .plan-buttons {
       display: flex;
-      align-items: center;
-      margin-top: 5px;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Weekly Credit Calculator</h2>
-    <label for="totalCredits">How many credits do you need?</label>
+    <div class="disclaimer">
+      This calculator is designed for students who plan to graduate this school year.
+      <br><br>
+      If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.
+      <br><br>
+      Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.
+    </div>
+
+    <label for="totalCredits">How many credits do you need to finish?</label>
     <input type="number" id="totalCredits" min="1" max="100" required>
 
     <label for="startWeek">What week are you starting from? (1–52)</label>
@@ -68,29 +88,42 @@
     <label for="endWeek">Which week do you want to finish by? (1–52)</label>
     <input type="number" id="endWeek" min="1" max="52" value="46">
 
-    <div class="checkbox-group">
-      <label><input type="checkbox" id="winterBreak"> I won't be working during winter break.</label>
-      <label><input type="checkbox" id="thanksgivingBreak"> I won't be working during Thanksgiving week.</label>
-      <label><input type="checkbox" id="easterBreak"> I won't be working during Easter week.</label>
-    </div>
-
-    <button onclick="calculateCredits()" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
+    <button onclick="calculateCredits()" id="calculateBtn" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
 
     <div class="output" id="result"></div>
+
+    <div class="plan-buttons" id="planButtons" style="display: none;">
+      <button onclick="generatePlan('A')">🟢 Open Plan A</button>
+      <button onclick="generatePlan('B')">🟡 Open Plan B</button>
+      <button onclick="generatePlan('C')">🔵 Open Plan C</button>
+      <button onclick="generatePlan('D')">🔴 Open Plan D</button>
+    </div>
+
+    <div class="footer-disclaimer">
+      <strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.
+    </div>
   </div>
 
   <script>
+    const dateRanges = [
+      "", "July 1–4", "July 7–11", "July 14–18", "July 21–25", "July 28–Aug 1",
+      "Aug 4–8", "Aug 11–15", "Aug 18–22", "Aug 25–29", "Sept 1–5", "Sept 8–12",
+      "Sept 15–19", "Sept 22–26", "Sept 29–Oct 3", "Oct 6–10", "Oct 13–17", "Oct 20–24",
+      "Oct 27–31", "Nov 3–7", "Nov 10–14", "Nov 17–21", "Nov 24–28", "Dec 1–5",
+      "Dec 8–12", "Dec 15–19", "Dec 22–26", "Dec 29–Jan 2", "Jan 5–9", "Jan 12–16",
+      "Jan 19–23", "Jan 26–30", "Feb 2–6", "Feb 9–13", "Feb 16–20", "Feb 23–27",
+      "Mar 2–6", "Mar 9–13", "Mar 16–20", "Mar 23–27", "Mar 30–Apr 3", "Apr 6–10",
+      "Apr 13–17", "Apr 20–24", "Apr 27–May 1", "May 4–8", "May 11–15", "May 18–22",
+      "May 25–29", "June 1–5", "June 8–12", "June 15–19", "June 22–26", "June 29–30"
+    ];
+
+    let storedPlan = {};
+
     function calculateCredits() {
       const totalCredits = parseInt(document.getElementById("totalCredits").value);
       const startWeek = parseInt(document.getElementById("startWeek").value);
       const endWeek = parseInt(document.getElementById("endWeek").value);
-
-      let breakWeeks = 0;
-      if (document.getElementById("winterBreak").checked) breakWeeks += 2;
-      if (document.getElementById("thanksgivingBreak").checked) breakWeeks += 1;
-      if (document.getElementById("easterBreak").checked) breakWeeks += 1;
-
-      const weeksRemaining = endWeek - startWeek + 1 - breakWeeks;
+      const weeksRemaining = endWeek - startWeek + 1;
 
       if (!totalCredits || !weeksRemaining || weeksRemaining <= 0) {
         document.getElementById("result").innerText = "Please enter valid numbers.";
@@ -98,29 +131,54 @@
       }
 
       const weeklyAvg = (totalCredits / weeksRemaining).toFixed(2);
+      const weeklyAvgNum = parseFloat(weeklyAvg);
+
       let suggestion = "";
+      let riskLevel = "✅ Low Risk";
 
-      if (weeklyAvg <= 1) {
-        suggestion = `✅ You can average ${weeklyAvg} credits/week. A slow & steady plan will work well.`;
-      } else if (weeklyAvg <= 2) {
-        suggestion = `✅ You need to complete around ${weeklyAvg} credits/week. Stay consistent at 2/week.`;
-      } else if (weeklyAvg <= 3) {
-        suggestion = `⚠️ You need ${weeklyAvg} credits/week. You must complete close to 3 each week.`;
+      if (weeklyAvgNum <= 2.00) {
+        suggestion = `✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.`;
+      } else if (weeklyAvgNum > 2.00 && weeklyAvgNum <= 2.50) {
+        suggestion = `⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.`;
+        riskLevel = "⚠️ Medium Risk";
+      } else if (weeklyAvgNum > 2.50 && weeklyAvgNum <= 2.79) {
+        suggestion = `⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.`;
+        riskLevel = "⚠️ Medium–High Risk";
+      } else if (weeklyAvgNum > 2.79 && weeklyAvgNum < 3.00) {
+        suggestion = `⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.`;
+        riskLevel = "⚠️ High Risk – Near Limit";
       } else {
-        suggestion = `🚨 You need ${weeklyAvg} credits/week. This is more than the normal weekly max. Speak with your teacher.`;
+        suggestion = `🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.`;
+        riskLevel = "🚨 High Risk";
       }
 
-      let warning = "";
-      if (endWeek > 46) {
-        warning = `<div class='warning'>⚠️ You selected a week beyond the graduation deadline (Week 46). Week 53 is only 2 days long. If you're trying to finish after graduation, please speak with your teacher about your plan.</div>`;
+      let bufferWarning = "";
+      if (endWeek === 46) {
+        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> You’re planning to finish right at the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.</div>`;
+      } else if (endWeek === 45) {
+        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> You’re planning to finish really close to the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.</div>`;
+      } else if (endWeek > 46) {
+        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> Week 46 is the last week to turn in credits to walk in the graduation ceremony. You’ve selected a week after that — talk with your teacher to make sure your plan still works.</div>`;
       }
-
-      const bufferWeeks = endWeek <= 46 ? 46 - endWeek : 99;
-      let bufferWarning = bufferWeeks < 2 ? `<div class='warning'>⚠️ You are planning to finish very close to the graduation deadline. Consider building in 2+ buffer weeks in case something comes up.</div>` : "";
-
-      const riskLevel = weeklyAvg > 3 ? "🚨 High Risk" : weeklyAvg > 2.5 ? "⚠️ Moderate Risk" : "✅ Low Risk";
 
       const strongStart = startWeek <= 10 ? `<p><strong>Strong Start Tip:</strong> Try completing 3 credits/week for the first 6 weeks. You can slow down later.</p>` : "";
+
+      const oneCreditWeeks = Math.max(0, Math.min(totalCredits, weeksRemaining, weeksRemaining * 2 - totalCredits));
+
+      const fullWeeksAt3 = Math.floor(totalCredits / 3);
+      const remainder = totalCredits % 3;
+      let planB = remainder === 0 ? `3 credits/week for ${fullWeeksAt3} weeks - (${fullWeeksAt3} weeks total)` : `3 credits/week for ${fullWeeksAt3} weeks + 1 week of ${remainder} credit${remainder > 1 ? 's' : ''} - (${fullWeeksAt3 + 1} weeks total)`;
+
+      const creditsAfter3PerWeek = 3 * 8;
+      const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
+      const fullWeeksAt4 = Math.floor(remainingCredits / 4);
+      const remainderD = remainingCredits % 4;
+      let planD = `<span style='color:red'><strong>Plan D (Special Approval Needed):</strong></span> 3/week for 8 weeks (to unlock 4 credits a week max), then ${fullWeeksAt4} week(s) of 4/week`;
+      if (remainderD > 0) {
+        planD += ` + 1 week of ${remainderD} credit${remainderD > 1 ? 's' : ''}`;
+      }
+      const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
+      planD += ` - (${totalWeeksD} weeks total)`;
 
       const result = `
         <p><strong>Credits Needed:</strong> ${totalCredits}</p>
@@ -128,13 +186,72 @@
         <p><strong>Average Credits per Week:</strong> ${weeklyAvg}</p>
         <p><strong>Risk Level:</strong> ${riskLevel}</p>
         <p><strong>Suggestion:</strong> ${suggestion}</p>
-        ${warning}
-        <hr>
         ${bufferWarning}
         ${strongStart}
+        <hr>
+        <p><strong>Workflow Options:</strong></p>
+        <ul>
+          <li><strong>Plan A:</strong> 2 credits/week for ${Math.ceil(totalCredits / 2)} weeks</li><br>
+          <li><strong>Plan B:</strong> ${planB}</li><br>
+          <li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+</li><br>
+          <li>${planD}</li>
+        </ul>
       `;
 
       document.getElementById("result").innerHTML = result;
+      document.getElementById("planButtons").style.display = "flex";
+      storedPlan = { totalCredits, startWeek, endWeek, oneCreditWeeks };
+    }
+
+    function generatePlan(type) {
+      const { totalCredits, startWeek, endWeek, oneCreditWeeks } = storedPlan;
+      const weeks = endWeek - startWeek + 1;
+      let weekPlan = [];
+
+      if (type === 'A') weekPlan = Array(weeks).fill(2);
+      if (type === 'B') {
+        const full3 = Math.floor(totalCredits / 3);
+        const rem = totalCredits % 3;
+        weekPlan = [...Array(full3).fill(3)];
+        if (rem > 0) weekPlan.push(rem);
+      }
+      if (type === 'C') {
+        const twoWeeks = weeks - oneCreditWeeks;
+        weekPlan = [...Array(twoWeeks).fill(2), ...Array(oneCreditWeeks).fill(1)];
+      }
+      if (type === 'D') {
+        const part1 = Array(8).fill(3);
+        const rem = totalCredits - 24;
+        const w4 = Math.floor(rem / 4);
+        const r4 = rem % 4;
+        const part2 = Array(w4).fill(4);
+        if (r4 > 0) part2.push(r4);
+        weekPlan = [...part1, ...part2];
+      }
+
+      const table = `
+        <html><head><title>Plan ${type} Credit Tracker</title>
+        <style>
+          body { font-family: Arial; padding: 20px; }
+          table { border-collapse: collapse; width: 100%; }
+          td, th { border: 1px solid #ccc; padding: 8px; text-align: center; }
+          input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
+          .credit-cell { display: flex; align-items: center; gap: 6px; }
+        </style></head><body>
+        <h2>Credit Tracker – Plan ${type}</h2>
+        <table><tr><th>Week</th><th>Date Range</th><th>Credits</th><th colspan="4">Packets</th></tr>
+        ${weekPlan.map((credits, i) => {
+          const weekNum = startWeek + i;
+          const row = `<td>${weekNum}</td><td>${dateRanges[weekNum]}</td><td>${credits}</td>`;
+          const cells = Array(4).fill(`<td><div class="credit-cell"><input type="checkbox" /> ________</div></td>`).join('');
+          return `<tr>${row}${cells}</tr>`;
+        }).join('')}
+        </table></body></html>
+      `;
+
+      const printWin = window.open("", "_blank");
+      printWin.document.write(table);
+      printWin.document.close();
     }
   </script>
 </body>
