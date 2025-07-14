@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Weekly Credit Calculator</title>
   <link rel="manifest" href="manifest.json">
   <style>
@@ -26,12 +26,19 @@
       display: block;
       margin-top: 15px;
     }
-    input[type="number"] {
+    input[type="number"],
+    input[type="checkbox"] {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
       border-radius: 6px;
       border: 1px solid #ccc;
+    }
+    .checkbox-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
     }
     .output {
       margin-top: 20px;
@@ -88,6 +95,14 @@
     <label for="endWeek">Which week do you want to finish by? (1–52)</label>
     <input type="number" id="endWeek" min="1" max="52" value="46">
 
+    <!-- === START ADD: Holiday Checkboxes === -->
+    <div class="checkbox-container">
+      <label><input type="checkbox" id="skipThanksgiving"> Skip Thanksgiving Week</label>
+      <label><input type="checkbox" id="skipWinter"> Skip Winter Break</label>
+      <label><input type="checkbox" id="skipSpring"> Skip Spring Week</label>
+    </div>
+    <!-- === END ADD === -->
+
     <button onclick="calculateCredits()" id="calculateBtn" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
 
     <div class="output" id="result"></div>
@@ -105,8 +120,7 @@
   </div>
 
   <script>
-    const dateRanges = [
-      "", "July 1–4", "July 7–11", "July 14–18", "July 21–25", "July 28–Aug 1",
+    const dateRanges = [ "", "July 1–4", "July 7–11", "July 14–18", "July 21–25", "July 28–Aug 1",
       "Aug 4–8", "Aug 11–15", "Aug 18–22", "Aug 25–29", "Sept 1–5", "Sept 8–12",
       "Sept 15–19", "Sept 22–26", "Sept 29–Oct 3", "Oct 6–10", "Oct 13–17", "Oct 20–24",
       "Oct 27–31", "Nov 3–7", "Nov 10–14", "Nov 17–21", "Nov 24–28", "Dec 1–5",
@@ -123,9 +137,21 @@
       const totalCredits = parseInt(document.getElementById("totalCredits").value);
       const startWeek = parseInt(document.getElementById("startWeek").value);
       const endWeek = parseInt(document.getElementById("endWeek").value);
-      const weeksRemaining = endWeek - startWeek + 1;
 
-      if (!totalCredits || !weeksRemaining || weeksRemaining <= 0) {
+      // === START ADD: Checkbox Reduction Logic ===
+      const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
+      const skipWinter = document.getElementById("skipWinter").checked;
+      const skipSpring = document.getElementById("skipSpring").checked;
+
+      let holidayReduction = 0;
+      if (skipThanksgiving) holidayReduction += 1;
+      if (skipWinter) holidayReduction += 2;
+      if (skipSpring) holidayReduction += 1;
+      // === END ADD ===
+
+      let weeksRemaining = endWeek - startWeek + 1 - holidayReduction;
+
+      if (!totalCredits || weeksRemaining <= 0) {
         document.getElementById("result").innerText = "Please enter valid numbers.";
         return;
       }
