@@ -60,10 +60,24 @@
       color: #555;
       text-align: center;
     }
-    .plan-link {
-      display: inline-block;
-      margin-top: 6px;
-      font-size: 0.9em;
+    .plan-buttons {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .plan-buttons button {
+      flex: 1;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .plan-buttons button:hover {
+      background: #0056b3;
     }
   </style>
 </head>
@@ -71,8 +85,10 @@
   <div class="container">
     <h2>Weekly Credit Calculator</h2>
     <div class="disclaimer">
-      This calculator is designed for students who plan to graduate this school year.<br><br>
-      If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.<br><br>
+      This calculator is designed for students who plan to graduate this school year.
+      <br><br>
+      If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.
+      <br><br>
       Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.
     </div>
 
@@ -89,20 +105,19 @@
 
     <div class="output" id="result"></div>
 
+    <div class="plan-buttons" id="planLinks" style="display: none;">
+      <button onclick="openPlan('a')">Open Plan A</button>
+      <button onclick="openPlan('b')">Open Plan B</button>
+      <button onclick="openPlan('c')">Open Plan C</button>
+      <button onclick="openPlan('d')">Open Plan D</button>
+    </div>
+
     <div class="footer-disclaimer">
       <strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.
     </div>
   </div>
 
   <script>
-    function openPlanSchedule(plan) {
-      const totalCredits = parseInt(document.getElementById("totalCredits").value);
-      const startWeek = parseInt(document.getElementById("startWeek").value);
-      const endWeek = parseInt(document.getElementById("endWeek").value);
-      const url = `https://yourdomain.com/schedules/plan-${plan.toLowerCase()}?credits=${totalCredits}&start=${startWeek}&end=${endWeek}`;
-      window.open(url, '_blank');
-    }
-
     function calculateCredits() {
       const totalCredits = parseInt(document.getElementById("totalCredits").value);
       const startWeek = parseInt(document.getElementById("startWeek").value);
@@ -136,24 +151,40 @@
         riskLevel = "🚨 High Risk";
       }
 
+      let bufferWarning = "";
+      if (endWeek === 46) {
+        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> You’re planning to finish right at the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.</div>`;
+      } else if (endWeek === 45) {
+        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> You’re planning to finish really close to the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.</div>`;
+      } else if (endWeek > 46) {
+        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> Week 46 is the last week to turn in credits to walk in the graduation ceremony. You’ve selected a week after that — talk with your teacher to make sure your plan still works.</div>`;
+      }
+
+      const strongStart = startWeek <= 10 ? `<p><strong>Strong Start Tip:</strong> Try completing 3 credits/week for the first 6 weeks. You can slow down later.</p>` : "";
+
       const oneCreditWeeks = Math.max(0, Math.min(totalCredits, weeksRemaining, weeksRemaining * 2 - totalCredits));
 
       const fullWeeksAt3 = Math.floor(totalCredits / 3);
       const remainder = totalCredits % 3;
-      let planB = remainder === 0 ? `3 credits/week for ${fullWeeksAt3} weeks - (${fullWeeksAt3} weeks total)` : `3 credits/week for ${fullWeeksAt3} weeks + 1 week of ${remainder} credit${remainder > 1 ? 's' : ''} - (${fullWeeksAt3 + 1} weeks total)`;
+      let planB = "";
+      if (remainder === 0) {
+        const totalWeeks = fullWeeksAt3;
+        planB = `3 credits/week for ${fullWeeksAt3} weeks - (${totalWeeks} weeks total)`;
+      } else {
+        const totalWeeks = fullWeeksAt3 + 1;
+        planB = `3 credits/week for ${fullWeeksAt3} weeks + 1 week of ${remainder} credit${remainder > 1 ? 's' : ''} - (${totalWeeks} weeks total)`;
+      }
 
       const creditsAfter3PerWeek = 3 * 8;
       const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
       const fullWeeksAt4 = Math.floor(remainingCredits / 4);
       const remainderD = remainingCredits % 4;
-      const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
       let planD = `<span style='color:red'><strong>Plan D (Special Approval Needed):</strong></span> 3/week for 8 weeks (to unlock 4 credits a week max), then ${fullWeeksAt4} week(s) of 4/week`;
-      if (remainderD > 0) planD += ` + 1 week of ${remainderD} credit${remainderD > 1 ? 's' : ''}`;
+      if (remainderD > 0) {
+        planD += ` + 1 week of ${remainderD} credit${remainderD > 1 ? 's' : ''}`;
+      }
+      const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
       planD += ` - (${totalWeeksD} weeks total)`;
-
-      const bufferWarning = endWeek >= 45 ? `<div class='warning'>⚠️ <strong>Heads up:</strong> You’re planning to finish close to the deadline. Try to finish by Week 44 or earlier if possible.</div>` : "";
-
-      const strongStart = startWeek <= 10 ? `<p><strong>Strong Start Tip:</strong> Try completing 3 credits/week for the first 6 weeks. You can slow down later.</p>` : "";
 
       const result = `
         <p><strong>Credits Needed:</strong> ${totalCredits}</p>
@@ -166,18 +197,26 @@
         <hr>
         <p><strong>Workflow Options:</strong></p>
         <ul>
-          <li><strong>Plan A:</strong> 2 credits/week for ${Math.ceil(totalCredits / 2)} weeks <br><a class="plan-link" href="#" onclick="openPlanSchedule('A')">📄 Open Plan A Schedule</a></li><br>
-          <li><strong>Plan B:</strong> ${planB} <br><a class="plan-link" href="#" onclick="openPlanSchedule('B')">📄 Open Plan B Schedule</a></li><br>
-          <li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+ <br><a class="plan-link" href="#" onclick="openPlanSchedule('C')">📄 Open Plan C Schedule</a></li><br>
-          <li>${planD} <br><a class="plan-link" href="#" onclick="openPlanSchedule('D')">📄 Open Plan D Schedule</a></li>
+          <li><strong>Plan A:</strong> 2 credits/week for ${Math.ceil(totalCredits / 2)} weeks</li><br>
+          <li><strong>Plan B:</strong> ${planB}</li><br>
+          <li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+</li><br>
+          <li>${planD}</li>
         </ul>
       `;
 
       document.getElementById("result").innerHTML = result;
+      document.getElementById("planLinks").style.display = 'flex';
+    }
+
+    function openPlan(letter) {
+      const totalCredits = parseInt(document.getElementById("totalCredits").value);
+      const startWeek = parseInt(document.getElementById("startWeek").value);
+      const endWeek = parseInt(document.getElementById("endWeek").value);
+      const url = `plan-${letter}.html?credits=${totalCredits}&start=${startWeek}&end=${endWeek}`;
+      window.open(url, '_blank');
     }
 
     document.getElementById("calculateBtn").addEventListener("click", calculateCredits);
-
     document.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         event.preventDefault();
