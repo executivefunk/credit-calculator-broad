@@ -118,6 +118,8 @@
 
   .holiday-option label {
     white-space: nowrap;
+    position: relative;
+    top: -1px; /* 👈 Lift the label slightly */
   }
 </style>
 
@@ -125,7 +127,7 @@
   <div class="holiday-option">
     <input type="checkbox" id="skipThanksgiving">
     <label for="skipThanksgiving">Not doing credits Thanksgiving Week (Week 22)</label>
-  </div>
+  </div> 
   <div class="holiday-option">
     <input type="checkbox" id="skipWinter">
     <label for="skipWinter">Not doing credits Winter Break (Weeks 26–27)</label>
