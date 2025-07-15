@@ -345,6 +345,16 @@ if (planBWeeks > weeksRemaining) {
   planBButton.title = "";
 }
 
+      // Disable Plan D button if Plan D exceeds weeks
+const planDButton = document.querySelector('button[onclick="generatePlan(\'D\')"]');
+if (totalWeeksD > weeksRemaining) {
+  planDButton.disabled = true;
+  planDButton.title = "Disabled: Plan D requires more weeks than you have left.";
+} else {
+  planDButton.disabled = false;
+  planDButton.title = "";
+}
+
       document.getElementById("planButtons").style.display = "flex";
       storedPlan = { 
   totalCredits, 
