@@ -96,11 +96,28 @@
     <input type="number" id="endWeek" min="1" max="52" value="46">
 
     <!-- === START ADD: Holiday Checkboxes === -->
-    <div class="checkbox-container">
-      <label><input type="checkbox" id="skipThanksgiving"> Skip Thanksgiving Week (Week 22)</label>
-      <label><input type="checkbox" id="skipWinter"> Skip Winter Break (Weeks 26 & 27)</label>
-      <label><input type="checkbox" id="skipSpring"> Skip Spring Week (Week 41)</label>
-    </div>
+    <style>
+  .checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* adds space between each option */
+  }
+
+  .checkbox-container label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .checkbox-container input[type="checkbox"] {
+    margin-right: 8px; /* adds space between checkbox and text */
+  }
+</style>
+
+<div class="checkbox-container">
+  <label><input type="checkbox" id="skipThanksgiving"> Skip Thanksgiving Week (Week 22)</label>
+  <label><input type="checkbox" id="skipWinter"> Skip Winter Break (Weeks 26 & 27)</label>
+  <label><input type="checkbox" id="skipSpring"> Skip Spring Week (Week 41)</label>
+</div>
     <!-- === END ADD === -->
 
     <button onclick="calculateCredits()" id="calculateBtn" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
