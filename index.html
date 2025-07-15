@@ -317,7 +317,13 @@
 
   // Determine credit distribution per plan
   let distribution = [];
-  if (type === 'A') distribution = Array(usableWeekCount).fill(2);
+  if (type === 'A') {
+  const neededWeeks = Math.ceil(totalCredits / 2);
+  distribution = [
+    ...Array(neededWeeks).fill(2),
+    ...Array(Math.max(0, usableWeekCount - neededWeeks)).fill(0)
+  ];
+}
   if (type === 'B') {
     const full3 = Math.floor(totalCredits / 3);
     const rem = totalCredits % 3;
