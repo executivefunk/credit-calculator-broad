@@ -170,6 +170,13 @@
     let storedPlan = {};
 
     function calculateCredits() {
+        if (
+    !document.getElementById("totalCredits").value ||
+    !document.getElementById("startWeek").value ||
+    !document.getElementById("endWeek").value
+  ) {
+    return;
+  }
       const totalCredits = parseInt(document.getElementById("totalCredits").value);
       const startWeek = parseInt(document.getElementById("startWeek").value);
       const endWeek = parseInt(document.getElementById("endWeek").value);
@@ -417,6 +424,10 @@ distribution = [
   printWin.document.write(table);
   printWin.document.close();
 }
+    // Recalculate output when holiday checkboxes are toggled
+document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
+document.getElementById("skipWinter").addEventListener("change", calculateCredits);
+document.getElementById("skipSpring").addEventListener("change", calculateCredits);
   </script>
 </body>
 </html>
