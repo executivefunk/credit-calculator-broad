@@ -96,17 +96,43 @@
     <input type="number" id="endWeek" min="1" max="52" value="46">
 
     <!-- === START ADD: Holiday Checkboxes === -->
-<div style="background-color: #e0f8e9; border: 1px solid #b6e2c4; border-radius: 8px; padding: 15px; margin-top: 15px;">
-  <div style="display: flex; align-items: center; margin-bottom: 10px;">
-    <input type="checkbox" id="skipThanksgiving" style="margin-right: 10px; transform: scale(1.2);">
+<style>
+  .holiday-box {
+    background-color: #e0f8e9;
+    border: 1px solid #b6e2c4;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  .holiday-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .holiday-option input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+  }
+
+  .holiday-option label {
+    white-space: nowrap;
+  }
+</style>
+
+<div class="holiday-box">
+  <div class="holiday-option">
+    <input type="checkbox" id="skipThanksgiving">
     <label for="skipThanksgiving">Skip Thanksgiving Week (Week 22)</label>
   </div>
-  <div style="display: flex; align-items: center; margin-bottom: 10px;">
-    <input type="checkbox" id="skipWinter" style="margin-right: 10px; transform: scale(1.2);">
+  <div class="holiday-option">
+    <input type="checkbox" id="skipWinter">
     <label for="skipWinter">Skip Winter Break (Weeks 26 & 27)</label>
   </div>
-  <div style="display: flex; align-items: center;">
-    <input type="checkbox" id="skipSpring" style="margin-right: 10px; transform: scale(1.2);">
+  <div class="holiday-option">
+    <input type="checkbox" id="skipSpring">
     <label for="skipSpring">Skip Spring Week (Week 41)</label>
   </div>
 </div>
