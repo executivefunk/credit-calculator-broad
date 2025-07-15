@@ -428,6 +428,16 @@ distribution = [
 document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
 document.getElementById("skipWinter").addEventListener("change", calculateCredits);
 document.getElementById("skipSpring").addEventListener("change", calculateCredits);
+
+    // Pressing "Enter" in any input field triggers calculateCredits
+["totalCredits", "startWeek", "endWeek"].forEach(id => {
+  document.getElementById(id).addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission or accidental refresh
+      calculateCredits();
+    }
+  });
+});
   </script>
 </body>
 </html>
