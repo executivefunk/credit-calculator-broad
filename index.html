@@ -100,22 +100,22 @@
   .checkbox-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
     margin-top: 10px;
+    padding-left: 0; /* align with input above */
   }
 
   .checkbox-container label {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    white-space: nowrap;         /* prevent line breaks */
     font-size: 16px;
-    width: 100%;
+    line-height: 1.4;
+    margin: 0;
   }
 
   .checkbox-container input[type="checkbox"] {
-    margin-right: 8px;
-    transform: scale(1.2);       /* optional: make checkbox bigger */
+    margin-right: 10px;
+    transform: scale(1.2);
   }
 </style>
 
