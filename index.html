@@ -303,6 +303,16 @@ planANote += `</li>`;
       `;
 
       document.getElementById("result").innerHTML = result;
+      // Disable Plan C button if Plan A exceeds weeks
+const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
+if (planAWeeks > weeksRemaining) {
+  planCButton.disabled = true;
+  planCButton.title = "Disabled: 2 credits/week will not be enough to finish on time.";
+} else {
+  planCButton.disabled = false;
+  planCButton.title = "";
+}
+
       document.getElementById("planButtons").style.display = "flex";
       storedPlan = { 
   totalCredits, 
