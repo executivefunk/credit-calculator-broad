@@ -291,59 +291,85 @@
 
       document.getElementById("result").innerHTML = result;
       document.getElementById("planButtons").style.display = "flex";
-      storedPlan = { totalCredits, startWeek, endWeek, oneCreditWeeks };
+      storedPlan = { 
+  totalCredits, 
+  startWeek, 
+  endWeek, 
+  oneCreditWeeks,
+  skipWeeks: [
+    ...(skipThanksgiving ? [22] : []),
+    ...(skipWinter ? [26, 27] : []),
+    ...(skipSpring ? [41] : [])
+  ]
+};
     }
 
-    function generatePlan(type) {
-      const { totalCredits, startWeek, endWeek, oneCreditWeeks } = storedPlan;
-      const weeks = endWeek - startWeek + 1;
-      let weekPlan = [];
+   function generatePlan(type) {
+  const { totalCredits, startWeek, endWeek, oneCreditWeeks, skipWeeks } = storedPlan;
 
-      if (type === 'A') weekPlan = Array(weeks).fill(2);
-      if (type === 'B') {
-        const full3 = Math.floor(totalCredits / 3);
-        const rem = totalCredits % 3;
-        weekPlan = [...Array(full3).fill(3)];
-        if (rem > 0) weekPlan.push(rem);
-      }
-      if (type === 'C') {
-        const twoWeeks = weeks - oneCreditWeeks;
-        weekPlan = [...Array(twoWeeks).fill(2), ...Array(oneCreditWeeks).fill(1)];
-      }
-      if (type === 'D') {
-        const part1 = Array(8).fill(3);
-        const rem = totalCredits - 24;
-        const w4 = Math.floor(rem / 4);
-        const r4 = rem % 4;
-        const part2 = Array(w4).fill(4);
-        if (r4 > 0) part2.push(r4);
-        weekPlan = [...part1, ...part2];
-      }
+  // Prepare the usable weeks excluding skipWeeks
+  let allWeeks = [];
+  for (let w = startWeek; w <= endWeek; w++) {
+    allWeeks.push({ week: w, skip: skipWeeks.includes(w) });
+  }
+  const usableWeeks = allWeeks.filter(w => !w.skip);
+  const usableWeekCount = usableWeeks.length;
 
-      const table = `
-        <html><head><title>Plan ${type} Credit Tracker</title>
-        <style>
-          body { font-family: Arial; padding: 20px; }
-          table { border-collapse: collapse; width: 100%; }
-          td, th { border: 1px solid #ccc; padding: 8px; text-align: center; }
-          input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
-          .credit-cell { display: flex; align-items: center; gap: 6px; }
-        </style></head><body>
-        <h2>Credit Tracker – Plan ${type}</h2>
-        <table><tr><th>Week</th><th>Date Range</th><th>Credits</th><th colspan="4">Credits</th></tr>
-        ${weekPlan.map((credits, i) => {
-          const weekNum = startWeek + i;
-          const row = `<td>${weekNum}</td><td>${dateRanges[weekNum]}</td><td>${credits}</td>`;
-          const cells = Array(4).fill(`<td><div class="credit-cell"><input type="checkbox" /> ________</div></td>`).join('');
-          return `<tr>${row}${cells}</tr>`;
-        }).join('')}
-        </table></body></html>
-      `;
+  // Determine credit distribution per plan
+  let distribution = [];
+  if (type === 'A') distribution = Array(usableWeekCount).fill(2);
+  if (type === 'B') {
+    const full3 = Math.floor(totalCredits / 3);
+    const rem = totalCredits % 3;
+    distribution = [...Array(full3).fill(3)];
+    if (rem > 0) distribution.push(rem);
+  }
+  if (type === 'C') {
+    const twoWeeks = usableWeekCount - oneCreditWeeks;
+    distribution = [...Array(twoWeeks).fill(2), ...Array(oneCreditWeeks).fill(1)];
+  }
+  if (type === 'D') {
+    const part1 = Array(8).fill(3);
+    const rem = totalCredits - 24;
+    const w4 = Math.floor(rem / 4);
+    const r4 = rem % 4;
+    const part2 = Array(w4).fill(4);
+    if (r4 > 0) part2.push(r4);
+    distribution = [...part1, ...part2];
+  }
 
-      const printWin = window.open("", "_blank");
-      printWin.document.write(table);
-      printWin.document.close();
-    }
+  // Apply distribution to usable weeks
+  usableWeeks.forEach((w, i) => w.credits = distribution[i] ?? 0);
+  // Add 0 credits for skipped weeks
+  allWeeks = allWeeks.map(w => w.skip ? { ...w, credits: 0 } : usableWeeks.shift());
+
+  // Render table
+  const table = `
+    <html><head><title>Plan ${type} Credit Tracker</title>
+    <style>
+      body { font-family: Arial; padding: 20px; }
+      table { border-collapse: collapse; width: 100%; }
+      td, th { border: 1px solid #ccc; padding: 8px; text-align: center; }
+      input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
+      .credit-cell { display: flex; align-items: center; gap: 6px; }
+      .skip-row { background-color: #ffd6d6; } /* red highlight */
+    </style></head><body>
+    <h2>Credit Tracker – Plan ${type}</h2>
+    <table>
+      <tr><th>Week</th><th>Date Range</th><th>Credits</th><th colspan="4">Credits</th></tr>
+      ${allWeeks.map(w => {
+        const rowClass = w.skip ? ' class="skip-row"' : '';
+        const row = `<td>${w.week}</td><td>${dateRanges[w.week]}</td><td>${w.credits}</td>`;
+        const cells = Array(4).fill(`<td><div class="credit-cell"><input type="checkbox" /> ________</div></td>`).join('');
+        return `<tr${rowClass}>${row}${cells}</tr>`;
+      }).join('')}
+    </table></body></html>
+  `;
+
+  const printWin = window.open("", "_blank");
+  printWin.document.write(table);
+  printWin.document.close();
+}
   </script>
 </body>
 </html>
