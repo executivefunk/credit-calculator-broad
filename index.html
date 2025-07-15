@@ -97,32 +97,41 @@
 
     <!-- === START ADD: Holiday Checkboxes === -->
 <style>
-  .checkbox-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .checkbox-wrapper {
+    background-color: #e0f8e9; /* light green background */
+    border: 1px solid #b6e2c4;
+    padding: 15px;
+    border-radius: 8px;
     margin-top: 10px;
   }
 
-  .checkbox-container label {
-    display: inline-block;
+  .checkbox-wrapper .checkbox-option {
+    display: flex;
+    align-items: center;
     white-space: nowrap;
     font-size: 16px;
-    line-height: 1.4;
+    margin-bottom: 10px;
   }
 
-  .checkbox-container input[type="checkbox"] {
-    vertical-align: middle;
-    margin-right: 8px;
+  .checkbox-wrapper input[type="checkbox"] {
+    margin-right: 10px;
     transform: scale(1.2);
   }
 </style>
 
-<div class="checkbox-container">
-  <label><input type="checkbox" id="skipThanksgiving"> Skip Thanksgiving Week (Week 22)</label>
-  <label><input type="checkbox" id="skipWinter"> Skip Winter Break (Weeks 26 & 27)</label>
-  <label><input type="checkbox" id="skipSpring"> Skip Spring Week (Week 41)</label>
+<div class="checkbox-wrapper">
+  <div class="checkbox-option">
+    <input type="checkbox" id="skipThanksgiving">
+    <label for="skipThanksgiving">Skip Thanksgiving Week (Week 22)</label>
+  </div>
+  <div class="checkbox-option">
+    <input type="checkbox" id="skipWinter">
+    <label for="skipWinter">Skip Winter Break (Weeks 26 & 27)</label>
+  </div>
+  <div class="checkbox-option">
+    <input type="checkbox" id="skipSpring">
+    <label for="skipSpring">Skip Spring Week (Week 41)</label>
+  </div>
 </div>
     <!-- === END ADD === -->
 
