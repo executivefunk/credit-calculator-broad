@@ -255,10 +255,11 @@
       planD += ` - (${totalWeeksD} weeks total)`;
 
       const planAWeeks = Math.ceil(totalCredits / 2);
+      let weeksOf3 = 0; // Make this available outside the if-block
      let planANote = `<li><strong>Plan A:</strong> 2 credits/week for ${planAWeeks} weeks`;
 if (planAWeeks > weeksRemaining) {
   const weeksOver = planAWeeks - weeksRemaining;
-  const weeksOf3 = weeksOver * 2;
+  weeksOf3 = weeksOver * 2;
   const creditsFrom3s = weeksOf3 * 3;
   const creditsRemaining = totalCredits - creditsFrom3s;
  const weeksOf2 = Math.floor(creditsRemaining / 2);
