@@ -100,29 +100,29 @@
   .checkbox-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 10px;
     margin-top: 10px;
-    padding-left: 0; /* align with input above */
   }
 
   .checkbox-container label {
-    display: flex;
-    align-items: center;
+    display: inline-block;
+    white-space: nowrap;
     font-size: 16px;
     line-height: 1.4;
-    margin: 0;
   }
 
   .checkbox-container input[type="checkbox"] {
-    margin-right: 10px;
+    vertical-align: middle;
+    margin-right: 8px;
     transform: scale(1.2);
   }
 </style>
 
 <div class="checkbox-container">
-  <label><input type="checkbox" id="skipThanksgiving">Skip Thanksgiving Week (Week 22)</label>
-  <label><input type="checkbox" id="skipWinter">Skip Winter Break (Weeks 26 & 27)</label>
-  <label><input type="checkbox" id="skipSpring">Skip Spring Week (Week 41)</label>
+  <label><input type="checkbox" id="skipThanksgiving"> Skip Thanksgiving Week (Week 22)</label>
+  <label><input type="checkbox" id="skipWinter"> Skip Winter Break (Weeks 26 & 27)</label>
+  <label><input type="checkbox" id="skipSpring"> Skip Spring Week (Week 41)</label>
 </div>
     <!-- === END ADD === -->
 
