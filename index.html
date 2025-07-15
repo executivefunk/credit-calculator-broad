@@ -97,9 +97,9 @@
 
     <!-- === START ADD: Holiday Checkboxes === -->
     <div class="checkbox-container">
-      <label><input type="checkbox" id="skipThanksgiving"> Skip Thanksgiving Week</label>
-      <label><input type="checkbox" id="skipWinter"> Skip Winter Break</label>
-      <label><input type="checkbox" id="skipSpring"> Skip Spring Week</label>
+      <label><input type="checkbox" id="skipThanksgiving"> Skip Thanksgiving Week (Week 22)</label>
+      <label><input type="checkbox" id="skipWinter"> Skip Winter Break (Weeks 26 & 27)</label>
+      <label><input type="checkbox" id="skipSpring"> Skip Spring Week (Week 41)</label>
     </div>
     <!-- === END ADD === -->
 
@@ -294,7 +294,7 @@
           .credit-cell { display: flex; align-items: center; gap: 6px; }
         </style></head><body>
         <h2>Credit Tracker – Plan ${type}</h2>
-        <table><tr><th>Week</th><th>Date Range</th><th>Credits</th><th colspan="4">Packets</th></tr>
+        <table><tr><th>Week</th><th>Date Range</th><th>Credits</th><th colspan="4">Credits</th></tr>
         ${weekPlan.map((credits, i) => {
           const weekNum = startWeek + i;
           const row = `<td>${weekNum}</td><td>${dateRanges[weekNum]}</td><td>${credits}</td>`;
