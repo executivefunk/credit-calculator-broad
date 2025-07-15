@@ -250,9 +250,17 @@ if (planAWeeks > weeksRemaining) {
   const weeksOf3 = weeksOver * 2;
   const creditsFrom3s = weeksOf3 * 3;
   const creditsRemaining = totalCredits - creditsFrom3s;
-  const weeksOf2 = Math.floor(creditsRemaining / 2);
-  planANote += ` <span style="color: red;">(Exceeds weeks left by ${weeksOver})</span><br>`;
-  planANote += `<em>(You need ${weeksOf3} week${weeksOf3 > 1 ? 's' : ''} of 3 credits and ${weeksOf2} week${weeksOf2 > 1 ? 's' : ''} of 2 credits to stay within your available weeks)</em>`;
+ const weeksOf2 = Math.floor(creditsRemaining / 2);
+const leftover = creditsRemaining % 2;
+const weeksOf1 = leftover > 0 ? 1 : 0;
+
+const segments = [];
+if (weeksOf3 > 0) segments.push(`${weeksOf3} week${weeksOf3 > 1 ? 's' : ''} of 3 credits`);
+if (weeksOf2 > 0) segments.push(`${weeksOf2} week${weeksOf2 > 1 ? 's' : ''} of 2 credits`);
+if (weeksOf1 > 0) segments.push(`1 week of 1 credit`);
+
+planANote += ` <span style="color: red;">(Exceeds weeks left by ${weeksOver})</span><br>`;
+planANote += `<em>(You need ${segments.join(' and ')} to stay within your available weeks)</em>`;
 }
 planANote += `</li>`;
 
@@ -335,13 +343,16 @@ planANote += `</li>`;
     const creditsFrom3s = weeksOf3 * 3;
     const remainingCredits = totalCredits - creditsFrom3s;
     const weeksOf2 = Math.floor(remainingCredits / 2);
-    const fillerZeros = usableWeekCount - weeksOf3 - weeksOf2;
+const leftover = remainingCredits % 2;
+const weeksOf1 = leftover > 0 ? 1 : 0;
+const fillerZeros = usableWeekCount - weeksOf3 - weeksOf2 - weeksOf1;
 
-    distribution = [
-      ...Array(weeksOf3).fill(3),
-      ...Array(weeksOf2).fill(2),
-      ...Array(Math.max(0, fillerZeros)).fill(0)
-    ];
+distribution = [
+  ...Array(weeksOf3).fill(3),
+  ...Array(weeksOf2).fill(2),
+  ...Array(weeksOf1).fill(1),
+  ...Array(Math.max(0, fillerZeros)).fill(0)
+];
   }
 }
   if (type === 'B') {
