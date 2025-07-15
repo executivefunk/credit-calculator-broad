@@ -334,6 +334,16 @@ if (planAWeeks > weeksRemaining) {
   planCButton.disabled = false;
   planCButton.title = "";
 }
+      
+      // Disable Plan B button if Plan B exceeds weeks
+const planBButton = document.querySelector('button[onclick="generatePlan(\'B\')"]');
+if (planBWeeks > weeksRemaining) {
+  planBButton.disabled = true;
+  planBButton.title = "Disabled: 3 credits/week plan won't fit in your remaining time.";
+} else {
+  planBButton.disabled = false;
+  planBButton.title = "";
+}
 
       document.getElementById("planButtons").style.display = "flex";
       storedPlan = { 
