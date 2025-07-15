@@ -310,6 +310,16 @@ planANote += `</li>`;
       `;
 
       document.getElementById("result").innerHTML = result;
+      // Disable Plan A button if weeksOf3 exceeds weeksRemaining
+const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
+if (typeof weeksOf3 !== 'undefined' && weeksOf3 > weeksRemaining) {
+  planAButton.disabled = true;
+  planAButton.title = "Disabled: Not enough time — too many 3-credit weeks required.";
+} else {
+  planAButton.disabled = false;
+  planAButton.title = "";
+}
+
       // Disable Plan C button if Plan A exceeds weeks
 const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
 if (planAWeeks > weeksRemaining) {
