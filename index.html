@@ -244,12 +244,17 @@
       planD += ` - (${totalWeeksD} weeks total)`;
 
       const planAWeeks = Math.ceil(totalCredits / 2);
-      let planANote = `<li><strong>Plan A:</strong> 2 credits/week for ${planAWeeks} weeks`;
-      if (planAWeeks > weeksRemaining) {
-        const diff = planAWeeks - weeksRemaining;
-        planANote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
-      }
-      planANote += `</li>`;
+     let planANote = `<li><strong>Plan A:</strong> 2 credits/week for ${planAWeeks} weeks`;
+if (planAWeeks > weeksRemaining) {
+  const weeksOver = planAWeeks - weeksRemaining;
+  const weeksOf3 = weeksOver * 2;
+  const creditsFrom3s = weeksOf3 * 3;
+  const creditsRemaining = totalCredits - creditsFrom3s;
+  const weeksOf2 = Math.floor(creditsRemaining / 2);
+  planANote += ` <span style="color: red;">(Exceeds weeks left by ${weeksOver})</span><br>`;
+  planANote += `<em>(You need ${weeksOf3} week${weeksOf3 > 1 ? 's' : ''} of 3 credits and ${weeksOf2} week${weeksOf2 > 1 ? 's' : ''} of 2 credits to stay within your available weeks)</em>`;
+}
+planANote += `</li>`;
 
       let planBNote = `<li><strong>Plan B:</strong> ${planB}`;
       if (planBWeeks > weeksRemaining) {
@@ -319,10 +324,25 @@
   let distribution = [];
   if (type === 'A') {
   const neededWeeks = Math.ceil(totalCredits / 2);
-  distribution = [
-    ...Array(neededWeeks).fill(2),
-    ...Array(Math.max(0, usableWeekCount - neededWeeks)).fill(0)
-  ];
+  if (neededWeeks <= usableWeekCount) {
+    distribution = [
+      ...Array(neededWeeks).fill(2),
+      ...Array(usableWeekCount - neededWeeks).fill(0)
+    ];
+  } else {
+    const weeksOver = neededWeeks - usableWeekCount;
+    const weeksOf3 = weeksOver * 2; // ✅ Each 3-credit week gives 1 extra credit
+    const creditsFrom3s = weeksOf3 * 3;
+    const remainingCredits = totalCredits - creditsFrom3s;
+    const weeksOf2 = Math.floor(remainingCredits / 2);
+    const fillerZeros = usableWeekCount - weeksOf3 - weeksOf2;
+
+    distribution = [
+      ...Array(weeksOf3).fill(3),
+      ...Array(weeksOf2).fill(2),
+      ...Array(Math.max(0, fillerZeros)).fill(0)
+    ];
+  }
 }
   if (type === 'B') {
     const full3 = Math.floor(totalCredits / 3);
