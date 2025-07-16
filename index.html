@@ -148,12 +148,12 @@
     <div class="output" id="result"></div>
 
     <div class="plan-buttons" id="planButtons" style="display: none;">
-  <button onclick="generatePlan('A')">🟢 Open Plan A</button>
-  <button onclick="generatePlan('B')">🟡 Open Plan B</button>
-  <button onclick="generatePlan('C')">🔵 Open Plan C</button>
-  <button onclick="generatePlan('D')">🔴 Open Plan D</button>
-  <button onclick="generatePlan('E')">🔴 Open Plan E</button>
-</div>
+      <button onclick="generatePlan('A')">🟢 Open Plan A</button>
+      <button onclick="generatePlan('B')">🟡 Open Plan B</button>
+      <button onclick="generatePlan('C')">🔵 Open Plan C</button>
+      <button onclick="generatePlan('D')">🔴 Open Plan D</button>
+      <button onclick="generatePlan('E')">🟣 Open Plan E</button>
+    </div>
 
     <div class="footer-disclaimer">
       <strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.
@@ -296,40 +296,36 @@ planANote += `</li>`;
         planDNote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
       }
       planDNote += `</li>`;
-      // Plan E (Special Approval Needed)
-      let planEWeeks = 8; // First 8 weeks of 3 credits
-      let remE = Math.max(totalCredits - 24, 0);
-      let e4 = 0, e3 = 0, e2 = 0, e1 = 0;
 
-      while (remE > 0) {
-        if (remE >= 4) {
-          e4++;
-          remE -= 4;
-        } else if (remE === 3) {
-          e3++;
-          remE -= 3;
-        } else if (remE === 2) {
-          e2++;
-          remE -= 2;
-        } else {
-          e1++;
-          remE -= 1;
-        }
-      }
+      let creditsLeftAfterUnlock = Math.max(totalCredits - 24, 0);
+let remainingWeeksAfterUnlock = Math.max(weeksRemaining - 8, 0);
 
-planEWeeks += e4 + e3 + e2 + e1;
+let distribution = [];
+let remaining = creditsLeftAfterUnlock;
 
-let planENote = `<li><strong>Plan E (Special Approval Needed):</strong> 3/week for 8 weeks (to unlock 4 credits a week max), then`;
+const fillWeeks = (credits, label) => {
+  const count = Math.floor(remaining / credits);
+  remaining -= count * credits;
+  return { label, count };
+};
 
-const eSegments = [];
-if (e4) eSegments.push(`${e4} week${e4 > 1 ? 's' : ''} of 4/week`);
-if (e3) eSegments.push(`${e3} week${e3 > 1 ? 's' : ''} of 3 credits`);
-if (e2) eSegments.push(`${e2} week${e2 > 1 ? 's' : ''} of 2 credits`);
-if (e1) eSegments.push(`${e1} week${e1 > 1 ? 's' : ''} of 1 credit`);
+const fours = fillWeeks(4, '4');
+const threes = fillWeeks(3, '3');
+const twos = fillWeeks(2, '2');
+const ones = fillWeeks(1, '1');
 
-planENote += ` ${eSegments.join(' + ')} - (${planEWeeks} weeks total)`;
-if (planEWeeks > weeksRemaining) {
-  const diff = planEWeeks - weeksRemaining;
+const segmentsE = [
+  `${fours.count} week${fours.count > 1 ? 's' : ''} of 4`,
+  `${threes.count} week${threes.count > 1 ? 's' : ''} of 3`,
+  `${twos.count} week${twos.count > 1 ? 's' : ''} of 2`,
+  `${ones.count} week${ones.count > 1 ? 's' : ''} of 1`
+].filter(seg => !seg.startsWith('0'));
+
+let totalWeeksE = 8 + fours.count + threes.count + twos.count + ones.count;
+
+let planENote = `<li><span style='color:red'><strong>Plan E (Special Approval Needed):</strong></span> 3/week for 8 weeks to unlock, then ${segmentsE.join(' + ')} - (${totalWeeksE} weeks total)`;
+if (totalWeeksE > weeksRemaining) {
+  const diff = totalWeeksE - weeksRemaining;
   planENote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
 }
 planENote += `</li>`;
@@ -345,11 +341,11 @@ planENote += `</li>`;
         <hr>
         <p><strong>Workflow Options:</strong></p>
         <ul>
-        ${planANote}<br>
-        ${planBNote}<br>
-        ${planCNote}<br>
-        ${planDNote}<br>
-        ${planENote}
+          ${planANote}<br>
+          ${planBNote}<br>
+          ${planCNote}<br>
+          ${planDNote}
+          ${planENote}
         </ul>
       `;
 
@@ -393,41 +389,15 @@ if (totalWeeksD > weeksRemaining) {
   planDButton.disabled = false;
   planDButton.title = "";
 }
-      
-      // Disable Plan E button if it exceeds available weeks
-const creditsAfterUnlock = 8 * 3;
-planEWeeks = 8; // First 8 weeks at 3 credits
-let creditsRemainingE = Math.max(totalCredits - creditsAfterUnlock, 0);
-let creditsLeft = creditsRemainingE;
-let count4 = 0, count3 = 0, count2 = 0, count1 = 0;
 
-while (creditsLeft > 0) {
-  if (creditsLeft >= 4) {
-    count4++;
-    creditsLeft -= 4;
-  } else if (creditsLeft === 3) {
-    count3++;
-    creditsLeft -= 3;
-  } else if (creditsLeft === 2) {
-    count2++;
-    creditsLeft -= 2;
-  } else {
-    count1++;
-    creditsLeft -= 1;
-  }
-}
-
-planEWeeks += count4 + count3 + count2 + count1;
-
-const planEButton = document.querySelector('button[onclick="generatePlan(\'E\')"]');
-if (planEWeeks > weeksRemaining) {
+ const planEButton = document.querySelector('button[onclick="generatePlan(\'E\')"]');
+if (totalWeeksE > weeksRemaining) {
   planEButton.disabled = true;
   planEButton.title = "Disabled: Plan E requires more weeks than you have left.";
 } else {
   planEButton.disabled = false;
   planEButton.title = "";
 }
-
       document.getElementById("planButtons").style.display = "flex";
       storedPlan = { 
   totalCredits, 
@@ -500,33 +470,22 @@ distribution = [
     distribution = [...part1, ...part2];
   }
   if (type === 'E') {
-  const first8 = Array(8).fill(3);
-  let remE = totalCredits - 24; // 8 weeks of 3 credits
-  let e4 = 0, e3 = 0, e2 = 0, e1 = 0;
+  const part1 = Array(8).fill(3); // 8 weeks of 3 credits
+  let rem = totalCredits - 24;
 
-  while (remE > 0) {
-    if (remE >= 4) {
-      e4++;
-      remE -= 4;
-    } else if (remE === 3) {
-      e3++;
-      remE -= 3;
-    } else if (remE === 2) {
-      e2++;
-      remE -= 2;
-    } else {
-      e1++;
-      remE -= 1;
-    }
-  }
+  const part2 = [];
+  const fill = (num) => {
+    const count = Math.floor(rem / num);
+    rem -= count * num;
+    return Array(count).fill(num);
+  };
 
-  distribution = [
-    ...first8,
-    ...Array(e4).fill(4),
-    ...Array(e3).fill(3),
-    ...Array(e2).fill(2),
-    ...Array(e1).fill(1)
-  ];
+  part2.push(...fill(4));
+  part2.push(...fill(3));
+  part2.push(...fill(2));
+  part2.push(...fill(1));
+
+  distribution = [...part1, ...part2];
 }
 
   // Apply distribution to usable weeks
