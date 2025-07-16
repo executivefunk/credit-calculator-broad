@@ -172,7 +172,7 @@
     <h2>Weekly Credit Calculator</h2>
     <p id="currentDate" style="text-align: center; font-weight: bold; margin-top: -10px;"></p>
 <p id="currentWeek" style="text-align: center; font-size: 1.1em; margin-bottom: 15px;"></p>
-    <div class="disclaimer">
+    <div class="disclaimer" id="mainDisclaimer">
       This calculator is designed for students who plan to graduate this school year.
       <br><br>
       If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.
@@ -245,7 +245,7 @@
       <button onclick="generatePlan('D')">🔴 Open Plan D</button>
     </div>
 
-    <div class="footer-disclaimer">
+    <div class="footer-disclaimer" id="footerDisclaimer">
       <strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.
     </div>
   </div>
@@ -308,6 +308,14 @@ const translations = {
   "This calculator is designed for students who plan to graduate this school year.": "Esta calculadora está diseñada para estudiantes que planean graduarse este año escolar.",
   "If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.": "Si planeas graduarte el próximo año o después, aún puedes usarla para establecer una meta de créditos para el año o semestre.",
   "Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.": "Habla con tu maestro para decidir cuántos créditos necesitas, luego usa ese número en la calculadora."
+    "mainDisclaimerFull": `This calculator is designed for students who plan to graduate this school year.<br><br>If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.<br><br>Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.`,
+
+  "mainDisclaimerFull_ES": `Esta calculadora está diseñada para estudiantes que planean graduarse este año escolar.<br><br>Si planeas graduarte el próximo año o después, igual puedes usarla para establecer una meta de créditos para el año o semestre escolar.<br><br>Habla con tu maestro para decidir cuántos créditos deberías completar y usa ese número en la calculadora.`,
+
+  "footerDisclaimerFull": `<strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.`,
+
+  "footerDisclaimerFull_ES": `<strong>Aviso:</strong> Esta calculadora es una herramienta útil para planificar, pero es importante verificar tus créditos totales y cuántas semanas tienes.<br>Si no estás seguro, habla con tu maestro o consejero escolar para revisar tu plan.`
+
 };
 
     const dateRanges = [
@@ -746,18 +754,29 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
 displayCurrentDateAndWeek();
     function toggleLanguage() {
   isSpanish = !isSpanish;
-document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
-Object.keys(translations).forEach(eng => {
-  const elements = Array.from(document.querySelectorAll("*")).filter(el =>
-    el.childNodes.length === 1 &&
-    el.childNodes[0].nodeType === 3 &&
-    (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
-  );
-  elements.forEach(el => {
-    el.textContent = isSpanish ? translations[eng] : eng;
+  document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
+  
+  Object.keys(translations).forEach(eng => {
+    const elements = Array.from(document.querySelectorAll("*")).filter(el =>
+      el.childNodes.length === 1 &&
+      el.childNodes[0].nodeType === 3 &&
+      (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
+    );
+    elements.forEach(el => {
+      el.textContent = isSpanish ? translations[eng] : eng;
+    });
   });
-});
-populateWeekDropdowns();
+
+  populateWeekDropdowns();
+
+  // ✅ ADD THIS BLOCK TO TOGGLE THE FULL DISCLAIMER CONTENT
+  document.getElementById("mainDisclaimer").innerHTML = isSpanish
+    ? translations.mainDisclaimerFull_ES
+    : translations.mainDisclaimerFull;
+
+  document.getElementById("footerDisclaimer").innerHTML = isSpanish
+    ? translations.footerDisclaimerFull_ES
+    : translations.footerDisclaimerFull;
 }
 
   </script>
