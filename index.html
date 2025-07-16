@@ -286,76 +286,76 @@ const translations = {
 ];
 
 function populateWeekDropdowns() {
+  const weeks = [
+    ["July 1 - July 4", "1–4 de julio"],
+    ["July 7 - July 11", "7–11 de julio"],
+    ["July 14 - July 18", "14–18 de julio"],
+    ["July 21 - July 25", "21–25 de julio"],
+    ["July 28 - Aug 1", "28 de julio–1 de agosto"],
+    ["Aug 4 - Aug 8", "4–8 de agosto"],
+    ["Aug 11 - Aug 15", "11–15 de agosto"],
+    ["Aug 18 - Aug 22", "18–22 de agosto"],
+    ["Aug 25 - Aug 29", "25–29 de agosto"],
+    ["Sept 1 - Sept 5", "1–5 de septiembre"],
+    ["Sept 8 - Sept 12", "8–12 de septiembre"],
+    ["Sept 15 - Sept 19", "15–19 de septiembre"],
+    ["Sept 22 - Sept 26", "22–26 de septiembre"],
+    ["Sept 29 - Oct 3", "29 de septiembre–3 de octubre"],
+    ["Oct 6 - Oct 10", "6–10 de octubre"],
+    ["Oct 13 - Oct 17", "13–17 de octubre"],
+    ["Oct 20 - Oct 24", "20–24 de octubre"],
+    ["Oct 27 - Oct 31", "27–31 de octubre"],
+    ["Nov 3 - Nov 7", "3–7 de noviembre"],
+    ["Nov 10 - Nov 14", "10–14 de noviembre"],
+    ["Nov 17 - Nov 21", "17–21 de noviembre"],
+    ["Nov 24 - Nov 28", "24–28 de noviembre"],
+    ["Dec 1 - Dec 5", "1–5 de diciembre"],
+    ["Dec 8 - Dec 12", "8–12 de diciembre"],
+    ["Dec 15 - Dec 19", "15–19 de diciembre"],
+    ["Dec 22 - Dec 26 (Winter Break)", "22–26 de diciembre (Vacaciones de invierno)"],
+    ["Dec 29 - Jan 2 (Winter Break)", "29 de diciembre–2 de enero (Vacaciones de invierno)"],
+    ["Jan 5 - Jan 9", "5–9 de enero"],
+    ["Jan 12 - Jan 16", "12–16 de enero"],
+    ["Jan 19 - Jan 23 - End of Semester 1", "19–23 de enero - Fin del semestre 1"],
+    ["Jan 26 - Jan 30", "26–30 de enero"],
+    ["Feb 2 - Feb 6", "2–6 de febrero"],
+    ["Feb 9 - Feb 13", "9–13 de febrero"],
+    ["Feb 16 - Feb 20", "16–20 de febrero"],
+    ["Feb 23 - Feb 27", "23–27 de febrero"],
+    ["Mar 2 - Mar 6", "2–6 de marzo"],
+    ["Mar 9 - Mar 13", "9–13 de marzo"],
+    ["Mar 16 - Mar 20", "16–20 de marzo"],
+    ["Mar 23 - Mar 27", "23–27 de marzo"],
+    ["Mar 30 - Apr 3", "30 de marzo–3 de abril"],
+    ["Apr 6 - Apr 10", "6–10 de abril"],
+    ["Apr 13 - Apr 17", "13–17 de abril"],
+    ["Apr 20 - Apr 24", "20–24 de abril"],
+    ["Apr 27 - May 1", "27 de abril–1 de mayo"],
+    ["May 4 - May 8", "4–8 de mayo"],
+    ["May 11 - May 15 ( Graduation Ceremony Credit Deadline - May 15)", "11–15 de mayo (Fecha límite para créditos de graduación)"],
+    ["May 18 - May 22", "18–22 de mayo"],
+    ["May 25 - May 29", "25–29 de mayo"],
+    ["June 1 - June 5", "1–5 de junio"],
+    ["June 8 - June 12", "8–12 de junio"],
+    ["June 15 - June 19", "15–19 de junio"],
+    ["June 22 - June 26 - End of Semester 2", "22–26 de junio - Fin del semestre 2"]
+  ];
+
   const startSelect = document.getElementById("startWeek");
   const endSelect = document.getElementById("endWeek");
 
-  const weeks = [
-    "", // index 0 is unused
-    "July 1 - July 4",
-    "July 7 - July 11",
-    "July 14 - July 18",
-    "July 21 - July 25",
-    "July 28 - Aug 1",
-    "Aug 4 - Aug 8",
-    "Aug 11 - Aug 15",
-    "Aug 18 - Aug 22",
-    "Aug 25 - Aug 29",
-    "Sept 1 - Sept 5",
-    "Sept 8 - Sept 12",
-    "Sept 15 - Sept 19",
-    "Sept 22 - Sept 26",
-    "Sept 29 - Oct 3",
-    "Oct 6 - Oct 10",
-    "Oct 13 - Oct 17",
-    "Oct 20 - Oct 24",
-    "Oct 27 - Oct 31",
-    "Nov 3 - Nov 7",
-    "Nov 10 - Nov 14",
-    "Nov 17 - Nov 21",
-    "Nov 24 - Nov 28",
-    "Dec 1 - Dec 5",
-    "Dec 8 - Dec 12",
-    "Dec 15 - Dec 19",
-    "Dec 22 - Dec 26 (Winter Break)",
-    "Dec 29 - Jan 2 (Winter Break)",
-    "Jan 5 - Jan 9",
-    "Jan 12 - Jan 16",
-    "Jan 19 - Jan 23 - End of Semester 1",
-    "Jan 26 - Jan 30",
-    "Feb 2 - Feb 6",
-    "Feb 9 - Feb 13",
-    "Feb 16 - Feb 20",
-    "Feb 23 - Feb 27",
-    "Mar 2 - Mar 6",
-    "Mar 9 - Mar 13",
-    "Mar 16 - Mar 20",
-    "Mar 23 - Mar 27",
-    "Mar 30 - Apr 3",
-    "Apr 6 - Apr 10",
-    "Apr 13 - Apr 17",
-    "Apr 20 - Apr 24",
-    "Apr 27 - May 1",
-    "May 4 - May 8",
-    "May 11 - May 15 (Graduation Ceremony Credit Deadline - May 15)",
-    "May 18 - May 22",
-    "May 25 - May 29",
-    "June 1 - June 5",
-    "June 8 - June 12",
-    "June 15 - June 19",
-    "June 22 - June 26 - End of Semester 2"
-  ];
+  startSelect.innerHTML = "";
+  endSelect.innerHTML = "";
 
-  for (let i = 1; i <= 52; i++) {
-    const label = `Week ${i}: ${weeks[i]}`;
+  for (let i = 0; i < weeks.length; i++) {
+    const optionEN = document.createElement("option");
+    optionEN.value = i + 1;
+    optionEN.text = isSpanish ? `Semana ${i + 1}: ${weeks[i][1]}` : `Week ${i + 1}: ${weeks[i][0]}`;
 
-    const optionStart = new Option(label, i);
-    const optionEnd = new Option(label, i);
+    const optionEN2 = optionEN.cloneNode(true);
 
-    if (i === 1) optionStart.selected = true;
-    if (i === 46) optionEnd.selected = true;
-
-    startSelect.add(optionStart);
-    endSelect.add(optionEnd);
+    startSelect.appendChild(optionEN);
+    endSelect.appendChild(optionEN2);
   }
 }
 
@@ -706,23 +706,26 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
 displayCurrentDateAndWeek();
     function toggleLanguage() {
   isSpanish = !isSpanish;
-
   document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
 
-  // Translate static text content
-  const keys = Object.keys(translations);
-  keys.forEach(eng => {
+  Object.keys(translations).forEach(eng => {
     const elements = Array.from(document.querySelectorAll("*"))
-      .filter(el => el.childNodes.length === 1 && el.childNodes[0].nodeType === 3 && el.textContent.trim() === eng);
-
+      .filter(el =>
+        el.childNodes.length === 1 &&
+        el.childNodes[0].nodeType === 3 &&
+        el.textContent.trim() === (isSpanish ? eng : translations[eng])
+      );
     elements.forEach(el => {
       el.textContent = isSpanish ? translations[eng] : eng;
     });
   });
 
-  // Translate button text
-  const calculateBtn = document.getElementById("calculateBtn");
-  calculateBtn.textContent = isSpanish ? translations["Calculate"] : "Calculate";
+  const outputBox = document.getElementById("output");
+  if (outputBox && outputBox.innerHTML.trim() !== "") {
+    calculateCredits();
+  }
+
+  populateWeekDropdowns(); // 🔁 Refresh dropdowns based on language
 }
 
   </script>
