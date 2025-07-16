@@ -319,7 +319,15 @@ planANote += `</li>`;
 
 planEWeeks += e4 + e3 + e2 + e1;
 
-let planENote = `<li><strong>Plan E (Special Approval Needed):</strong> 3/week for 8 weeks to unlock, then ${e4} week${e4 !== 1 ? 's' : ''} of 4, ${e3} of 3, ${e2} of 2, ${e1} of 1 — (${planEWeeks} weeks total)`;
+let planENote = `<li><strong>Plan E (Special Approval Needed):</strong> 3/week for 8 weeks (to unlock 4 credits a week max), then`;
+
+const eSegments = [];
+if (e4) eSegments.push(`${e4} week${e4 > 1 ? 's' : ''} of 4/week`);
+if (e3) eSegments.push(`${e3} week${e3 > 1 ? 's' : ''} of 3 credits`);
+if (e2) eSegments.push(`${e2} week${e2 > 1 ? 's' : ''} of 2 credits`);
+if (e1) eSegments.push(`${e1} week${e1 > 1 ? 's' : ''} of 1 credit`);
+
+planENote += ` ${eSegments.join(' + ')} - (${planEWeeks} weeks total)`;
 if (planEWeeks > weeksRemaining) {
   const diff = planEWeeks - weeksRemaining;
   planENote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
