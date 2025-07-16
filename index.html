@@ -253,6 +253,46 @@
   <script>
    
     let isSpanish = false;
+    function getText(key) {
+  const map = {
+    "Credits Needed": ["Credits Needed", "Créditos Necesarios"],
+    "Weeks Remaining": ["Weeks Remaining", "Semanas Restantes"],
+    "Average Credits per Week": ["Average Credits per Week", "Promedio de Créditos por Semana"],
+    "Risk Level": ["Risk Level", "Nivel de Riesgo"],
+    "Suggestion": ["Suggestion", "Sugerencia"],
+    "Workflow Options": ["Workflow Options", "Opciones de Planificación"],
+    "✅ Low Risk": ["✅ Low Risk", "✅ Riesgo Bajo"],
+    "⚠️ Medium Risk": ["⚠️ Medium Risk", "⚠️ Riesgo Medio"],
+    "⚠️ Medium–High Risk": ["⚠️ Medium–High Risk", "⚠️ Riesgo Medio–Alto"],
+    "⚠️ High Risk – Near Limit": ["⚠️ High Risk – Near Limit", "⚠️ Riesgo Alto – Cerca del límite"],
+    "🚨 High Risk": ["🚨 High Risk", "🚨 Riesgo Muy Alto"],
+    "✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.": [
+      "✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.",
+      "✅ ¡Vas bien! Intenta entregar 2 créditos por semana para mantenerte al día y terminar a tiempo."
+    ],
+    "⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.": [
+      "⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.",
+      "⚠️ Necesitarás hacer un poco más de 2 por semana. Intenta entregar 3 créditos por semana para avanzar y reducir tu carga semanal."
+    ],
+    "⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.": [
+      "⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.",
+      "⚠️ Estás cerca del límite semanal de 3 créditos. Entrega 3 por semana ahora para reducir tu carga y evitar agotarte más adelante."
+    ],
+    "⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.": [
+      "⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.",
+      "⚠️ Muy cerca del límite semanal de 3 créditos. Entrega 3 por semana para bajar tu carga."
+    ],
+    "🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.": [
+      "🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.",
+      "🚨 Este plan requiere 3 o más créditos cada semana sin descansos. Es difícil de mantener, y la mayoría de estudiantes necesitan apoyo extra. Habla con tu maestro para armar un plan realista y con respaldo."
+    ],
+    "Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.": [
+      "Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.",
+      "Consejo para un buen comienzo: Intenta completar 3 créditos/semana durante las primeras 6 semanas. Después puedes bajar el ritmo."
+    ]
+  };
+  return isSpanish ? map[key]?.[1] ?? key : map[key]?.[0] ?? key;
+}
 
 const translations = {
   "Weekly Credit Calculator": "Calculadora de Créditos Semanales",
@@ -487,22 +527,22 @@ planANote += `</li>`;
       planDNote += `</li>`;
 
       const result = `
-        <p><strong>Credits Needed:</strong> ${totalCredits}</p>
-        <p><strong>Weeks Remaining:</strong> ${weeksRemaining}</p>
-        <p><strong>Average Credits per Week:</strong> ${weeklyAvg}</p>
-        <p><strong>Risk Level:</strong> ${riskLevel}</p>
-        <p><strong>Suggestion:</strong> ${suggestion}</p>
-        ${bufferWarning}
-        ${strongStart}
-        <hr>
-        <p><strong>Workflow Options:</strong></p>
-        <ul>
-          ${planANote}<br>
-          ${planBNote}<br>
-          ${planCNote}<br>
-          ${planDNote}
-        </ul>
-      `;
+  <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
+  <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
+  <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
+  <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
+  <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
+  ${bufferWarning}
+  ${startWeek <= 10 ? `<p><strong>${getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.")}</strong></p>` : ""}
+  <hr>
+  <p><strong>${getText("Workflow Options")}:</strong></p>
+  <ul>
+    ${planANote}<br>
+    ${planBNote}<br>
+    ${planCNote}<br>
+    ${planDNote}
+  </ul>
+`;
 
       document.getElementById("result").innerHTML = result;
       // Disable Plan A button if weeksOf3 exceeds weeksRemaining
@@ -706,35 +746,18 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
 displayCurrentDateAndWeek();
     function toggleLanguage() {
   isSpanish = !isSpanish;
-
-  // Update toggle button text
-  document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
-
-  // Translate all static text
-  Object.keys(translations).forEach(eng => {
-    const elements = Array.from(document.querySelectorAll("*")).filter(el =>
-      el.childNodes.length === 1 &&
-      el.childNodes[0].nodeType === 3 &&
-      (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
-    );
-    elements.forEach(el => {
-      el.textContent = isSpanish ? translations[eng] : eng;
-    });
+document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
+Object.keys(translations).forEach(eng => {
+  const elements = Array.from(document.querySelectorAll("*")).filter(el =>
+    el.childNodes.length === 1 &&
+    el.childNodes[0].nodeType === 3 &&
+    (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
+  );
+  elements.forEach(el => {
+    el.textContent = isSpanish ? translations[eng] : eng;
   });
-
-  // ✅ Reset inputs
-  document.getElementById("creditsNeeded").value = "";
-  document.getElementById("skipThanksgiving").checked = false;
-  document.getElementById("skipWinter").checked = false;
-  document.getElementById("skipSpring").checked = false;
-
-  // ✅ Reset dropdowns AFTER setting isSpanish
-  populateWeekDropdowns();
-  document.getElementById("startWeek").selectedIndex = 0;
-  document.getElementById("endWeek").selectedIndex = 0;
-
-  // ✅ Clear output
-  document.getElementById("output").innerHTML = "";
+});
+populateWeekDropdowns();
 }
 
   </script>
