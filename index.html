@@ -508,7 +508,10 @@ document.getElementById("skipSpring").addEventListener("change", calculateCredit
     ? `Today is ${formattedDate}`
     : `Today is ${formattedDate} — Week ${currentWeek}`;
 
-  document.getElementById("currentDateWeek").textContent = label;
+  document.getElementById("currentDate").textContent = formattedDate;
+document.getElementById("currentWeek").textContent = currentWeek === "Outside of school year" 
+  ? "Not in school year range"
+  : `📅 Current Week: ${currentWeek}`;
 }
 
 // Run it once the page loads
