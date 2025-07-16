@@ -6,89 +6,163 @@
   <title>Weekly Credit Calculator</title>
   <link rel="manifest" href="manifest.json">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f4f4f4;
-    }
-    @media (max-width: 480px) {
   body {
-    font-size: 16px;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f4f4f4;
+    margin: 0;
   }
 
-  label, .holiday-option label {
-    font-size: 15px;
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
   }
-}
-    .container {
-  max-width: 500px;
-  width: 100%;
-  margin: 0 auto;
-  background: white;
-  padding: 5vw;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-    }
-    h2 {
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-    }
-    input[type="number"],
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    .checkbox-container {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 10px;
-    }
-    .output {
-      margin-top: 20px;
-      padding: 10px;
-      background: #eef;
-      border-radius: 6px;
-    }
-    .warning {
-      background: #ffeeba;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-      border: 1px solid #f0ad4e;
-    }
-    .disclaimer {
-      background: #fff89a;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ffeeba;
-      margin-top: 10px;
-      font-size: 0.95em;
-    }
-    .footer-disclaimer {
-      margin-top: 20px;
-      font-size: 0.9em;
-      color: #555;
-      text-align: center;
-    }
-    .plan-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .plan-buttons button:disabled {
+
+  h2 {
+    text-align: center;
+  }
+
+  label {
+    display: block;
+    margin-top: 15px;
+  }
+
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .output {
+    margin-top: 20px;
+    padding: 10px;
+    background: #eef;
+    border-radius: 6px;
+  }
+
+  .warning {
+    background: #ffeeba;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    border: 1px solid #f0ad4e;
+  }
+
+  .disclaimer {
+    background: #fff89a;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ffeeba;
+    margin-top: 10px;
+    font-size: 0.95em;
+  }
+
+  .footer-disclaimer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #555;
+    text-align: center;
+  }
+
+  .plan-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .plan-buttons button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  </style>
+
+  /* Holiday Box Styling */
+  .holiday-box {
+    background-color: #e0f8e9;
+    border: 1px solid #b6e2c4;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  .holiday-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .holiday-option input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+  }
+
+  .holiday-option label {
+    white-space: nowrap;
+    position: relative;
+    top: -5px;
+  }
+
+  /* Responsive Fixes */
+  @media (max-width: 480px) {
+    body {
+      padding: 10px;
+    }
+
+    .container {
+      padding: 15px;
+      width: 100%;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    h2 {
+      font-size: 1.2em;
+    }
+
+    .holiday-option {
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    label,
+    .holiday-option label {
+      font-size: 14px;
+    }
+
+    input[type="number"],
+    select {
+      font-size: 16px;
+    }
+
+    button {
+      font-size: 15px;
+    }
+
+    .disclaimer,
+    .warning,
+    .footer-disclaimer,
+    .output {
+      font-size: 14px;
+    }
+  }
+</style>
 </head>
 <body>
   <div class="container">
