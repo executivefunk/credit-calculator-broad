@@ -708,6 +708,7 @@ displayCurrentDateAndWeek();
   isSpanish = !isSpanish;
   document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
 
+  // Translate labels
   Object.keys(translations).forEach(eng => {
     const elements = Array.from(document.querySelectorAll("*"))
       .filter(el =>
@@ -720,12 +721,19 @@ displayCurrentDateAndWeek();
     });
   });
 
-  const outputBox = document.getElementById("output");
-  if (outputBox && outputBox.innerHTML.trim() !== "") {
-    calculateCredits();
-  }
+  // Reset form inputs
+  document.getElementById("creditsNeeded").value = "";
+  document.getElementById("startWeek").selectedIndex = 0;
+  document.getElementById("endWeek").selectedIndex = 0;
+  document.getElementById("skipThanksgiving").checked = false;
+  document.getElementById("skipWinter").checked = false;
+  document.getElementById("skipSpring").checked = false;
 
-  populateWeekDropdowns(); // 🔁 Refresh dropdowns based on language
+  // Clear output
+  document.getElementById("output").innerHTML = "";
+
+  // Repopulate dropdowns in correct language
+  populateWeekDropdowns();
 }
 
   </script>
