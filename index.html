@@ -707,35 +707,34 @@ displayCurrentDateAndWeek();
     function toggleLanguage() {
   isSpanish = !isSpanish;
 
-  // Update toggle button label
+  // Update toggle button text
   document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
 
-  // Translate static labels
+  // Translate all static text
   Object.keys(translations).forEach(eng => {
-    const elements = Array.from(document.querySelectorAll("*"))
-      .filter(el =>
-        el.childNodes.length === 1 &&
-        el.childNodes[0].nodeType === 3 &&
-        el.textContent.trim() === (isSpanish ? eng : translations[eng])
-      );
+    const elements = Array.from(document.querySelectorAll("*")).filter(el =>
+      el.childNodes.length === 1 &&
+      el.childNodes[0].nodeType === 3 &&
+      (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
+    );
     elements.forEach(el => {
       el.textContent = isSpanish ? translations[eng] : eng;
     });
   });
 
-  // 💥 Clear inputs
+  // ✅ Reset inputs
   document.getElementById("creditsNeeded").value = "";
-  document.getElementById("startWeek").selectedIndex = 0;
-  document.getElementById("endWeek").selectedIndex = 0;
   document.getElementById("skipThanksgiving").checked = false;
   document.getElementById("skipWinter").checked = false;
   document.getElementById("skipSpring").checked = false;
 
-  // 💥 Clear output
-  document.getElementById("output").innerHTML = "";
-
-  // 🌀 Repopulate dropdowns in new language
+  // ✅ Reset dropdowns AFTER setting isSpanish
   populateWeekDropdowns();
+  document.getElementById("startWeek").selectedIndex = 0;
+  document.getElementById("endWeek").selectedIndex = 0;
+
+  // ✅ Clear output
+  document.getElementById("output").innerHTML = "";
 }
 
   </script>
