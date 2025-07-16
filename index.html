@@ -706,9 +706,11 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
 displayCurrentDateAndWeek();
     function toggleLanguage() {
   isSpanish = !isSpanish;
+
+  // Update toggle button label
   document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
 
-  // Translate labels
+  // Translate static labels
   Object.keys(translations).forEach(eng => {
     const elements = Array.from(document.querySelectorAll("*"))
       .filter(el =>
@@ -721,7 +723,7 @@ displayCurrentDateAndWeek();
     });
   });
 
-  // Reset form inputs
+  // 💥 Clear inputs
   document.getElementById("creditsNeeded").value = "";
   document.getElementById("startWeek").selectedIndex = 0;
   document.getElementById("endWeek").selectedIndex = 0;
@@ -729,10 +731,10 @@ displayCurrentDateAndWeek();
   document.getElementById("skipWinter").checked = false;
   document.getElementById("skipSpring").checked = false;
 
-  // Clear output
+  // 💥 Clear output
   document.getElementById("output").innerHTML = "";
 
-  // Repopulate dropdowns in correct language
+  // 🌀 Repopulate dropdowns in new language
   populateWeekDropdowns();
 }
 
