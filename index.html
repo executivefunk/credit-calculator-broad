@@ -166,6 +166,9 @@
 </head>
 <body>
   <div class="container">
+    <div style="text-align: right; margin-bottom: 10px;">
+  <button onclick="toggleLanguage()" id="langToggleBtn">Español</button>
+</div>
     <h2>Weekly Credit Calculator</h2>
     <p id="currentDate" style="text-align: center; font-weight: bold; margin-top: -10px;"></p>
 <p id="currentWeek" style="text-align: center; font-size: 1.1em; margin-bottom: 15px;"></p>
@@ -248,6 +251,25 @@
   </div>
 
   <script>
+   
+    let isSpanish = false;
+
+const translations = {
+  "Weekly Credit Calculator": "Calculadora de Créditos Semanales",
+  "How many credits do you need to finish?": "¿Cuántos créditos necesitas completar?",
+  "What week are you starting from?": "¿Desde qué semana comienzas?",
+  "Which week do you want to finish by?": "¿En qué semana quieres terminar?",
+  "Skip Thanksgiving Week (Week 22)": "Saltar la semana de Acción de Gracias (Semana 22)",
+  "Skip Winter Break (Weeks 26–27)": "Saltar las vacaciones de invierno (Semanas 26–27)",
+  "Skip Spring Week (Week 41)": "Saltar la semana de primavera (Semana 41)",
+  "Calculate": "Calcular",
+  "Disclaimer:": "Aviso:",
+  "This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.": "Esta calculadora es una herramienta útil para planificar, pero es importante verificar tus créditos y el número de semanas. Si no estás seguro, habla con tu maestro o consejero escolar.",
+  "This calculator is designed for students who plan to graduate this school year.": "Esta calculadora está diseñada para estudiantes que planean graduarse este año escolar.",
+  "If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.": "Si planeas graduarte el próximo año o después, aún puedes usarla para establecer una meta de créditos para el año o semestre.",
+  "Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.": "Habla con tu maestro para decidir cuántos créditos necesitas, luego usa ese número en la calculadora."
+};
+
     const dateRanges = [
   "", "July 1 - July 4", "July 7 - July 11", "July 14 - July 18", "July 21 - July 25",
   "July 28 - Aug 1", "Aug 4 - Aug 8", "Aug 11 - Aug 15", "Aug 18 - Aug 22", "Aug 25 - Aug 29",
@@ -682,6 +704,27 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
 
 // Run it once the page loads
 displayCurrentDateAndWeek();
+    function toggleLanguage() {
+  isSpanish = !isSpanish;
+
+  document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
+
+  // Translate static text content
+  const keys = Object.keys(translations);
+  keys.forEach(eng => {
+    const elements = Array.from(document.querySelectorAll("*"))
+      .filter(el => el.childNodes.length === 1 && el.childNodes[0].nodeType === 3 && el.textContent.trim() === eng);
+
+    elements.forEach(el => {
+      el.textContent = isSpanish ? translations[eng] : eng;
+    });
+  });
+
+  // Translate button text
+  const calculateBtn = document.getElementById("calculateBtn");
+  calculateBtn.textContent = isSpanish ? translations["Calculate"] : "Calculate";
+}
+
   </script>
 </body>
 </html>
