@@ -425,7 +425,10 @@ function populateWeekDropdowns() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", populateWeekDropdowns);
+document.addEventListener("DOMContentLoaded", () => {
+  populateWeekDropdowns();
+  document.getElementById("endWeek").value = "46";
+});
 
 let storedPlan = {};
 
