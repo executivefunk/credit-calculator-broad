@@ -356,6 +356,61 @@ const translations = {
 "weeks_total": [
   "({x} weeks total)",
   "({x} semanas en total)"
+],
+  "credits_per_week_for_weeks": [
+  "{x} credits/week for {y} weeks",
+  "{x} créditos/semana por {y} semanas"
+],
+"exceeds_weeks_by": [
+  "(Exceeds weeks left by {z})",
+  "(Excede las semanas disponibles por {z})"
+],
+"weeks_of_x_credits": [
+  "{count} week(s) of {credit} credit(s)",
+  "{count} semana(s) de {credit} crédito(s)"
+],
+"you_need_segments": [
+  "You need {segments} to stay within your available weeks",
+  "Necesitas {segments} para quedarte dentro de tus semanas disponibles"
+],
+"and": ["and", "y"],
+"Plan B": ["Plan B", "Plan B"],
+"plus_1_week_of_n": [
+  "+ 1 week of {n} credit(s)",
+  "+ 1 semana de {n} crédito(s)"
+],
+"weeks_total": [
+  "({x} weeks total)",
+  "({x} semanas en total)"
+],
+"credits_per_week_for_weeks": [
+  "{x} credits/week for {y} weeks",
+  "{x} créditos/semana por {y} semanas"
+],
+"exceeds_weeks_by": [
+  "(Exceeds weeks left by {z})",
+  "(Excede las semanas disponibles por {z})"
+],
+  "Plan C": ["Plan C", "Plan C"],
+"Plan C Subtitle": [
+  "2 credits/week - simple but requires consistency",
+  "2 créditos/semana - simple pero requiere constancia"
+],
+  "Plan D (Special Approval Needed)": [
+  "Plan D (Special Approval Needed)",
+  "Plan D (Se Requiere Aprobación Especial)"
+],
+"plan_d_header": [
+  "3/week for 8 weeks (to unlock 4 credits a week max), then {x} week(s) of 4/week",
+  "3/semana por 8 semanas (para desbloquear hasta 4 créditos por semana), luego {x} semana(s) de 4/semana"
+],
+"plus_1_week_of_n": [
+  "+ 1 week of {n} credit(s)",
+  "+ 1 semana de {n} crédito(s)"
+],
+"weeks_total": [
+  "({x} weeks total)",
+  "({x} semanas en total)"
 ]
 };
 
@@ -553,31 +608,30 @@ planDNote += `</li>`;
      let planANote = `<li><strong>${getText("Plan A")}:</strong> ` +
   getText("credits_per_week_for_weeks")
     .replace("{x}", "2")
-    .replace("{y}", planAWeeks);
+    .replace("{y}", weeksRemaining);
 
-if (planAWeeks > weeksRemaining) {
-  const weeksOver = planAWeeks - weeksRemaining;
-  weeksOf3 = weeksOver * 2;
-  const creditsFrom3s = weeksOf3 * 3;
-  const creditsRemaining = totalCredits - creditsFrom3s;
-  const weeksOf2 = Math.floor(creditsRemaining / 2);
-  const leftover = creditsRemaining % 2;
-  const weeksOf1 = leftover > 0 ? 1 : 0;
-
+if (weeksOver > 0) {
   const segments = [];
-  if (weeksOf3 > 0) segments.push(
-    getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3)
-  );
-  if (weeksOf2 > 0) segments.push(
-    getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2)
-  );
-  if (weeksOf1 > 0) segments.push(
-    getText("weeks_of_x_credits").replace("{count}", 1).replace("{credit}", 1)
-  );
+  if (weeksOf3 > 0) {
+    segments.push(getText("weeks_of_x_credits")
+      .replace("{count}", weeksOf3)
+      .replace("{credit}", 3));
+  }
+  if (weeksOf2 > 0) {
+    segments.push(getText("weeks_of_x_credits")
+      .replace("{count}", weeksOf2)
+      .replace("{credit}", 2));
+  }
+  if (weeksOf1 > 0) {
+    segments.push(getText("weeks_of_x_credits")
+      .replace("{count}", weeksOf1)
+      .replace("{credit}", 1));
+  }
 
   planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span><br>`;
   planANote += `<em>${getText("you_need_segments").replace("{segments}", segments.join(` ${getText("and")} `))}</em>`;
 }
+
 planANote += `</li>`;
 
       let planBNote = `<li><strong>${getText("Plan B")}:</strong> ` +
@@ -585,17 +639,17 @@ planANote += `</li>`;
     .replace("{x}", "3")
     .replace("{y}", fullWeeksAt3);
 
-      planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
-
 if (remainder > 0) {
   planBNote += ` + ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
 }
+
 planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
 
 if (planBWeeks > weeksRemaining) {
   const diff = planBWeeks - weeksRemaining;
   planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
 }
+
 planBNote += `</li>`;
       let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${getText("Plan C Subtitle")}</li>`;
 
@@ -1001,13 +1055,21 @@ distribution = [
     let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${getText("Plan C Subtitle")}</li>`;
 
     // Plan D
-    let planDNote = `<li><strong>${getText("plan_d_header")}</strong>`;
-    planDNote += `, ${getText("then_x_weeks_of_4").replace("{x}", planD4Weeks)}`;
-    if (planDExtraWeeks === 1) {
-      planDNote += ` + ${getText("plus_1_week_of_n").replace("{n}", 3)}`;
-    }
-    planDNote += ` - ${getText("weeks_total").replace("{x}", planDUnlockedWeeks + planD4Weeks + planDExtraWeeks)}`;
-    planDNote += `</li>`;
+    let planDNote = `<li><strong>${getText("Plan D (Special Approval Needed)")}:</strong> ${getText("plan_d_header")}`;
+
+planDNote = planDNote.replace("{x}", weeksOf4);
+
+if (weeksOf3 > 0) {
+  planDNote += ` ${getText("plus_1_week_of_n").replace("{n}", 3)}`;
+}
+if (weeksOf2 > 0) {
+  planDNote += ` ${getText("plus_1_week_of_n").replace("{n}", 2)}`;
+}
+if (weeksOf1 > 0) {
+  planDNote += ` ${getText("plus_1_week_of_n").replace("{n}", 1)}`;
+}
+
+planDNote += ` - ${getText("weeks_total").replace("{x}", planDWeeks)}</li>`;
 
     // Final Result Section
     const result = `
