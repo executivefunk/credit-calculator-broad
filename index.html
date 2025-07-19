@@ -278,6 +278,30 @@
   "⚠️ Heads up: Week 46 is the last week to turn in credits to walk in the graduation ceremony. You’ve selected a week after that — talk with your teacher to make sure your plan still works.",
   "⚠️ Aviso: La Semana 46 es la última semana para entregar créditos y participar en la ceremonia de graduación. Has seleccionado una semana posterior — habla con tu maestro para asegurarte de que tu plan aún funcione."
 ],
+    "Plan A": ["Plan A", "Plan A"],
+"Plan B": ["Plan B", "Plan B"],
+"Plan C": ["Plan C", "Plan C"],
+"Plan D (Special Approval Needed)": ["Plan D (Special Approval Needed)", "Plan D (Se Requiere Aprobación Especial)"],
+
+"credits_per_week_for_weeks": ["{x} credits/week for {y} weeks", "{x} créditos/semana por {y} semanas"],
+"exceeds_weeks_by": ["(Exceeds weeks left by {z})", "(Excede las semanas restantes por {z})"],
+"you_need_segments": ["(You need {segments} to stay within your available weeks)", "(Necesitas {segments} para mantenerte dentro de tus semanas disponibles)"],
+
+"weeks_of_x_credits": ["{count} week(s) of {credit} credit(s)", "{count} semana(s) de {credit} crédito(s)"],
+
+"can_afford_1_credit": [
+  "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
+  "Puedes tener hasta {count} semana(s) de 1 crédito si el resto promedia 2 o más"
+],
+
+"plan_d_header": [
+  "Plan D (Special Approval Needed): 3/week for 8 weeks (to unlock 4 credits a week max)",
+  "Plan D (Se Requiere Aprobación Especial): 3/semana por 8 semanas (para desbloquear hasta 4 créditos por semana)"
+],
+"then_x_weeks_of_4": ["then {x} week(s) of 4/week", "luego {x} semana(s) de 4/semana"],
+"plus_1_week_of_n": ["+ 1 week of {n} credit(s)", "+ 1 semana de {n} crédito(s)"],
+"weeks_total": ["({x} weeks total)", "({x} semanas en total)"]
+
   };
   return isSpanish ? map[key]?.[1] ?? key : map[key]?.[0] ?? key;
 }
@@ -310,7 +334,8 @@ const translations = {
 
   "footerDisclaimerFull": `<strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.`,
 
-  "footerDisclaimerFull_ES": `<strong>Aviso:</strong> Esta calculadora es una herramienta útil para planificar, pero es importante verificar tus créditos totales y cuántas semanas tienes.<br>Si no estás seguro, habla con tu maestro o consejero escolar para revisar tu plan.`
+  "footerDisclaimerFull_ES": `<strong>Aviso:</strong> Esta calculadora es una herramienta útil para planificar, pero es importante verificar tus créditos totales y cuántas semanas tienes.<br>Si no estás seguro, habla con tu maestro o consejero escolar para revisar tu plan.`,
+
 };
 
     const dateRanges = [
@@ -485,54 +510,71 @@ let bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWar
       const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
       const fullWeeksAt4 = Math.floor(remainingCredits / 4);
       const remainderD = remainingCredits % 4;
-      let planD = `<span style='color:red'><strong>Plan D (Special Approval Needed):</strong></span> 3/week for 8 weeks (to unlock 4 credits a week max), then ${fullWeeksAt4} week(s) of 4/week`;
-      if (remainderD > 0) {
-        planD += ` + 1 week of ${remainderD} credit${remainderD > 1 ? 's' : ''}`;
-      }
       const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
-      planD += ` - (${totalWeeksD} weeks total)`;
+
+let planD = `<span style='color:red'><strong>${getText("plan_d_header")}</strong></span>, ` +
+  getText("then_x_weeks_of_4").replace("{x}", fullWeeksAt4);
+
+if (remainderD > 0) {
+  planD += ` ${getText("plus_1_week_of_n").replace("{n}", remainderD)}`;
+}
+
+planD += ` - ${getText("weeks_total").replace("{x}", totalWeeksD)}`;
+      let planDNote = `<li>${planD}`;
+if (totalWeeksD > weeksRemaining) {
+  const diff = totalWeeksD - weeksRemaining;
+  planDNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
+}
+planDNote += `</li>`;
 
       const planAWeeks = Math.ceil(totalCredits / 2);
       let weeksOf3 = 0; // Make this available outside the if-block
-     let planANote = `<li><strong>Plan A:</strong> 2 credits/week for ${planAWeeks} weeks`;
+     let planANote = `<li><strong>${getText("Plan A")}:</strong> ` +
+  getText("credits_per_week_for_weeks")
+    .replace("{x}", "2")
+    .replace("{y}", planAWeeks);
+
 if (planAWeeks > weeksRemaining) {
   const weeksOver = planAWeeks - weeksRemaining;
   weeksOf3 = weeksOver * 2;
   const creditsFrom3s = weeksOf3 * 3;
   const creditsRemaining = totalCredits - creditsFrom3s;
- const weeksOf2 = Math.floor(creditsRemaining / 2);
-const leftover = creditsRemaining % 2;
-const weeksOf1 = leftover > 0 ? 1 : 0;
+  const weeksOf2 = Math.floor(creditsRemaining / 2);
+  const leftover = creditsRemaining % 2;
+  const weeksOf1 = leftover > 0 ? 1 : 0;
 
-const segments = [];
-if (weeksOf3 > 0) segments.push(`${weeksOf3} week${weeksOf3 > 1 ? 's' : ''} of 3 credits`);
-if (weeksOf2 > 0) segments.push(`${weeksOf2} week${weeksOf2 > 1 ? 's' : ''} of 2 credits`);
-if (weeksOf1 > 0) segments.push(`1 week of 1 credit`);
+  const segments = [];
+  if (weeksOf3 > 0) segments.push(
+    getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3)
+  );
+  if (weeksOf2 > 0) segments.push(
+    getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2)
+  );
+  if (weeksOf1 > 0) segments.push(
+    getText("weeks_of_x_credits").replace("{count}", 1).replace("{credit}", 1)
+  );
 
-planANote += ` <span style="color: red;">(Exceeds weeks left by ${weeksOver})</span><br>`;
-planANote += `<em>(You need ${segments.join(' and ')} to stay within your available weeks)</em>`;
+  planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span><br>`;
+  planANote += `<em>${getText("you_need_segments").replace("{segments}", segments.join(" and "))}</em>`;
 }
 planANote += `</li>`;
 
-      let planBNote = `<li><strong>Plan B:</strong> ${planB}`;
-      if (planBWeeks > weeksRemaining) {
-        const diff = planBWeeks - weeksRemaining;
-        planBNote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
-      }
-      planBNote += `</li>`;
+      let planBNote = `<li><strong>${getText("Plan B")}:</strong> ` +
+  getText("credits_per_week_for_weeks")
+    .replace("{x}", "3")
+    .replace("{y}", fullWeeksAt3);
 
-      let planCNote = `<li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+</li>`;
-      if (weeksRemaining < oneCreditWeeks + (weeksRemaining - oneCreditWeeks)) {
-        const diff = (oneCreditWeeks + (weeksRemaining - oneCreditWeeks)) - weeksRemaining;
-        planCNote = `<li><strong>Plan C:</strong> You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+ <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span></li>`;
-      }
+if (remainder > 0) {
+  planBNote += ` + ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
+}
+planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
 
-      let planDNote = `<li>${planD}`;
-      if (totalWeeksD > weeksRemaining) {
-        const diff = totalWeeksD - weeksRemaining;
-        planDNote += ` <span style="color: red;">(Exceeds the amount of weeks left by ${diff} week${diff > 1 ? 's' : ''})</span>`;
-      }
-      planDNote += `</li>`;
+if (planBWeeks > weeksRemaining) {
+  const diff = planBWeeks - weeksRemaining;
+  planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
+}
+planBNote += `</li>`;
+      let planCNote = `<li><strong>${getText("Plan C")}:</strong> 2 credits/week - simple but requires consistency</li>`;
 
       const result = `
   <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
