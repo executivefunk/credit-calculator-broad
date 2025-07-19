@@ -798,18 +798,6 @@ distribution = [
   }
 }
 
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const formattedDate = today.toLocaleDateString(undefined, options);
-
-  const label = currentWeek === "Outside of school year"
-    ? `Today is ${formattedDate}`
-    : `Today is ${formattedDate} — Week ${currentWeek}`;
-
-  document.getElementById("currentDate").textContent = formattedDate;
-document.getElementById("currentWeek").textContent = currentWeek === "Outside of school year" 
-  ? "Not in school year range"
-  : `📅 Current Week: ${currentWeek}`;
-
     function toggleLanguage() {
   isSpanish = !isSpanish;
   document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
