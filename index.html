@@ -754,6 +754,8 @@ distribution = [
 
     // Pressing "Enter" in any input field triggers calculateCredits
     function displayCurrentDateAndWeek() {
+  const today = new Date();  // ✅ define today FIRST
+
   const dateRanges = [
     "", "2025-07-01", "2025-07-07", "2025-07-14", "2025-07-21", "2025-07-28",
     "2025-08-04", "2025-08-11", "2025-08-18", "2025-08-25", "2025-09-01",
@@ -768,7 +770,6 @@ distribution = [
     "2026-06-15", "2026-06-22", "2026-06-29"
   ];
 
-  const today = new Date();
   let currentWeek = "Outside of school year";
 
   for (let i = dateRanges.length - 1; i > 0; i--) {
@@ -788,8 +789,13 @@ distribution = [
         ? `📅 Semana actual: ${currentWeek}`
         : `📅 Current Week: ${currentWeek}`);
 
-  document.getElementById("currentDate").textContent = formattedDate;
-  document.getElementById("currentWeek").textContent = label;
+  const dateEl = document.getElementById("currentDate");
+  const weekEl = document.getElementById("currentWeek");
+
+  if (dateEl && weekEl) {
+    dateEl.textContent = formattedDate;
+    weekEl.textContent = label;
+  }
 }
 
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
