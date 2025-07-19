@@ -742,7 +742,7 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
 
     function toggleLanguage() {
   isSpanish = !isSpanish;
-  document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
+  document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
   
   Object.keys(translations).forEach(eng => {
     const elements = Array.from(document.querySelectorAll("*")).filter(el =>
@@ -765,6 +765,11 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
   document.getElementById("footerDisclaimer").innerHTML = isSpanish
     ? translations.footerDisclaimerFull_ES
     : translations.footerDisclaimerFull;
+
+      setTimeout(() => {
+  populateWeekDropdowns();
+  document.getElementById("endWeek").value = "46"; // restore default end week
+}, 0);
 }
 
   </script>
