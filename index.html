@@ -401,8 +401,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
 
-  // ✅ Add event listeners after DOM is ready
+  // ✅ Add checkbox event listeners
+  document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
+  document.getElementById("skipWinter").addEventListener("change", calculateCredits);
+  document.getElementById("skipSpring").addEventListener("change", calculateCredits);
 
+  // ✅ Add Enter key triggers
   ["totalCredits", "startWeek", "endWeek"].forEach(id => {
     document.getElementById(id).addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
@@ -416,10 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
 let storedPlan = {};
 
     function calculateCredits() {
-        if (
-  ) {
-    return;
-  }
+        
       const totalCredits = parseInt(document.getElementById("totalCredits").value);
       const startWeek = parseInt(document.getElementById("startWeek").value);
       const endWeek = parseInt(document.getElementById("endWeek").value);
@@ -739,8 +740,6 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
   : `📅 Current Week: ${currentWeek}`;
 }
 
-// Run it once the page loads
-displayCurrentDateAndWeek();
     function toggleLanguage() {
   isSpanish = !isSpanish;
   document.getElementById("langToggleBtn").textContent = isSpanish ? "English" : "Español";
