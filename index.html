@@ -381,7 +381,8 @@ const weeks = [
     // ✅ Then define the function once (not nested)
 function populateWeekDropdowns() {
   console.log("✅ populateWeekDropdowns is running");
-
+  document.body.insertAdjacentHTML('afterbegin', '<p style="color:green;">populateWeekDropdowns() ran</p>');
+  
   const startSelect = document.getElementById("startWeek");
   const endSelect = document.getElementById("endWeek");
 
