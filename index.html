@@ -224,7 +224,6 @@
   <script>
 
     try {
-  document.body.insertAdjacentHTML("afterbegin", "<p style='color: red;'>✅ Script loaded</p>");
 } catch (e) {
   alert("Script error: " + e.message);
 }
@@ -383,17 +382,14 @@ const weeks = [
 
     // ✅ Then define the function once (not nested)
 function populateWeekDropdowns() {
-  document.body.insertAdjacentHTML("afterbegin", "<p style='color: green;'>✅ populateWeekDropdowns() started</p>");
 
   const startSelect = document.getElementById("startWeek");
   const endSelect = document.getElementById("endWeek");
 
   if (!startSelect || !endSelect) {
-    document.body.insertAdjacentHTML("afterbegin", "<p style='color: red;'>❌ startWeek or endWeek not found in DOM</p>");
     return;
   }
 
-  document.body.insertAdjacentHTML("afterbegin", "<p style='color: green;'>✅ startWeek and endWeek found</p>");
 
   startSelect.innerHTML = "";
   endSelect.innerHTML = "";
@@ -411,7 +407,6 @@ function populateWeekDropdowns() {
     endSelect.appendChild(optionEN2);
   }
 
-  document.body.insertAdjacentHTML("afterbegin", "<p style='color: green;'>✅ dropdowns populated</p>");
 }
 
 let storedPlan = {};
