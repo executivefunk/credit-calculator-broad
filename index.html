@@ -400,15 +400,23 @@ document.addEventListener("DOMContentLoaded", () => {
   populateWeekDropdowns();
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
+
+  // ✅ Add event listeners after DOM is ready
+
+  ["totalCredits", "startWeek", "endWeek"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault(); // Prevent form submission or accidental refresh
+        calculateCredits();
+      }
+    });
+  });
 });
 
 let storedPlan = {};
 
     function calculateCredits() {
         if (
-    !document.getElementById("totalCredits").value ||
-    !document.getElementById("startWeek").value ||
-    !document.getElementById("endWeek").value
   ) {
     return;
   }
@@ -690,20 +698,8 @@ distribution = [
   printWin.document.write(table);
   printWin.document.close();
 }
-    // Recalculate output when holiday checkboxes are toggled
-document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
-document.getElementById("skipWinter").addEventListener("change", calculateCredits);
-document.getElementById("skipSpring").addEventListener("change", calculateCredits);
 
     // Pressing "Enter" in any input field triggers calculateCredits
-["totalCredits", "startWeek", "endWeek"].forEach(id => {
-  document.getElementById(id).addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      e.preventDefault(); // Prevent form submission or accidental refresh
-      calculateCredits();
-    }
-  });
-});
     function displayCurrentDateAndWeek() {
   const dateRanges = [
     "", "2025-07-01", "2025-07-07", "2025-07-14", "2025-07-21", "2025-07-28",
