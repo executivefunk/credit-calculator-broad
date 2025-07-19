@@ -751,7 +751,7 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
       (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
     );
     elements.forEach(el => {
-      el.textContent = isSpanish ? translations[eng] : eng;
+      el.innerHTML = isSpanish ? translations[eng] : eng;
     });
   });
 
