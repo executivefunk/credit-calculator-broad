@@ -892,7 +892,46 @@ distribution = [
     populateWeekDropdowns();
     document.getElementById("endWeek").value = "46";
   }, 0);
-    renderResult();  // ✅ This goes here to refresh output language
+    if (typeof lastResultData !== "undefined" && lastResultData !== null) {
+  const {
+    totalCredits,
+    weeksRemaining,
+    weeklyAvg,
+    riskLevel,
+    suggestion,
+    bufferWarningKey,
+    strongStart,
+    planANote,
+    planBNote,
+    planCNote,
+    planDNote
+  } = lastResultData;
+
+  let bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
+  let strongStartTip = strongStart
+    ? `<p><strong>${getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.")}</strong></p>`
+    : "";
+
+  const result = `
+    <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
+    <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
+    <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
+    <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
+    <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
+    ${bufferWarning}
+    ${strongStartTip}
+    <hr>
+    <p><strong>${getText("Workflow Options")}:</strong></p>
+    <ul>
+      ${planANote}<br>
+      ${planBNote}<br>
+      ${planCNote}<br>
+      ${planDNote}
+    </ul>
+  `;
+
+  document.getElementById("result").innerHTML = result;
+}
     displayCurrentDateAndWeek(); // ✅ Refresh current week label in the new language
 }
 document.addEventListener("DOMContentLoaded", () => {
