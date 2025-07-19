@@ -415,27 +415,6 @@ function populateWeekDropdowns() {
 
   document.body.insertAdjacentHTML("afterbegin", "<p style='color: green;'>✅ dropdowns populated</p>");
 }
-  
-document.addEventListener("DOMContentLoaded", () => {
-  populateWeekDropdowns();
-  document.getElementById("endWeek").value = "46";
-  displayCurrentDateAndWeek();
-
-  // ✅ Add checkbox event listeners
-  document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
-  document.getElementById("skipWinter").addEventListener("change", calculateCredits);
-  document.getElementById("skipSpring").addEventListener("change", calculateCredits);
-
-  // ✅ Add Enter key triggers
-  ["totalCredits", "startWeek", "endWeek"].forEach(id => {
-    document.getElementById(id).addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault(); // Prevent form submission or accidental refresh
-        calculateCredits();
-      }
-    });
-  });
-});
 
 let storedPlan = {};
 
@@ -790,7 +769,26 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
     document.getElementById("endWeek").value = "46";
   }, 0);
 }
+document.addEventListener("DOMContentLoaded", () => {
+  populateWeekDropdowns();
+  document.getElementById("endWeek").value = "46";
+  displayCurrentDateAndWeek();
 
+  // ✅ Add checkbox event listeners
+  document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
+  document.getElementById("skipWinter").addEventListener("change", calculateCredits);
+  document.getElementById("skipSpring").addEventListener("change", calculateCredits);
+
+  // ✅ Add Enter key triggers
+  ["totalCredits", "startWeek", "endWeek"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault(); // Prevent form submission or accidental refresh
+        calculateCredits();
+      }
+    });
+  });
+});
   </script>
 </body>
 </html>
