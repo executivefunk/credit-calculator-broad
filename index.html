@@ -780,6 +780,19 @@ distribution = [
   }
 
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = today.toLocaleDateString(isSpanish ? "es-ES" : "en-US", options);
+
+  const label = currentWeek === "Outside of school year"
+    ? (isSpanish ? `Hoy es ${formattedDate}` : `Today is ${formattedDate}`)
+    : (isSpanish
+        ? `📅 Semana actual: ${currentWeek}`
+        : `📅 Current Week: ${currentWeek}`);
+
+  document.getElementById("currentDate").textContent = formattedDate;
+  document.getElementById("currentWeek").textContent = label;
+}
+
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString(undefined, options);
 
   const label = currentWeek === "Outside of school year"
@@ -822,6 +835,7 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
     document.getElementById("endWeek").value = "46";
   }, 0);
     renderResult();  // ✅ This goes here to refresh output language
+    displayCurrentDateAndWeek(); // ✅ Refresh current week label in the new language
 }
 document.addEventListener("DOMContentLoaded", () => {
   populateWeekDropdowns();
