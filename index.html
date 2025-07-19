@@ -411,6 +411,7 @@ function populateWeekDropdowns() {
 
 let storedPlan = {};
 
+    let lastResultData = null;
     function calculateCredits() {
         
       const totalCredits = parseInt(document.getElementById("totalCredits").value);
@@ -457,14 +458,15 @@ let storedPlan = {};
         riskLevel = "🚨 High Risk";
       }
 
-      let bufferWarning = "";
-      if (endWeek === 46) {
-        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> You’re planning to finish right at the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.</div>`;
-      } else if (endWeek === 45) {
-        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> You’re planning to finish really close to the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.</div>`;
-      } else if (endWeek > 46) {
-        bufferWarning = `<div class='warning'>⚠️ <strong>Heads up:</strong> Week 46 is the last week to turn in credits to walk in the graduation ceremony. You’ve selected a week after that — talk with your teacher to make sure your plan still works.</div>`;
-      }
+      let bufferWarningKey = "";
+if (endWeek === 46) {
+  bufferWarningKey = "bufferWarning44";
+} else if (endWeek === 45) {
+  bufferWarningKey = "bufferWarning45";
+} else if (endWeek > 46) {
+  bufferWarningKey = "bufferWarningAfter46";
+}
+let bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
 
       const strongStart = startWeek <= 10 ? `<p><strong>Strong Start Tip:</strong> Try completing 3 credits/week for the first 6 weeks. You can slow down later.</p>` : "";
 
@@ -547,6 +549,20 @@ planANote += `</li>`;
 `;
 
       document.getElementById("result").innerHTML = result;
+      lastResultData = {
+  totalCredits,
+  weeksRemaining,
+  weeklyAvg,
+  riskLevel,
+  suggestion,
+  bufferWarningKey,
+  strongStart: startWeek <= 10,
+  planANote,
+  planBNote,
+  planCNote,
+  planDNote
+};
+
       // Disable Plan A button if weeksOf3 exceeds weeksRemaining
 const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
 if (typeof weeksOf3 !== 'undefined' && weeksOf3 > weeksRemaining) {
@@ -600,6 +616,46 @@ if (totalWeeksD > weeksRemaining) {
   ]
 };
     }
+
+    function renderResult() {
+  if (!lastResultData) return;
+
+  const {
+    totalCredits,
+    weeksRemaining,
+    weeklyAvg,
+    riskLevel,
+    suggestion,
+    bufferWarningKey,
+    strongStart,
+    planANote,
+    planBNote,
+    planCNote,
+    planDNote
+  } = lastResultData;
+
+  const bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
+
+  const result = `
+    <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
+    <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
+    <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
+    <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
+    <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
+    ${bufferWarning}
+    ${strongStart ? `<p><strong>${getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.")}</strong></p>` : ""}
+    <hr>
+    <p><strong>${getText("Workflow Options")}:</strong></p>
+    <ul>
+      ${planANote}<br>
+      ${planBNote}<br>
+      ${planCNote}<br>
+      ${planDNote}
+    </ul>
+  `;
+
+  document.getElementById("result").innerHTML = result;
+}
 
    function generatePlan(type) {
   const { totalCredits, startWeek, endWeek, oneCreditWeeks, skipWeeks } = storedPlan;
@@ -761,6 +817,7 @@ document.getElementById("currentWeek").textContent = currentWeek === "Outside of
     populateWeekDropdowns();
     document.getElementById("endWeek").value = "46";
   }, 0);
+    renderResult();  // ✅ This goes here to refresh output language
 }
 document.addEventListener("DOMContentLoaded", () => {
   populateWeekDropdowns();
