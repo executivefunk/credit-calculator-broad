@@ -387,7 +387,7 @@ function populateWeekDropdowns() {
   for (let i = 0; i < weeks.length; i++) {
     const optionEN = document.createElement("option");
     optionEN.value = i + 1;
-    optionEN.text = isSpanish ? `Semana ${i + 1}: ${weeks[i][1]}` : `Week ${i + 1}: ${weeks[i][0]}`;
+    optionEN.innerHTML = isSpanish ? `Semana ${i + 1}: ${weeks[i][1]}` : `Week ${i + 1}: ${weeks[i][0]}`;
 
     const optionEN2 = optionEN.cloneNode(true);
 
