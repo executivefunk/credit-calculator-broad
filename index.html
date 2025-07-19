@@ -322,65 +322,66 @@ const translations = {
   "June 22 - June 26 - End of Semester 2", "June 29 - June 30"
 ];
 
-function populateWeekDropdowns() {
-  const weeks = [
-    ["July 1 - July 4", "1–4 de julio"],
-    ["July 7 - July 11", "7–11 de julio"],
-    ["July 14 - July 18", "14–18 de julio"],
-    ["July 21 - July 25", "21–25 de julio"],
-    ["July 28 - Aug 1", "28 de julio–1 de agosto"],
-    ["Aug 4 - Aug 8", "4–8 de agosto"],
-    ["Aug 11 - Aug 15", "11–15 de agosto"],
-    ["Aug 18 - Aug 22", "18–22 de agosto"],
-    ["Aug 25 - Aug 29", "25–29 de agosto"],
-    ["Sept 1 - Sept 5", "1–5 de septiembre"],
-    ["Sept 8 - Sept 12", "8–12 de septiembre"],
-    ["Sept 15 - Sept 19", "15–19 de septiembre"],
-    ["Sept 22 - Sept 26", "22–26 de septiembre"],
-    ["Sept 29 - Oct 3", "29 de septiembre–3 de octubre"],
-    ["Oct 6 - Oct 10", "6–10 de octubre"],
-    ["Oct 13 - Oct 17", "13–17 de octubre"],
-    ["Oct 20 - Oct 24", "20–24 de octubre"],
-    ["Oct 27 - Oct 31", "27–31 de octubre"],
-    ["Nov 3 - Nov 7", "3–7 de noviembre"],
-    ["Nov 10 - Nov 14", "10–14 de noviembre"],
-    ["Nov 17 - Nov 21", "17–21 de noviembre"],
-    ["Nov 24 - Nov 28", "24–28 de noviembre"],
-    ["Dec 1 - Dec 5", "1–5 de diciembre"],
-    ["Dec 8 - Dec 12", "8–12 de diciembre"],
-    ["Dec 15 - Dec 19", "15–19 de diciembre"],
-    ["Dec 22 - Dec 26 (Winter Break)", "22–26 de diciembre (Vacaciones de invierno)"],
-    ["Dec 29 - Jan 2 (Winter Break)", "29 de diciembre–2 de enero (Vacaciones de invierno)"],
-    ["Jan 5 - Jan 9", "5–9 de enero"],
-    ["Jan 12 - Jan 16", "12–16 de enero"],
-    ["Jan 19 - Jan 23 - End of Semester 1", "19–23 de enero - Fin del semestre 1"],
-    ["Jan 26 - Jan 30", "26–30 de enero"],
-    ["Feb 2 - Feb 6", "2–6 de febrero"],
-    ["Feb 9 - Feb 13", "9–13 de febrero"],
-    ["Feb 16 - Feb 20", "16–20 de febrero"],
-    ["Feb 23 - Feb 27", "23–27 de febrero"],
-    ["Mar 2 - Mar 6", "2–6 de marzo"],
-    ["Mar 9 - Mar 13", "9–13 de marzo"],
-    ["Mar 16 - Mar 20", "16–20 de marzo"],
-    ["Mar 23 - Mar 27", "23–27 de marzo"],
-    ["Mar 30 - Apr 3", "30 de marzo–3 de abril"],
-    ["Apr 6 - Apr 10", "6–10 de abril"],
-    ["Apr 13 - Apr 17", "13–17 de abril"],
-    ["Apr 20 - Apr 24", "20–24 de abril"],
-    ["Apr 27 - May 1", "27 de abril–1 de mayo"],
-    ["May 4 - May 8", "4–8 de mayo"],
-    ["May 11 - May 15 ( Graduation Ceremony Credit Deadline - May 15)", "11–15 de mayo (Fecha límite para créditos de graduación)"],
-    ["May 18 - May 22", "18–22 de mayo"],
-    ["May 25 - May 29", "25–29 de mayo"],
-    ["June 1 - June 5", "1–5 de junio"],
-    ["June 8 - June 12", "8–12 de junio"],
-    ["June 15 - June 19", "15–19 de junio"],
-    ["June 22 - June 26 - End of Semester 2", "22–26 de junio - Fin del semestre 2"]
-  ];
-  
+// ✅ Define weeks array globally (outside any function)
+const weeks = [
+  ["July 1 - July 4", "1–4 de julio"],
+  ["July 7 - July 11", "7–11 de julio"],
+  ["July 14 - July 18", "14–18 de julio"],
+  ["July 21 - July 25", "21–25 de julio"],
+  ["July 28 - Aug 1", "28 de julio–1 de agosto"],
+  ["Aug 4 - Aug 8", "4–8 de agosto"],
+  ["Aug 11 - Aug 15", "11–15 de agosto"],
+  ["Aug 18 - Aug 22", "18–22 de agosto"],
+  ["Aug 25 - Aug 29", "25–29 de agosto"],
+  ["Sept 1 - Sept 5", "1–5 de septiembre"],
+  ["Sept 8 - Sept 12", "8–12 de septiembre"],
+  ["Sept 15 - Sept 19", "15–19 de septiembre"],
+  ["Sept 22 - Sept 26", "22–26 de septiembre"],
+  ["Sept 29 - Oct 3", "29 de septiembre–3 de octubre"],
+  ["Oct 6 - Oct 10", "6–10 de octubre"],
+  ["Oct 13 - Oct 17", "13–17 de octubre"],
+  ["Oct 20 - Oct 24", "20–24 de octubre"],
+  ["Oct 27 - Oct 31", "27–31 de octubre"],
+  ["Nov 3 - Nov 7", "3–7 de noviembre"],
+  ["Nov 10 - Nov 14", "10–14 de noviembre"],
+  ["Nov 17 - Nov 21", "17–21 de noviembre"],
+  ["Nov 24 - Nov 28", "24–28 de noviembre"],
+  ["Dec 1 - Dec 5", "1–5 de diciembre"],
+  ["Dec 8 - Dec 12", "8–12 de diciembre"],
+  ["Dec 15 - Dec 19", "15–19 de diciembre"],
+  ["Dec 22 - Dec 26 (Winter Break)", "22–26 de diciembre (Vacaciones de invierno)"],
+  ["Dec 29 - Jan 2 (Winter Break)", "29 de diciembre–2 de enero (Vacaciones de invierno)"],
+  ["Jan 5 - Jan 9", "5–9 de enero"],
+  ["Jan 12 - Jan 16", "12–16 de enero"],
+  ["Jan 19 - Jan 23 - End of Semester 1", "19–23 de enero - Fin del semestre 1"],
+  ["Jan 26 - Jan 30", "26–30 de enero"],
+  ["Feb 2 - Feb 6", "2–6 de febrero"],
+  ["Feb 9 - Feb 13", "9–13 de febrero"],
+  ["Feb 16 - Feb 20", "16–20 de febrero"],
+  ["Feb 23 - Feb 27", "23–27 de febrero"],
+  ["Mar 2 - Mar 6", "2–6 de marzo"],
+  ["Mar 9 - Mar 13", "9–13 de marzo"],
+  ["Mar 16 - Mar 20", "16–20 de marzo"],
+  ["Mar 23 - Mar 27", "23–27 de marzo"],
+  ["Mar 30 - Apr 3", "30 de marzo–3 de abril"],
+  ["Apr 6 - Apr 10", "6–10 de abril"],
+  ["Apr 13 - Apr 17", "13–17 de abril"],
+  ["Apr 20 - Apr 24", "20–24 de abril"],
+  ["Apr 27 - May 1", "27 de abril–1 de mayo"],
+  ["May 4 - May 8", "4–8 de mayo"],
+  ["May 11 - May 15 ( Graduation Ceremony Credit Deadline - May 15)", "11–15 de mayo (Fecha límite para créditos de graduación)"],
+  ["May 18 - May 22", "18–22 de mayo"],
+  ["May 25 - May 29", "25–29 de mayo"],
+  ["June 1 - June 5", "1–5 de junio"],
+  ["June 8 - June 12", "8–12 de junio"],
+  ["June 15 - June 19", "15–19 de junio"],
+  ["June 22 - June 26 - End of Semester 2", "22–26 de junio - Fin del semestre 2"]
+];
+
+    // ✅ Then define the function once (not nested)
 function populateWeekDropdowns() {
   console.log("✅ populateWeekDropdowns is running");
-  
+
   const startSelect = document.getElementById("startWeek");
   const endSelect = document.getElementById("endWeek");
 
@@ -390,7 +391,9 @@ function populateWeekDropdowns() {
   for (let i = 0; i < weeks.length; i++) {
     const optionEN = document.createElement("option");
     optionEN.value = i + 1;
-    optionEN.innerHTML = isSpanish ? `Semana ${i + 1}: ${weeks[i][1]}` : `Week ${i + 1}: ${weeks[i][0]}`;
+    optionEN.innerHTML = isSpanish
+      ? `Semana ${i + 1}: ${weeks[i][1]}`
+      : `Week ${i + 1}: ${weeks[i][0]}`;
 
     const optionEN2 = optionEN.cloneNode(true);
 
@@ -398,7 +401,7 @@ function populateWeekDropdowns() {
     endSelect.appendChild(optionEN2);
   }
 }
-
+  
 document.addEventListener("DOMContentLoaded", () => {
   populateWeekDropdowns();
   document.getElementById("endWeek").value = "46";
