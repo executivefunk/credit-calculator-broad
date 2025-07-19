@@ -1003,16 +1003,20 @@ distribution = [
 
   // ✅ Rebuild result section with new language
   if (lastResultData) {
-    const {
-      totalCredits,
-      weeksRemaining,
-      weeklyAvg,
-      riskLevel,
-      suggestion,
-      bufferWarningKey,
-      strongStart,
-      planValues
-    } = lastResultData;
+  renderResult(
+    lastResultData.totalCredits,
+    lastResultData.weeksRemaining,
+    lastResultData.weeklyAvg,
+    lastResultData.riskLevel,
+    lastResultData.suggestion,
+    lastResultData.bufferWarningKey,
+    lastResultData.strongStart,
+    lastResultData.planANote,
+    lastResultData.planBNote,
+    lastResultData.planCNote,
+    lastResultData.planDNote
+  );
+}
 
     const {
       weeksOf2,
