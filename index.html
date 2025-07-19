@@ -222,7 +222,12 @@
   </div>
 
   <script>
-   
+
+    try {
+  document.body.insertAdjacentHTML("afterbegin", "<p style='color: red;'>✅ Script loaded</p>");
+} catch (e) {
+  alert("Script error: " + e.message);
+}
     let isSpanish = false;
     function getText(key) {
   const map = {
