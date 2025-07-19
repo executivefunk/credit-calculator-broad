@@ -626,10 +626,18 @@ planBNote += `</li>`;
   suggestion,
   bufferWarningKey,
   strongStart: startWeek <= 10,
-  planANote,
-  planBNote,
-  planCNote,
-  planDNote
+  planValues: {
+    weeksOf2,
+    weeksOf3,
+    weeksOf1,
+    weeksOver,
+    fullWeeksAt3,
+    remainder,
+    planBWeeks,
+    planDUnlockedWeeks,
+    planD4Weeks,
+    planDExtraWeeks
+  }
 };
 
       // Disable Plan A button if weeksOf3 exceeds weeksRemaining
@@ -690,18 +698,65 @@ if (totalWeeksD > weeksRemaining) {
   if (!lastResultData) return;
 
   const {
-    totalCredits,
-    weeksRemaining,
-    weeklyAvg,
-    riskLevel,
-    suggestion,
-    bufferWarningKey,
-    strongStart,
-    planANote,
-    planBNote,
-    planCNote,
-    planDNote
-  } = lastResultData;
+  totalCredits,
+  weeksRemaining,
+  weeklyAvg,
+  riskLevel,
+  suggestion,
+  bufferWarningKey,
+  strongStart,
+  planValues
+} = lastResultData;
+
+const {
+  weeksOf2,
+  weeksOf3,
+  weeksOf1,
+  weeksOver,
+  fullWeeksAt3,
+  remainder,
+  planBWeeks,
+  planDUnlockedWeeks,
+  planD4Weeks,
+  planDExtraWeeks
+} = planValues;
+
+// 🧠 Rebuild Plan A
+let planANote = `<li><strong>${getText("Plan A")}:</strong> ${getText("credits_per_week_for_weeks").replace("{x}", "2").replace("{y}", totalCredits / 2)}`;
+if (weeksOver > 0) {
+  const segments = [];
+  if (weeksOf3 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3));
+  if (weeksOf2 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2));
+  if (weeksOf1 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf1).replace("{credit}", 1));
+  planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span><br>`;
+  planANote += `<em>${getText("you_need_segments").replace("{segments}", segments.join(` ${getText("and")} `))}</em>`;
+}
+planANote += `</li>`;
+
+// 🧠 Rebuild Plan B
+let planBNote = `<li><strong>${getText("Plan B")}:</strong> ` +
+  getText("credits_per_week_for_weeks").replace("{x}", "3").replace("{y}", fullWeeksAt3);
+if (remainder > 0) {
+  planBNote += ` + ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
+}
+planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
+if (planBWeeks > weeksRemaining) {
+  const diff = planBWeeks - weeksRemaining;
+  planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
+}
+planBNote += `</li>`;
+
+// 🧠 Rebuild Plan C
+let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${getText("Plan C Subtitle")}</li>`;
+
+// 🧠 Rebuild Plan D
+let planDNote = `<li><strong>${getText("plan_d_header")}</strong>`;
+planDNote += `, ${getText("then_x_weeks_of_4").replace("{x}", planD4Weeks)}`;
+if (planDExtraWeeks === 1) {
+  planDNote += ` + ${getText("plus_1_week_of_n").replace("{n}", 3)}`;
+}
+planDNote += ` - ${getText("weeks_total").replace("{x}", planDUnlockedWeeks + planD4Weeks + planDExtraWeeks)}`;
+planDNote += `</li>`;
 
   const bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
 
