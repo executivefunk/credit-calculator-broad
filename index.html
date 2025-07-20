@@ -7,72 +7,80 @@
   <link rel="manifest" href="manifest.json">
   <style>
   /* Base Layout */
+/* Base Layout */
 html, body {
-  font-size: 16px; /* Default root size for balance */
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  font-size: 16px;
+  height: 100%;
+  width: 100%;
 }
 
+/* Calculator Container */
 .container {
   width: 100%;
-  max-width: 900px; /* wider for desktop */
+  max-width: 900px;
   margin: 0 auto;
   background: white;
   padding: 30px;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  min-height: 100vh; /* fills mobile screen */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
+/* Headings and Date */
 h2 {
-  font-size: 1.5rem; /* ~24px */
-  margin-bottom: 10px;
+  font-size: 1.7rem;
+  text-align: center;
+  margin-bottom: 8px;
 }
 
 #currentDate {
-  font-size: 1rem; /* ~16px */
-  font-weight: 600;
-  margin: 5px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 5px;
 }
 
 #currentWeek {
   font-size: 1rem;
-  margin-bottom: 15px;
-  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
+/* Labels and Inputs */
 label {
+  display: block;
+  margin-top: 16px;
   font-size: 1rem;
   font-weight: 500;
-  margin-top: 16px;
 }
 
-/* Form Elements */
 input[type="number"],
 select {
-  font-size: 1rem;
+  width: 100%;
   padding: 10px;
   margin-top: 5px;
-  border: 1px solid #ccc;
   border-radius: 6px;
-  width: 100%;
+  border: 1px solid #ccc;
+  font-size: 1rem;
   box-sizing: border-box;
 }
 
+/* Buttons */
 button {
-  font-size: 1rem;
   padding: 12px;
+  font-size: 1rem;
   border: none;
   border-radius: 6px;
   background-color: #007bff;
   color: white;
-  margin-top: 20px;
   cursor: pointer;
   width: 100%;
 }
@@ -82,7 +90,75 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Prompt Box */
+/* Disclaimer Box */
+.disclaimer {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  background: #fff89a;
+  padding: 14px;
+  border-radius: 6px;
+  border: 1px solid #ffeeba;
+  margin-top: 15px;
+  color: #333;
+}
+
+/* Output and Warnings */
+.output,
+.warning {
+  font-size: 1rem;
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.output {
+  background: #eef;
+}
+
+.warning {
+  background: #ffeeba;
+  border: 1px solid #f0ad4e;
+}
+
+/* Footer */
+.footer-disclaimer {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+  margin-top: 24px;
+  line-height: 1.4;
+}
+
+/* Plan Buttons */
+.plan-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Holiday Box and Options */
+.holiday-box {
+  background-color: #e0f8e9;
+  border: 1px solid #b6e2c4;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.holiday-option {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.holiday-option input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+/* Language Prompt Page */
 #languagePrompt {
   display: flex;
   align-items: center;
@@ -90,13 +166,13 @@ button:disabled {
   height: 100vh;
   width: 100%;
   background: #f4f4f4;
-  padding: 0; /* removed gap from edge */
+  padding: 0;
   box-sizing: border-box;
 }
 
 #languagePrompt > div {
   width: 100%;
-  max-width: 900px; /* match .container */
+  max-width: 900px;
   margin: 0 auto;
   background: white;
   padding: 30px;
@@ -107,7 +183,7 @@ button:disabled {
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  min-height: 100vh; /* match calculator */
+  min-height: 100vh;
 }
 
 #languagePrompt > div > div {
@@ -115,7 +191,7 @@ button:disabled {
   color: white;
   text-align: center;
   padding: 40px 20px;
-  font-size: 1.2em;
+  font-size: 1.2rem;
   cursor: pointer;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -130,87 +206,21 @@ button:disabled {
   transform: scale(1.02);
 }
 
-/* Special Elements */
-.output,
-.disclaimer,
-.warning,
-.footer-disclaimer {
-  font-size: 0.9rem;
-  text-align: center;
-  color: #555;
-  margin-top: 24px;
-  line-height: 1.4;
-}
-
-.output {
-  background: #eef;
-}
-
-.warning {
-  background: #ffeeba;
-  border: 1px solid #f0ad4e;
-}
-
-.disclaimer {
-  font-size: 0.95rem;
-  line-height: 1.4;
-  background: #fff89a;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #ffeeba;
-}
-
-.footer-disclaimer {
-  color: #555;
-  text-align: center;
-}
-
-/* Plan Buttons */
-.plan-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-/* Holiday Styling */
-.holiday-box {
-  background-color: #e0f8e9;
-  border: 1px solid #b6e2c4;
-  border-radius: 8px;
-  padding: 16px;
-  margin-top: 15px;
-}
-
-.holiday-option {
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.holiday-option input[type="checkbox"] {
-  margin-right: 10px;
-  transform: scale(1.2);
-}
-
-.holiday-option label {
-  white-space: nowrap;
-  position: relative;
-  top: -5px;
-}
-
-/* Responsive Tweaks */
+/* Responsive Adjustments */
 @media (max-width: 600px) {
-  .container {
+  .container,
+  #languagePrompt > div {
     padding: 20px;
     border-radius: 0;
-    min-height: 100vh;
+  }
+
+  h2 {
+    font-size: 1.4rem;
   }
 
   #languagePrompt > div > div {
     padding: 30px 16px;
-    font-size: 1.1em;
+    font-size: 1.1rem;
   }
 }
 </style>
