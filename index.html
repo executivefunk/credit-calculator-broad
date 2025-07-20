@@ -1094,9 +1094,8 @@ planDNote += ` - ${getText("weeks_total").replace("{x}", planDWeeks)}</li>`;
       </ul>
     `;
     document.getElementById("result").innerHTML = result;
+    displayCurrentDateAndWeek(); // Update label for current week 
   }
-
-  displayCurrentDateAndWeek(); // Update label for current week
 }
 document.addEventListener("DOMContentLoaded", () => {
   populateWeekDropdowns();
