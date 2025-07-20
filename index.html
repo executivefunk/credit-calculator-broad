@@ -942,13 +942,19 @@ calc.style.display = "block";
   });
 
   // ✅ Toggle disclaimers
-  document.getElementById("mainDisclaimer").innerHTML = isSpanish
+  const mainDisclaimerEl = document.getElementById("mainDisclaimer");
+if (mainDisclaimerEl) {
+  mainDisclaimerEl.innerHTML = isSpanish
     ? translations.mainDisclaimerFull_ES
     : translations.mainDisclaimerFull;
+}
 
-  document.getElementById("footerDisclaimer").innerHTML = isSpanish
+const footerDisclaimerEl = document.getElementById("footerDisclaimer");
+if (footerDisclaimerEl) {
+  footerDisclaimerEl.innerHTML = isSpanish
     ? translations.footerDisclaimerFull_ES
     : translations.footerDisclaimerFull;
+}
 
   // ✅ Refresh dropdowns with a small delay
   setTimeout(() => {
