@@ -443,12 +443,13 @@ const weeks = [
     calc.style.display = "none";
 
     const prompt = document.getElementById("languagePrompt");
-    prompt.style.display = "flex";
-    
+
+    prompt.removeAttribute("hidden"); // ✅ this makes it show up
+prompt.style.display = "flex";
+prompt.style.opacity = 1;
+
     // Force layout refresh to allow fade-in
     void prompt.offsetWidth;
-
-    prompt.style.opacity = 1;
 
     // Clear fields (optional reset)
     document.getElementById("totalCredits").value = "";
