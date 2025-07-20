@@ -485,17 +485,36 @@ const weeks = [
 ];
 
     function showLanguagePrompt() {
-  // Hide calculator
+  // Fade out calculator
   const calc = document.querySelector(".container");
   calc.style.opacity = 0;
 
-  // Show prompt after fade-out
   setTimeout(() => {
+    // Hide calculator and show language prompt
     calc.style.display = "none";
     const prompt = document.getElementById("languagePrompt");
     prompt.style.display = "flex";
     prompt.style.opacity = 1;
-  }, 400);
+
+    // 🧹 Reset all fields
+    document.getElementById("totalCredits").value = "";
+    document.getElementById("startWeek").selectedIndex = 0;
+    document.getElementById("endWeek").selectedIndex = 0;
+
+    document.getElementById("skipThanksgiving").checked = false;
+    document.getElementById("skipWinter").checked = false;
+    document.getElementById("skipSpring").checked = false;
+
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("planButtons").style.display = "none";
+
+    // Reset language toggle text in case it's been changed
+    document.getElementById("langToggleBtn").textContent = "Change Language / Cambiar Idioma";
+
+    // Reset tracking data
+    lastResultData = null;
+    storedPlan = {};
+  }, 400); // Matches fade-out duration
 }
 
     // ✅ Then define the function once (not nested)
