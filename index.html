@@ -7,290 +7,162 @@
   <link rel="manifest" href="manifest.json">
   <style>
 /* Base Layout */
-html, body {
-  font-size: 18px; /* Increased base font size, but not oversized */
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f4f4f4;
-  height: 100%;
-  width: 100%;
-}
-
-/* ===== Container ===== */
-.container {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* ===== Headings and Info ===== */
-h2 {
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 12px;
-}
-
-#currentDate {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 4px;
-}
-
-#currentWeek {
-  font-size: 1.1rem;
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-/* ===== Main Yellow Disclaimer ===== */
-.disclaimer {
-  font-size: 1rem;
-  line-height: 1.6;
-  background: #fff89a;
-  padding: 18px;
-  border-radius: 8px;
-  border: 1px solid #ffeeba;
-  margin-bottom: 24px;
-  color: #333;
-}
-
-/* ===== Form Labels & Inputs ===== */
-label {
-  display: block;
-  font-size: 1.05rem;
-  font-weight: 500;
-  margin-top: 24px;
-}
-
-select {
-  background-color: white;
-  color: black;
-  padding: 12px;
-  font-size: 1.05rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-select option {
-  background-color: rgba(200, 200, 200, 0.95);  /* Dark translucent */
-  color: black;                             /* Black text */
-}
-
-input[type="number"],
-select {
-  width: 100%;
-  padding: 14px;
-  margin-top: 8px;
-  font-size: 1.1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* ===== Button ===== */
-button {
-  padding: 16px;
-  font-size: 1.05rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 24px;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ===== Holiday Box ===== */
-.holiday-box {
-  background-color: #e0f8e9;
-  border: 1px solid #b6e2c4;
-  border-radius: 8px;
-  padding: 20px;
-  margin-top: 20px;
-}
-
-.holiday-option {
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  margin-bottom: 14px;
-}
-
-.holiday-option input[type="checkbox"] {
-  margin-right: 12px;
-  transform: scale(1.3);
-}
-
-/* ===== Output Area ===== */
-.output,
-.warning {
-  font-size: 1rem;
-  margin-top: 24px;
-  padding: 16px;
-  border-radius: 6px;
-}
-
-.output {
-  background: #eef;
-}
-
-.warning {
-  background: #ffeeba;
-  border: 1px solid #f0ad4e;
-}
-
-/* ===== Footer ===== */
-.footer-disclaimer {
-  font-size: 0.95rem;
-  color: #555;
-  text-align: center;
-  margin-top: 40px;
-  line-height: 1.5;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
-}
-
-/* Output and Warnings */
-.output,
-.warning {
-  font-size: 1rem;
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 6px;
-}
-
-.output {
-  background: #eef;
-}
-
-.warning {
-  background: #ffeeba;
-  border: 1px solid #f0ad4e;
-}
-
-/* Footer */
-.footer-disclaimer {
-  font-size: 0.9rem;
-  color: #555;
-  text-align: center;
-  margin-top: 24px;
-  line-height: 1.4;
-}
-
-/* Plan Buttons */
-.plan-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-/* Holiday Box and Options */
-.holiday-box {
-  background-color: #e0f8e9;
-  border: 1px solid #b6e2c4;
-  border-radius: 8px;
-  padding: 15px;
-  margin-top: 15px;
-}
-
-.holiday-option {
-  display: flex;
-  align-items: center;
-  font-size: 0.95rem;
-  margin-bottom: 10px;
-}
-
-.holiday-option input[type="checkbox"] {
-  margin-right: 10px;
-  transform: scale(1.2);
-}
-
-/* Language Prompt Page */
-#languagePrompt {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100%;
-  background: #f4f4f4;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-#languagePrompt > div {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  padding: 30px;
-  box-sizing: border-box;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px;
-  min-height: 100vh;
-}
-
-#languagePrompt > div > div {
-  background-color: #007bff;
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
-}
-
-#languagePrompt > div > div:last-child {
-  background-color: #28a745;
-}
-
-#languagePrompt > div > div:hover {
-  transform: scale(1.02);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 600px) {
-  .container,
-  #languagePrompt > div {
+body {
+    font-family: Arial, sans-serif;
     padding: 20px;
-    border-radius: 0;
+    background: #f4f4f4;
+    margin: 0;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
   }
 
   h2 {
-    font-size: 1.4rem;
+    text-align: center;
   }
 
-  #languagePrompt > div > div {
-    padding: 30px 16px;
-    font-size: 1.1rem;
+  label {
+    display: block;
+    margin-top: 15px;
   }
-  #startWeek,
-#endWeek {
-  margin-top: 24px;
+
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
   }
-}
+
+  .checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .output {
+    margin-top: 20px;
+    padding: 10px;
+    background: #eef;
+    border-radius: 6px;
+  }
+
+  .warning {
+    background: #ffeeba;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    border: 1px solid #f0ad4e;
+  }
+
+  .disclaimer {
+    background: #fff89a;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ffeeba;
+    margin-top: 10px;
+    font-size: 0.95em;
+  }
+
+  .footer-disclaimer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #555;
+    text-align: center;
+  }
+
+  .plan-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .plan-buttons button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Holiday Box Styling */
+  .holiday-box {
+    background-color: #e0f8e9;
+    border: 1px solid #b6e2c4;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  .holiday-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .holiday-option input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+  }
+
+  .holiday-option label {
+    white-space: nowrap;
+    position: relative;
+    top: -5px;
+  }
+
+  /* Responsive Fixes */
+  @media (max-width: 480px) {
+    body {
+      padding: 10px;
+    }
+
+    .container {
+      padding: 15px;
+      width: 100%;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    h2 {
+      font-size: 1.2em;
+    }
+
+    .holiday-option {
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+
+    label,
+    .holiday-option label {
+      font-size: 14px;
+    }
+
+    input[type="number"],
+    select {
+      font-size: 16px;
+    }
+
+    button {
+      font-size: 15px;
+    }
+
+    .disclaimer,
+    .warning,
+    .footer-disclaimer,
+    .output {
+      font-size: 14px;
+    }
+  }
 </style>
 </head>
 <body>
