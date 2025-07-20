@@ -7,16 +7,18 @@
   <link rel="manifest" href="manifest.json">
   <style>
 /* Base Layout */
-HTML, body {
+html, body {
     font-family: Arial, sans-serif;
     padding: 0;
     min-height: 100vh;
     background: #f4f4f4;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
     margin: 0;
-    overflow-y: auto;
   }
   body.show-prompt {
-    display: block;
+    display: flex;
   }
   .container {
     max-width: 500px;
