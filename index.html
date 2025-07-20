@@ -167,22 +167,30 @@
 <body>
 
   <!-- Language Selection Prompt OUTSIDE container -->
-  <div id="languagePrompt" style="
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+  <!-- Language Selection Prompt -->
+<div id="languagePrompt" style="
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #f4f4f4;
+">
+  <div style="
     background: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding: 20px;
-    z-index: 9999;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-sizing: border-box;
   ">
-    <h2 style="font-size: 1.5em; margin-bottom: 20px;">Choose your language / Elige tu idioma</h2>
+    <h2 style="margin-bottom: 15px;">Welcome to the Credit Calculator!<br>Bienvenido a la Calculadora de Créditos!</h2>
+    <p style="margin-bottom: 20px;">Please choose your language.<br>Por favor elige tu idioma.</p>
     <button onclick="setLanguage(false)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">English</button>
     <button onclick="setLanguage(true)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">Español</button>
   </div>
+</div>
 
   <!-- Actual calculator container (hidden at first) -->
   <div class="container" style="display: none;">
