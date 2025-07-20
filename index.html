@@ -241,6 +241,9 @@
   </div>
   <h2>Weekly Credit Calculator</h2>
 
+    <p id="currentDate" style="text-align: center; font-weight: bold; margin-top: -10px;"></p>
+<p id="currentWeek" style="text-align: center; font-size: 1.1em; margin-bottom: 15px;"></p>
+
     <div id="mainDisclaimer" class="disclaimer" style="margin-bottom: 15px;">
     This calculator is designed for students who plan to graduate this school year.
     <br><br>
@@ -967,6 +970,23 @@ if (footerDisclaimerEl) {
     ? translations.footerDisclaimerFull_ES
     : translations.footerDisclaimerFull;
 }
+
+ // ✅ Add this at the very end of the script
+  const currentDateEl = document.getElementById("currentDate");
+  if (currentDateEl) {
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    currentDateEl.textContent = today.toLocaleDateString(undefined, options);
+  }
+
+  const currentWeekEl = document.getElementById("currentWeek");
+  if (currentWeekEl) {
+    const startDate = new Date(new Date().getFullYear(), 6, 1); // July 1
+    const today = new Date();
+    const diffTime = today - startDate;
+    const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1;
+    currentWeekEl.textContent = `Week ${diffWeeks}`;
+  }
 
   // ✅ Refresh dropdowns with a small delay
   setTimeout(() => {
