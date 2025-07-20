@@ -165,24 +165,27 @@
 </style>
 </head>
 <body>
-  <div class="container" style="display: none;">
+
+  <!-- Language Selection Prompt OUTSIDE container -->
   <div id="languagePrompt" style="
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 9999;
-  text-align: center;
-">
-  <h2 style="font-size: 1.5em; margin-bottom: 20px;">Choose your language / Elige tu idioma</h2>
-  <button onclick="setLanguage(false)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">English</button>
-  <button onclick="setLanguage(true)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">Español</button>
-</div>
-  <div class="container">
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+    text-align: center;
+  ">
+    <h2 style="font-size: 1.5em; margin-bottom: 20px;">Choose your language / Elige tu idioma</h2>
+    <button onclick="setLanguage(false)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">English</button>
+    <button onclick="setLanguage(true)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">Español</button>
+  </div>
+
+  <!-- Actual calculator container (hidden at first) -->
+  <div class="container" style="display: none;">
     <div style="text-align: right; margin-bottom: 10px;">
   <button id="langToggleBtn" onclick="toggleLanguage()">Español</button>
 </div>
