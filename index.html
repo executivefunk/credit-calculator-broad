@@ -568,7 +568,7 @@ planANote += `</li>`;
     .replace("{y}", fullWeeksAt3);
 
 if (remainder > 0) {
-  planBNote += ` + ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
+  planBNote += ` ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
 }
 planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
 
