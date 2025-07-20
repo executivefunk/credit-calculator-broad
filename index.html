@@ -168,17 +168,17 @@ body {
 <body>
 
   <!-- Language Selection Prompt OUTSIDE container -->
-<div id="languagePrompt" style="display: none;">
-  <div>
+<div id="languagePrompt" style="display: none; justify-content: center; align-items: center; height: 100vh;">
+  <div class="container" style="text-align: center;">
     <div onclick="setLanguage(false)" style="
       background-color: #007bff;
       color: white;
-      text-align: center;
       padding: 40px 20px;
       font-size: 1.2em;
       cursor: pointer;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     ">
       Welcome to the Credit Calculator!<br>
       Please choose your language.<br><br>
@@ -188,14 +188,13 @@ body {
     <div onclick="setLanguage(true)" style="
       background-color: #28a745;
       color: white;
-      text-align: center;
       padding: 40px 20px;
       font-size: 1.2em;
       cursor: pointer;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     ">
-      Bienvenido a la Calculadora de Créditos!<br>
+      ¡Bienvenido a la Calculadora de Créditos!<br>
       Por favor elige tu idioma.<br><br>
       <strong>Español</strong>
     </div>
