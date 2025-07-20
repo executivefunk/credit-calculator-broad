@@ -8,148 +8,151 @@
   <style>
 /* Base Layout */
 html, body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    min-height: 100vh;
-    box-sizing: border-box
-  }
-  body {
-    padding: 20px 12px;
-    display: block;
-    overflow-y: auto;
-  }
-  .container {
-    width: 100%;
-    max-width:500px;
-    margin: 0 auto;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-  }
-
-  h2 {
-    text-align: center;
-  }
-
-  label {
-    display: block;
-    margin-top: 15px;
-  }
-
-  input[type="number"],
-  select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-
-  .checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
-  .output {
-    margin-top: 20px;
-    padding: 10px;
-    background: #eef;
-    border-radius: 6px;
-  }
-
-  .warning {
-    background: #ffeeba;
-    padding: 10px;
-    border-radius: 6px;
-    margin-top: 10px;
-    border: 1px solid #f0ad4e;
-  }
-
-  .disclaimer {
-    background: #fff89a;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ffeeba;
-    margin-top: 10px;
-    font-size: 0.95em;
-  }
-
-  .footer-disclaimer {
-    margin-top: 20px;
-    font-size: 0.9em;
-    color: #555;
-    text-align: center;
-  }
-
-  .plan-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .plan-buttons button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  /* Holiday Box Styling */
-  .holiday-box {
-    background-color: #e0f8e9;
-    border: 1px solid #b6e2c4;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 15px;
-  }
-
-  .holiday-option {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-
-  .holiday-option input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
-  }
-
-  .holiday-option label {
-    white-space: nowrap;
-    position: relative;
-    top: -5px;
-  }
-     #languagePrompt > .prompt-container {
-      display: flex;              /* REQUIRED for gap to work */
-      flex-direction: column;     /* Stack buttons vertically */
-      gap: 20px;                  /* Adds space between buttons */
-      max-width: 500px;
-      width: 100%;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-    }
-  /* Responsive Fixes */
-  @media (max-width: 450px) {
-  .container {
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
-  .container {
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+body {
+  padding: 20px 12px;
+  display: block;
+  overflow-y: auto;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Headings and Labels */
+h2 {
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+}
+
+/* Form Elements */
+input[type="number"],
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Checkbox Groups */
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* Output / Messages */
+.output {
+  margin-top: 20px;
+  padding: 10px;
+  background: #eef;
+  border-radius: 6px;
+}
+
+.warning {
+  background: #ffeeba;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  border: 1px solid #f0ad4e;
+}
+
+.disclaimer {
+  background: #fff89a;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ffeeba;
+  margin-top: 10px;
+  font-size: 0.95em;
+}
+
+.footer-disclaimer {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #555;
+  text-align: center;
+}
+
+/* Buttons */
+.plan-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.plan-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Holiday Options */
+.holiday-box {
+  background-color: #e0f8e9;
+  border: 1px solid #b6e2c4;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.holiday-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.holiday-option input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+.holiday-option label {
+  white-space: nowrap;
+  position: relative;
+  top: -5px;
+}
+
+/* Language Prompt Box */
+#languagePrompt > .prompt-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
   }
 
   input[type="number"],
@@ -158,16 +161,22 @@ html, body {
     font-size: 17px;
   }
 
+  .container {
+    box-shadow: none;
+    border-radius: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .holiday-option {
     font-size: 14px;
     flex-wrap: wrap;
   }
 
   label,
-  .holiday-option label {
-    font-size: 14px;
-  }
-
+  .holiday-option label,
   .disclaimer,
   .warning,
   .footer-disclaimer,
