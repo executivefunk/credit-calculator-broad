@@ -505,244 +505,200 @@ let storedPlan = {};
 
     let lastResultData = null;
     function calculateCredits() {
-        
-      const totalCredits = parseInt(document.getElementById("totalCredits").value);
-      const startWeek = parseInt(document.getElementById("startWeek").value);
-      const endWeek = parseInt(document.getElementById("endWeek").value);
+  const totalCredits = parseInt(document.getElementById("totalCredits").value);
+  const startWeek = parseInt(document.getElementById("startWeek").value);
+  const endWeek = parseInt(document.getElementById("endWeek").value);
 
-      // === START ADD: Checkbox Reduction Logic ===
-      const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
-      const skipWinter = document.getElementById("skipWinter").checked;
-      const skipSpring = document.getElementById("skipSpring").checked;
+  const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
+  const skipWinter = document.getElementById("skipWinter").checked;
+  const skipSpring = document.getElementById("skipSpring").checked;
 
-      let holidayReduction = 0;
-      if (skipThanksgiving) holidayReduction += 1;
-      if (skipWinter) holidayReduction += 2;
-      if (skipSpring) holidayReduction += 1;
-      // === END ADD ===
+  let holidayReduction = 0;
+  if (skipThanksgiving) holidayReduction += 1;
+  if (skipWinter) holidayReduction += 2;
+  if (skipSpring) holidayReduction += 1;
 
-      let weeksRemaining = endWeek - startWeek + 1 - holidayReduction;
+  let weeksRemaining = endWeek - startWeek + 1 - holidayReduction;
 
-      if (!totalCredits || weeksRemaining <= 0) {
-        document.getElementById("result").innerText = "Please enter valid numbers.";
-        return;
-      }
-
-      const weeklyAvg = (totalCredits / weeksRemaining).toFixed(2);
-      const weeklyAvgNum = parseFloat(weeklyAvg);
-
-      let suggestion = "";
-      let riskLevel = "✅ Low Risk";
-
-      if (weeklyAvgNum <= 2.00) {
-        suggestion = `✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.`;
-      } else if (weeklyAvgNum > 2.00 && weeklyAvgNum <= 2.50) {
-        suggestion = `⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.`;
-        riskLevel = "⚠️ Medium Risk";
-      } else if (weeklyAvgNum > 2.50 && weeklyAvgNum <= 2.79) {
-        suggestion = `⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.`;
-        riskLevel = "⚠️ Medium–High Risk";
-      } else if (weeklyAvgNum > 2.79 && weeklyAvgNum < 3.00) {
-        suggestion = `⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.`;
-        riskLevel = "⚠️ High Risk – Near Limit";
-      } else {
-        suggestion = `🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.`;
-        riskLevel = "🚨 High Risk";
-      }
-
-      let bufferWarningKey = "";
-if (endWeek === 46) {
-  bufferWarningKey = "bufferWarning44";
-} else if (endWeek === 45) {
-  bufferWarningKey = "bufferWarning45";
-} else if (endWeek > 46) {
-  bufferWarningKey = "bufferWarningAfter46";
-}
-let bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
-
-      const strongStart = startWeek <= 10 ? `<p><strong>Strong Start Tip:</strong> Try completing 3 credits/week for the first 6 weeks. You can slow down later.</p>` : "";
-
-      const oneCreditWeeks = Math.max(0, Math.min(totalCredits, weeksRemaining, weeksRemaining * 2 - totalCredits));
-
-      const fullWeeksAt3 = Math.floor(totalCredits / 3);
-      const remainder = totalCredits % 3;
-      let planB = remainder === 0 ? `3 credits/week for ${fullWeeksAt3} weeks - (${fullWeeksAt3} weeks total)` : `3 credits/week for ${fullWeeksAt3} weeks + 1 week of ${remainder} credit${remainder > 1 ? 's' : ''} - (${fullWeeksAt3 + 1} weeks total)`;
-      const planBWeeks = remainder === 0 ? fullWeeksAt3 : fullWeeksAt3 + 1;
-
-      const creditsAfter3PerWeek = 3 * 8;
-      const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
-      const fullWeeksAt4 = Math.floor(remainingCredits / 4);
-      const remainderD = remainingCredits % 4;
-      const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
-
-let planD = `<span style='color:red'><strong>${getText("plan_d_header")}</strong></span>, ` +
-  getText("then_x_weeks_of_4").replace("{x}", fullWeeksAt4);
-
-if (remainderD > 0) {
-  planD += ` ${getText("plus_1_week_of_n").replace("{n}", remainderD)}`;
-}
-
-planD += ` - ${getText("weeks_total").replace("{x}", totalWeeksD)}`;
-      let planDNote = `<li>${planD}`;
-if (totalWeeksD > weeksRemaining) {
-  const diff = totalWeeksD - weeksRemaining;
-  planDNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
-}
-planDNote += `</li>`;
-
-      const planAWeeks = Math.ceil(totalCredits / 2);
-      let weeksOf3 = 0; // Make this available outside the if-block
-     let planANote = `<li><strong>${getText("Plan A")}:</strong> ` +
-  getText("credits_per_week_for_weeks")
-    .replace("{x}", "2")
-    .replace("{y}", weeksRemaining);
-
-if (weeksOver > 0) {
-  const segments = [];
-  if (weeksOf3 > 0) {
-    segments.push(getText("weeks_of_x_credits")
-      .replace("{count}", weeksOf3)
-      .replace("{credit}", 3));
-  }
-  if (weeksOf2 > 0) {
-    segments.push(getText("weeks_of_x_credits")
-      .replace("{count}", weeksOf2)
-      .replace("{credit}", 2));
-  }
-  if (weeksOf1 > 0) {
-    segments.push(getText("weeks_of_x_credits")
-      .replace("{count}", weeksOf1)
-      .replace("{credit}", 1));
+  if (!totalCredits || weeksRemaining <= 0) {
+    document.getElementById("result").innerText = "Please enter valid numbers.";
+    return;
   }
 
-  planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span><br>`;
-  planANote += `<em>${getText("you_need_segments").replace("{segments}", segments.join(` ${getText("and")} `))}</em>`;
-}
+  const weeklyAvg = (totalCredits / weeksRemaining).toFixed(2);
+  const weeklyAvgNum = parseFloat(weeklyAvg);
 
-planANote += `</li>`;
+  let suggestion = "";
+  let riskLevel = "✅ Low Risk";
 
-      let planBNote = `<li><strong>${getText("Plan B")}:</strong> ` +
-  getText("credits_per_week_for_weeks")
-    .replace("{x}", "3")
-    .replace("{y}", fullWeeksAt3);
-
-if (remainder > 0) {
-  planBNote += ` + ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
-}
-
-planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
-
-if (planBWeeks > weeksRemaining) {
-  const diff = planBWeeks - weeksRemaining;
-  planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
-}
-
-planBNote += `</li>`;
-      let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${getText("Plan C Subtitle")}</li>`;
-
-      const result = `
-  <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
-  <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
-  <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
-  <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
-  <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
-  ${bufferWarning}
-  ${startWeek <= 10 ? `<p><strong>${getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.")}</strong></p>` : ""}
-  <hr>
-  <p><strong>${getText("Workflow Options")}:</strong></p>
-  <ul>
-    ${planANote}<br>
-    ${planBNote}<br>
-    ${planCNote}<br>
-    ${planDNote}
-  </ul>
-`;
-
-      const planAWeeks = Math.ceil(totalCredits / 2);
-
-// ✅ Add this block directly after the line above
-let weeksOver = 0;
-let weeksOf3 = 0;
-let weeksOf2 = 0;
-let weeksOf1 = 0;
-
-// ✅ (Then your existing result and tracking data can stay exactly like this)
-document.getElementById("result").innerHTML = result;
-lastResultData = {
-  totalCredits,
-  weeksRemaining,
-  weeklyAvg,
-  riskLevel,
-  suggestion,
-  bufferWarningKey,
-  strongStart: startWeek <= 10,
-  planValues: {
-    weeksOf2,
-    weeksOf3,
-    weeksOf1,
-    weeksOver,
-    fullWeeksAt3,
-    remainder,
-    planBWeeks,
-    planDUnlockedWeeks,
-    planD4Weeks,
-    planDExtraWeeks
+  if (weeklyAvgNum <= 2.00) {
+    suggestion = `✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.`;
+  } else if (weeklyAvgNum <= 2.5) {
+    suggestion = `⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.`;
+    riskLevel = "⚠️ Medium Risk";
+  } else if (weeklyAvgNum <= 2.79) {
+    suggestion = `⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.`;
+    riskLevel = "⚠️ Medium–High Risk";
+  } else if (weeklyAvgNum < 3.00) {
+    suggestion = `⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.`;
+    riskLevel = "⚠️ High Risk – Near Limit";
+  } else {
+    suggestion = `🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.`;
+    riskLevel = "🚨 High Risk";
   }
-};
 
-      // Disable Plan A button if weeksOf3 exceeds weeksRemaining
-const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
-if (typeof weeksOf3 !== 'undefined' && weeksOf3 > weeksRemaining) {
-  planAButton.disabled = true;
-  planAButton.title = "Disabled: Not enough time — too many 3-credit weeks required.";
-} else {
-  planAButton.disabled = false;
-  planAButton.title = "";
-}
+  // Buffer warning logic
+  let bufferWarningKey = "";
+  if (endWeek === 46) bufferWarningKey = "bufferWarning44";
+  else if (endWeek === 45) bufferWarningKey = "bufferWarning45";
+  else if (endWeek > 46) bufferWarningKey = "bufferWarningAfter46";
 
-      // Disable Plan C button if Plan A exceeds weeks
-const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
-if (planAWeeks > weeksRemaining) {
-  planCButton.disabled = true;
-  planCButton.title = "Disabled: 2 credits/week will not be enough to finish on time.";
-} else {
-  planCButton.disabled = false;
-  planCButton.title = "";
-}
-      
-      // Disable Plan B button if Plan B exceeds weeks
-const planBButton = document.querySelector('button[onclick="generatePlan(\'B\')"]');
-if (planBWeeks > weeksRemaining) {
-  planBButton.disabled = true;
-  planBButton.title = "Disabled: 3 credits/week plan won't fit in your remaining time.";
-} else {
-  planBButton.disabled = false;
-  planBButton.title = "";
-}
+  const bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
+  const strongStart = startWeek <= 10;
 
-      // Disable Plan D button if Plan D exceeds weeks
-const planDButton = document.querySelector('button[onclick="generatePlan(\'D\')"]');
-if (totalWeeksD > weeksRemaining) {
-  planDButton.disabled = true;
-  planDButton.title = "Disabled: Plan D requires more weeks than you have left.";
-} else {
-  planDButton.disabled = false;
-  planDButton.title = "";
-}
+  // Plan variables
+  const planAWeeks = Math.ceil(totalCredits / 2);
+  let weeksOver = 0;
+  let weeksOf3 = 0;
+  let weeksOf2 = 0;
+  let weeksOf1 = 0;
 
-      document.getElementById("planButtons").style.display = "flex";
-      storedPlan = { 
-  totalCredits, 
-  startWeek, 
-  endWeek, 
-  oneCreditWeeks,
-  skipWeeks: [
-    ...(skipThanksgiving ? [22] : []),
-    ...(skipWinter ? [26, 27] : []),
-    ...(skipSpring ? [41] : [])
-  ]
-};
+  if (planAWeeks > weeksRemaining) {
+    weeksOver = planAWeeks - weeksRemaining;
+    weeksOf3 = weeksOver * 2;
+    const creditsFrom3s = weeksOf3 * 3;
+    const remainingCredits = totalCredits - creditsFrom3s;
+    weeksOf2 = Math.floor(remainingCredits / 2);
+    const leftover = remainingCredits % 2;
+    weeksOf1 = leftover > 0 ? 1 : 0;
+  }
+
+  // Plan A
+  let planANote = `<li><strong>${getText("Plan A")}:</strong> ${getText("credits_per_week_for_weeks").replace("{x}", "2").replace("{y}", planAWeeks)}`;
+  if (weeksOver > 0) {
+    const segments = [];
+    if (weeksOf3 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3));
+    if (weeksOf2 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2));
+    if (weeksOf1 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf1).replace("{credit}", 1));
+    planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span><br>`;
+    planANote += `<em>${getText("you_need_segments").replace("{segments}", segments.join(` ${getText("and")} `))}</em>`;
+  }
+  planANote += `</li>`;
+
+  // Plan B
+  const fullWeeksAt3 = Math.floor(totalCredits / 3);
+  const remainder = totalCredits % 3;
+  const planBWeeks = fullWeeksAt3 + (remainder > 0 ? 1 : 0);
+
+  let planBNote = `<li><strong>${getText("Plan B")}:</strong> ${getText("credits_per_week_for_weeks").replace("{x}", "3").replace("{y}", fullWeeksAt3)}`;
+  if (remainder > 0) {
+    planBNote += ` + ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
+  }
+  planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
+  if (planBWeeks > weeksRemaining) {
+    const diff = planBWeeks - weeksRemaining;
+    planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
+  }
+  planBNote += `</li>`;
+
+  // Plan C
+  const oneCreditWeeks = Math.max(0, Math.min(totalCredits, weeksRemaining, weeksRemaining * 2 - totalCredits));
+  let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${getText("Plan C Subtitle")}</li>`;
+
+  // Plan D
+  const creditsAfter3PerWeek = 3 * 8;
+  const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
+  const fullWeeksAt4 = Math.floor(remainingCredits / 4);
+  const remainderD = remainingCredits % 4;
+  const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
+
+  let planD = `<span style='color:red'><strong>${getText("plan_d_header")}</strong></span>, ` +
+    getText("then_x_weeks_of_4").replace("{x}", fullWeeksAt4);
+  if (remainderD > 0) {
+    planD += ` ${getText("plus_1_week_of_n").replace("{n}", remainderD)}`;
+  }
+  planD += ` - ${getText("weeks_total").replace("{x}", totalWeeksD)}`;
+  let planDNote = `<li>${planD}`;
+  if (totalWeeksD > weeksRemaining) {
+    const diff = totalWeeksD - weeksRemaining;
+    planDNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
+  }
+  planDNote += `</li>`;
+
+  // Final result output
+  const result = `
+    <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
+    <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
+    <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
+    <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
+    <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
+    ${bufferWarning}
+    ${strongStart ? `<p><strong>${getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.")}</strong></p>` : ""}
+    <hr>
+    <p><strong>${getText("Workflow Options")}:</strong></p>
+    <ul>
+      ${planANote}<br>
+      ${planBNote}<br>
+      ${planCNote}<br>
+      ${planDNote}
+    </ul>
+  `;
+
+  document.getElementById("result").innerHTML = result;
+
+  lastResultData = {
+    totalCredits,
+    weeksRemaining,
+    weeklyAvg,
+    riskLevel,
+    suggestion,
+    bufferWarningKey,
+    strongStart,
+    planValues: {
+      weeksOf2,
+      weeksOf3,
+      weeksOf1,
+      weeksOver,
+      fullWeeksAt3,
+      remainder,
+      planBWeeks,
+      planDUnlockedWeeks: 8,
+      planD4Weeks: fullWeeksAt4,
+      planDExtraWeeks: remainderD > 0 ? 1 : 0
     }
+  };
+
+  // Button disabling logic (preserved from your code)
+  const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
+  planAButton.disabled = weeksOf3 > weeksRemaining;
+  planAButton.title = planAButton.disabled ? "Disabled: Not enough time — too many 3-credit weeks required." : "";
+
+  const planBButton = document.querySelector('button[onclick="generatePlan(\'B\')"]');
+  planBButton.disabled = planBWeeks > weeksRemaining;
+  planBButton.title = planBButton.disabled ? "Disabled: 3 credits/week plan won't fit in your remaining time." : "";
+
+  const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
+  planCButton.disabled = planAWeeks > weeksRemaining;
+  planCButton.title = planCButton.disabled ? "Disabled: 2 credits/week will not be enough to finish on time." : "";
+
+  const planDButton = document.querySelector('button[onclick="generatePlan(\'D\')"]');
+  planDButton.disabled = totalWeeksD > weeksRemaining;
+  planDButton.title = planDButton.disabled ? "Disabled: Plan D requires more weeks than you have left." : "";
+
+  document.getElementById("planButtons").style.display = "flex";
+
+  storedPlan = {
+    totalCredits,
+    startWeek,
+    endWeek,
+    oneCreditWeeks,
+    skipWeeks: [
+      ...(skipThanksgiving ? [22] : []),
+      ...(skipWinter ? [26, 27] : []),
+      ...(skipSpring ? [41] : [])
+    ]
+  };
+}
 
     function renderResult() {
   if (!lastResultData) return;
