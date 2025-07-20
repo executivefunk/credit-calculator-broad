@@ -6,180 +6,178 @@
   <title>Weekly Credit Calculator</title>
   <link rel="manifest" href="manifest.json">
   <style>
-  body {
-  font-family: Arial, sans-serif;
-  padding: 0;
+  /* Base Layout */
+html, body {
   margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
   background: #f4f4f4;
-  font-size: 18px; /* 🔁 was too small */
-  line-height: 1.6;
+  font-size: 18px;
+  height: 100%;
+  width: 100%;
 }
 
-  .container {
+.container {
   width: 100%;
-  max-width: 700px; /* increase for larger desktops */
+  max-width: 900px; /* wider for desktop */
   margin: 0 auto;
   background: white;
-  padding: 24px;
+  padding: 30px;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  min-height: 100vh; /* ensure full height on mobile */
+  min-height: 100vh; /* fills mobile screen */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-  h2 {
+h2 {
   font-size: 1.8em;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-  label {
-    display: block;
-    margin-top: 15px;
-  }
+label {
+  display: block;
+  margin-top: 15px;
+}
 
-  input[type="number"],
-  select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
+/* Form Elements */
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 1em;
+}
 
-  .checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 10px;
-  }
+button {
+  padding: 12px;
+  font-size: 1em;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
 
-  .output {
-    margin-top: 20px;
-    padding: 10px;
-    background: #eef;
-    border-radius: 6px;
-  }
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
-  .warning {
-    background: #ffeeba;
-    padding: 10px;
-    border-radius: 6px;
-    margin-top: 10px;
-    border: 1px solid #f0ad4e;
-  }
-
-  .disclaimer {
-    background: #fff89a;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ffeeba;
-    margin-top: 10px;
-    font-size: 0.95em;
-  }
-
-  .footer-disclaimer {
-    margin-top: 20px;
-    font-size: 0.9em;
-    color: #555;
-    text-align: center;
-  }
-
-  .plan-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .plan-buttons button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  /* Holiday Box Styling */
-  .holiday-box {
-    background-color: #e0f8e9;
-    border: 1px solid #b6e2c4;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 15px;
-  }
-
-  .holiday-option {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-
-  .holiday-option input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
-  }
-
-  .holiday-option label {
-    white-space: nowrap;
-    position: relative;
-    top: -5px;
-  }
-
-  /* Responsive Fixes */
-  @media (max-width: 480px) {
-    body {
-      padding: 10px;
-    }
-
-    .container {
+/* Prompt Box */
+#languagePrompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background: #f4f4f4;
   padding: 20px;
-  max-width: 500px;
-  width: 90%;
-  margin: 0 auto;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
 
-    h2 {
-      font-size: 1.2em;
-    }
-
-    .holiday-option {
-      font-size: 14px;
-      flex-wrap: wrap;
-    }
-
-    label,
-    .holiday-option label {
-      font-size: 14px;
-    }
-
-    input[type="number"],
-    select {
-      font-size: 16px;
-    }
-
-    button {
-      font-size: 15px;
-    }
-
-    .disclaimer,
-    .warning,
-    .footer-disclaimer,
-    .output {
-      font-size: 14px;
-    }
-    #languagePrompt,
-.container {
-  opacity: 1;
-  transition: opacity 0.4s ease;
+#languagePrompt > div {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
+
+#languagePrompt > div > div {
+  padding: 40px 20px;
+  font-size: 1.2em;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Special Elements */
+.output,
+.disclaimer,
+.warning,
+.footer-disclaimer {
+  font-size: 1em;
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.output {
+  background: #eef;
+}
+
+.warning {
+  background: #ffeeba;
+  border: 1px solid #f0ad4e;
+}
+
+.disclaimer {
+  background: #fff89a;
+  border: 1px solid #ffeeba;
+}
+
+.footer-disclaimer {
+  color: #555;
+  text-align: center;
+}
+
+/* Plan Buttons */
+.plan-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Holiday Styling */
+.holiday-box {
+  background-color: #e0f8e9;
+  border: 1px solid #b6e2c4;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.holiday-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.holiday-option input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+.holiday-option label {
+  white-space: nowrap;
+  position: relative;
+  top: -5px;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+    border-radius: 0;
+    min-height: 100vh;
   }
+
+  #languagePrompt > div > div {
+    padding: 30px 16px;
+    font-size: 1.1em;
+  }
+}
 </style>
 </head>
 <body>
@@ -234,17 +232,7 @@
 </div>
 
   <!-- Actual calculator container (hidden at first) -->
-  <div class="container" style="
-  display: none;
-  padding: 20px;
-  max-width: 500px;
-  width: 90%;
-  margin: 0 auto;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-">
+  <div class="container">
   <div style="text-align: right; margin-bottom: 10px;">
     <button id="langToggleBtn" onclick="showLanguagePrompt()">Change Language / Cambiar Idioma</button>
   </div>
