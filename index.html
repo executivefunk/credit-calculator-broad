@@ -8,59 +8,148 @@
   <style>
 /* Base Layout */
 html, body {
-  font-size: 18px; /* Increased from 16px */
+  font-size: 18px; /* Increased base font size, but not oversized */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+  height: 100%;
+  width: 100%;
 }
 
-/* Increase calculator padding */
+/* ===== Container ===== */
 .container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
   padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
   min-height: 100vh;
-  justify-content: space-between; /* Better layout spacing */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-/* Make inputs and dropdowns more readable and tap-friendly */
+/* ===== Headings and Info ===== */
+h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+#currentDate {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+#currentWeek {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* ===== Main Yellow Disclaimer ===== */
+.disclaimer {
+  font-size: 1rem;
+  line-height: 1.6;
+  background: #fff89a;
+  padding: 18px;
+  border-radius: 8px;
+  border: 1px solid #ffeeba;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+/* ===== Form Labels & Inputs ===== */
+label {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-top: 24px;
+}
+
 input[type="number"],
 select {
+  width: 100%;
   padding: 14px;
+  margin-top: 8px;
   font-size: 1.1rem;
-  border-radius: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-/* Increase label font size and spacing */
-label {
-  font-size: 1.1rem;
+/* ===== Button ===== */
+button {
+  padding: 16px;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 24px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Holiday Box ===== */
+.holiday-box {
+  background-color: #e0f8e9;
+  border: 1px solid #b6e2c4;
+  border-radius: 8px;
+  padding: 20px;
   margin-top: 20px;
 }
 
-/* Improve button size and visibility */
-button {
-  padding: 16px;
-  font-size: 1.1rem;
-  border-radius: 8px;
-}
-
-/* Better spacing and chunking for holiday box */
-.holiday-box {
-  padding: 20px;
-  margin-top: 25px;
-}
-
 .holiday-option {
-  margin-bottom: 16px;
-  font-size: 1.05rem;
-}
-
-/* Increase checkbox size */
-.holiday-option input[type="checkbox"] {
-  transform: scale(1.4);
-}
-
-/* Disclaimer spacing */
-.footer-disclaimer {
+  display: flex;
+  align-items: center;
   font-size: 1rem;
+  margin-bottom: 14px;
+}
+
+.holiday-option input[type="checkbox"] {
+  margin-right: 12px;
+  transform: scale(1.3);
+}
+
+/* ===== Output Area ===== */
+.output,
+.warning {
+  font-size: 1rem;
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.output {
+  background: #eef;
+}
+
+.warning {
+  background: #ffeeba;
+  border: 1px solid #f0ad4e;
+}
+
+/* ===== Footer ===== */
+.footer-disclaimer {
+  font-size: 0.95rem;
+  color: #555;
+  text-align: center;
   margin-top: 40px;
+  line-height: 1.5;
   padding-top: 20px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #ddd;
 }
 
 /* Output and Warnings */
