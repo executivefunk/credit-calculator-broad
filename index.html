@@ -237,7 +237,7 @@
   box-sizing: border-box;
 ">
   <div style="text-align: right; margin-bottom: 10px;">
-    <button id="langToggleBtn" onclick="toggleLanguage()">Español</button>
+    <button id="langToggleBtn" onclick="showLanguagePrompt()">Change Language / Cambiar Idioma</button>
   </div>
   <h2>Weekly Credit Calculator</h2>
 
@@ -483,6 +483,20 @@ const weeks = [
   ["June 15 - June 19", "15–19 de junio"],
   ["June 22 - June 26 - End of Semester 2", "22–26 de junio - Fin del semestre 2"]
 ];
+
+    function showLanguagePrompt() {
+  // Hide calculator
+  const calc = document.querySelector(".container");
+  calc.style.opacity = 0;
+
+  // Show prompt after fade-out
+  setTimeout(() => {
+    calc.style.display = "none";
+    const prompt = document.getElementById("languagePrompt");
+    prompt.style.display = "flex";
+    prompt.style.opacity = 1;
+  }, 400);
+}
 
     // ✅ Then define the function once (not nested)
 function populateWeekDropdowns() {
