@@ -167,12 +167,14 @@ body {
     .output {
       font-size: 14px;
     }
-    
+
     #languagePrompt > div {
+      display: flex;              /* REQUIRED for gap to work */
+      flex-direction: column;     /* Stack buttons vertically */
+      gap: 20px;                  /* Adds space between buttons */
       max-width: 500px;
       width: 100%;
       background: white;
-      gap: 20px;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
