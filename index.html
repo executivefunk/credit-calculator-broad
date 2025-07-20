@@ -3,26 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
   <title>Weekly Credit Calculator</title>
   <link rel="manifest" href="manifest.json">
   <style>
 /* Base Layout */
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background: #f4f4f4;
-    margin: 0;
-  }
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f4f4f4;
+  margin: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
 
-  .container {
-    max-width: 500px;
-    margin: 0 auto;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-  }
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
   h2 {
     text-align: center;
