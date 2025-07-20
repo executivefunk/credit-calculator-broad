@@ -928,19 +928,74 @@ distribution = [
 
     const calc = document.querySelector(".container");
     calc.style.opacity = 0;
-calc.style.display = "block";
+    calc.style.display = "block";
 
     // Fade in calculator
     setTimeout(() => {
       calc.style.opacity = 1;
     }, 10);
 
-    // Update language toggle button and translate
+    // Update language toggle button without flipping language again
     document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
-    toggleLanguage();
+
+    // Refresh translations
+    applyTranslations();
   }, 400); // Matches 0.4s transition time
 }
+    
+    function applyTranslations() {
+  Object.keys(translations).forEach(eng => {
+    const elements = Array.from(document.querySelectorAll("*")).filter(el =>
+      el.childNodes.length === 1 &&
+      el.childNodes[0].nodeType === 3 &&
+      (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
+    );
+    elements.forEach(el => {
+      el.innerHTML = isSpanish ? translations[eng] : eng;
+    });
+  });
 
+  const mainDisclaimerEl = document.getElementById("mainDisclaimer");
+  if (mainDisclaimerEl) {
+    mainDisclaimerEl.innerHTML = isSpanish
+      ? translations.mainDisclaimerFull_ES
+      : translations.mainDisclaimerFull;
+  }
+
+  const footerDisclaimerEl = document.getElementById("footerDisclaimer");
+  if (footerDisclaimerEl) {
+    footerDisclaimerEl.innerHTML = isSpanish
+      ? translations.footerDisclaimerFull_ES
+      : translations.footerDisclaimerFull;
+  }
+      
+      const currentDateEl = document.getElementById("currentDate");
+  if (currentDateEl) {
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    currentDateEl.textContent = today.toLocaleDateString(isSpanish ? "es-ES" : "en-US", options);
+  }
+
+  const currentWeekEl = document.getElementById("currentWeek");
+  if (currentWeekEl) {
+    const startDate = new Date(new Date().getFullYear(), 6, 1); // July 1
+    const today = new Date();
+    const diffTime = today - startDate;
+    const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1;
+    currentWeekEl.textContent = isSpanish
+      ? `📅 Semana actual: ${diffWeeks}`
+      : `📅 Current Week: ${diffWeeks}`;
+  }
+
+  setTimeout(() => {
+    populateWeekDropdowns();
+    document.getElementById("endWeek").value = "46";
+  }, 0);
+
+  renderResult();
+  displayCurrentDateAndWeek();
+}
+    
     function toggleLanguage() {
   isSpanish = !isSpanish;
   document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
@@ -955,21 +1010,6 @@ calc.style.display = "block";
       el.innerHTML = isSpanish ? translations[eng] : eng;
     });
   });
-
-  // ✅ Toggle disclaimers
-  const mainDisclaimerEl = document.getElementById("mainDisclaimer");
-if (mainDisclaimerEl) {
-  mainDisclaimerEl.innerHTML = isSpanish
-    ? translations.mainDisclaimerFull_ES
-    : translations.mainDisclaimerFull;
-}
-
-const footerDisclaimerEl = document.getElementById("footerDisclaimer");
-if (footerDisclaimerEl) {
-  footerDisclaimerEl.innerHTML = isSpanish
-    ? translations.footerDisclaimerFull_ES
-    : translations.footerDisclaimerFull;
-}
 
  // ✅ Add this at the very end of the script
   const currentDateEl = document.getElementById("currentDate");
