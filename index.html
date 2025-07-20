@@ -152,24 +152,26 @@ select {
 /* Responsive Tweaks */
 @media (max-width: 480px) {
   body {
-    padding: 10px;
-  }
-
-  input[type="number"],
-  select,
-  button {
-    font-size: 17px;
+    padding: 0;
+    margin: 0;
+    background: white; /* Match container background */
   }
 
   .container {
-    box-shadow: none;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 20px;
     border-radius: 0;
-    min-height: 100vh;
+    box-shadow: none;
+    background: white;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* optional: center content vertically */
   }
-
+  
   .holiday-option {
     font-size: 14px;
     flex-wrap: wrap;
