@@ -1091,31 +1091,72 @@ planDNote += ` - ${getText("weeks_total").replace("{x}", planDWeeks)}</li>`;
         ${planBNote}<br>
         ${planCNote}<br>
         ${planDNote}
-      </ul>
+          </ul>
     `;
     document.getElementById("result").innerHTML = result;
     displayCurrentDateAndWeek(); // Update label for current week 
-}
-document.addEventListener("DOMContentLoaded", () => {
-  populateWeekDropdowns();
-  document.getElementById("endWeek").value = "46";
-  displayCurrentDateAndWeek();
+  } // ✅ End of calculateCredits()
+  
+  // ✅ Needed: rerun output in selected language if toggled after calculation
+  function renderResult() {
+    if (lastResultData) {
+      const {
+        totalCredits,
+        weeksRemaining,
+        weeklyAvg,
+        riskLevel,
+        suggestion,
+        bufferWarningKey,
+        strongStart,
+        planANote,
+        planBNote,
+        planCNote,
+        planDNote
+      } = lastResultData;
 
-  // ✅ Add checkbox event listeners
-  document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
-  document.getElementById("skipWinter").addEventListener("change", calculateCredits);
-  document.getElementById("skipSpring").addEventListener("change", calculateCredits);
+      let bufferWarning = bufferWarningKey ? getText(bufferWarningKey) : "";
+      const result = `
+        <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
+        <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
+        <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
+        <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
+        <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
+        ${bufferWarning ? `<p>${bufferWarning}</p>` : ""}
+        ${strongStart ? `<p><strong>${getText("Strong Start Tip")}</strong></p>` : ""}
+        <hr>
+        <p><strong>${getText("Workflow Options")}:</strong></p>
+        <ul>
+          ${planANote}<br>
+          ${planBNote}<br>
+          ${planCNote}<br>
+          ${planDNote}
+        </ul>
+      `;
 
-  // ✅ Add Enter key triggers
-  ["totalCredits", "startWeek", "endWeek"].forEach(id => {
-    document.getElementById(id).addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault(); // Prevent form submission or accidental refresh
-        calculateCredits();
-      }
+      document.getElementById("result").innerHTML = result;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    populateWeekDropdowns();
+    document.getElementById("endWeek").value = "46";
+    displayCurrentDateAndWeek();
+
+    // ✅ Checkbox event listeners
+    document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
+    document.getElementById("skipWinter").addEventListener("change", calculateCredits);
+    document.getElementById("skipSpring").addEventListener("change", calculateCredits);
+
+    // ✅ Enter key triggers
+    ["totalCredits", "startWeek", "endWeek"].forEach(id => {
+      document.getElementById(id).addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          calculateCredits();
+        }
+      });
     });
   });
-});
   </script>
 </body>
 </html>
