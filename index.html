@@ -6,100 +6,61 @@
   <title>Weekly Credit Calculator</title>
   <link rel="manifest" href="manifest.json">
   <style>
-  /* Base Layout */
 /* Base Layout */
 html, body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  font-size: 16px;
-  height: 100%;
-  width: 100%;
+  font-size: 18px; /* Increased from 16px */
 }
 
-/* Calculator Container */
+/* Increase calculator padding */
 .container {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  padding: 40px;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between; /* Better layout spacing */
 }
 
-/* Headings and Date */
-h2 {
-  font-size: 1.7rem;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-#currentDate {
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-#currentWeek {
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/* Labels and Inputs */
-label {
-  display: block;
-  margin-top: 16px;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
+/* Make inputs and dropdowns more readable and tap-friendly */
 input[type="number"],
 select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-/* Buttons */
-button {
-  padding: 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  width: 100%;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Disclaimer Box */
-.disclaimer {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  background: #fff89a;
   padding: 14px;
-  border-radius: 6px;
-  border: 1px solid #ffeeba;
-  margin-top: 15px;
-  color: #333;
+  font-size: 1.1rem;
+  border-radius: 8px;
+}
+
+/* Increase label font size and spacing */
+label {
+  font-size: 1.1rem;
+  margin-top: 20px;
+}
+
+/* Improve button size and visibility */
+button {
+  padding: 16px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+}
+
+/* Better spacing and chunking for holiday box */
+.holiday-box {
+  padding: 20px;
+  margin-top: 25px;
+}
+
+.holiday-option {
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+}
+
+/* Increase checkbox size */
+.holiday-option input[type="checkbox"] {
+  transform: scale(1.4);
+}
+
+/* Disclaimer spacing */
+.footer-disclaimer {
+  font-size: 1rem;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
 }
 
 /* Output and Warnings */
