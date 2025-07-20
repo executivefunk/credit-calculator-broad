@@ -186,7 +186,7 @@ body {
 </div>
 
   <!-- Actual calculator container (hidden at first) -->
-  <div class="container">
+  <div id="calculator" class="container">
   <div style="text-align: right; margin-bottom: 10px;">
     <button onclick="showLanguagePrompt()">Change Language / Cambiar Idioma</button>
   </div>
@@ -436,7 +436,7 @@ const weeks = [
 ];
 
    function showLanguagePrompt() {
-  const calc = document.querySelector(".container");
+  const calc = document.getElementById("calculator");
   if (calc) {
     calc.style.opacity = 0;
     setTimeout(() => {
@@ -888,7 +888,7 @@ distribution = [
     setTimeout(() => {
       prompt.style.display = "none";
       prompt.setAttribute("hidden", "");
-      const calc = document.querySelector(".container");
+      const calc = document.getElementById("calculator");
       if (calc) {
         calc.style.display = "block";
         void calc.offsetWidth;
