@@ -934,25 +934,17 @@ distribution = [
     function setLanguage(spanish) {
   isSpanish = spanish;
 
-  // Fade out language prompt
   const prompt = document.getElementById("languagePrompt");
-  prompt.style.opacity = 0;
+  prompt.style.display = "none";
 
-  // After fade-out delay, hide prompt and show calculator
-  setTimeout(() => {
-    prompt.style.display = "none";
+  const calc = document.querySelector(".container");
+  calc.style.display = "block";
 
-    const calc = document.querySelector(".container");
-    calc.style.opacity = 0;
-    calc.style.display = "block";
+  // Restore scroll
+  document.body.style.overflow = '';
 
-    // Fade in calculator
-    setTimeout(() => {
-      calc.style.opacity = 1;
-    }, 10);
-
-    // Update language toggle button without flipping language again
-    document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
+  // Update toggle text
+  document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
 
     // Refresh translations
     applyTranslations();
