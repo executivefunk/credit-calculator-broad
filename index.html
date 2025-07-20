@@ -16,10 +16,7 @@ HTML, body {
     overflow-y: auto;
   }
   body.show-prompt {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    display: block;
   }
   .container {
     max-width: 500px;
@@ -126,7 +123,7 @@ HTML, body {
     position: relative;
     top: -5px;
   }
-     #languagePrompt > div { .prompt-container {
+     #languagePrompt > .prompt-container {
       display: flex;              /* REQUIRED for gap to work */
       flex-direction: column;     /* Stack buttons vertically */
       gap: 20px;                  /* Adds space between buttons */
