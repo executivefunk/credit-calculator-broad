@@ -300,8 +300,11 @@
 ],
 "then_x_weeks_of_4": ["then {x} week(s) of 4/week", "luego {x} semana(s) de 4/semana"],
 "plus_1_week_of_n": ["+ 1 week of {n} credit(s)", "+ 1 semana de {n} crédito(s)"],
-"weeks_total": ["({x} weeks total)", "({x} semanas en total)"]
-
+"weeks_total": ["({x} weeks total)", "({x} semanas en total)"],
+    "plan_c_affordable_1s": [
+  "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
+  "Puedes tener hasta {count} semana(s) de 1 crédito si el resto promedia 2 o más"
+]
   };
   return isSpanish ? map[key]?.[1] ?? key : map[key]?.[0] ?? key;
 }
@@ -574,7 +577,7 @@ if (planBWeeks > weeksRemaining) {
   planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
 }
 planBNote += `</li>`;
-      let planCNote = `<li><strong>${getText("Plan C")}:</strong> 2 credits/week - simple but requires consistency</li>`;
+      let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${getText("plan_c_affordable_1s").replace("{count}", oneCreditWeeks)}</li>`;
 
       const result = `
   <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
