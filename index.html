@@ -8,14 +8,12 @@
   <style>
 /* Base Layout */
 HTML, body {
-    font-family: Arial, sans-serif;
+    margin: 0;
     padding: 0;
-    height: 100%;
     min-height: 100vh;
     background: #f4f4f4;
-    margin: 0;
+    font-family: Arial, sans-serif;
     overflow-y: auto;
-    display: block;
   }
   body.show-prompt {
     display: block;
@@ -223,6 +221,7 @@ HTML, body {
   <!-- Actual calculator container (hidden at first) -->
   <div class="container">
   <div style="text-align: right; margin-bottom: 10px;">
+  <div style="height: 40vh;"></div>
     <button id="langToggleBtn" onclick="showLanguagePrompt()">Change Language / Cambiar Idioma</button>
   </div>
   <h2>Weekly Credit Calculator</h2>
