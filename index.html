@@ -8,13 +8,11 @@
   <style>
   /* Base Layout */
 html, body {
-  margin: 0;
-  padding: 0;
+  font-size: 16px; /* Default root size for balance */
   font-family: Arial, sans-serif;
   background: #f4f4f4;
-  font-size: 18px;
-  height: 100%;
-  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
@@ -33,36 +31,50 @@ html, body {
 }
 
 h2 {
-  font-size: 1.8em;
-  text-align: center;
-  margin-bottom: 20px;
+  font-size: 1.5rem; /* ~24px */
+  margin-bottom: 10px;
+}
+
+#currentDate {
+  font-size: 1rem; /* ~16px */
+  font-weight: 600;
+  margin: 5px 0;
+}
+
+#currentWeek {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: #333;
 }
 
 label {
-  display: block;
-  margin-top: 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 16px;
 }
 
 /* Form Elements */
 input[type="number"],
 select {
-  width: 100%;
+  font-size: 1rem;
   padding: 10px;
   margin-top: 5px;
-  border-radius: 6px;
   border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
   box-sizing: border-box;
-  font-size: 1em;
 }
 
 button {
+  font-size: 1rem;
   padding: 12px;
-  font-size: 1em;
   border: none;
   border-radius: 6px;
   background-color: #007bff;
   color: white;
+  margin-top: 20px;
   cursor: pointer;
+  width: 100%;
 }
 
 button:disabled {
@@ -123,10 +135,11 @@ button:disabled {
 .disclaimer,
 .warning,
 .footer-disclaimer {
-  font-size: 1em;
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #555;
+  margin-top: 24px;
+  line-height: 1.4;
 }
 
 .output {
@@ -139,7 +152,11 @@ button:disabled {
 }
 
 .disclaimer {
+  font-size: 0.95rem;
+  line-height: 1.4;
   background: #fff89a;
+  padding: 12px;
+  border-radius: 6px;
   border: 1px solid #ffeeba;
 }
 
@@ -161,15 +178,15 @@ button:disabled {
   background-color: #e0f8e9;
   border: 1px solid #b6e2c4;
   border-radius: 8px;
-  padding: 15px;
+  padding: 16px;
   margin-top: 15px;
 }
 
 .holiday-option {
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  font-size: 16px;
+  gap: 8px;
 }
 
 .holiday-option input[type="checkbox"] {
