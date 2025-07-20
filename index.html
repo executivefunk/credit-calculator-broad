@@ -437,33 +437,19 @@ const weeks = [
 
    function showLanguagePrompt() {
   const calc = document.querySelector(".container");
-  calc.style.opacity = 0;
+  if (calc) {
+    calc.style.opacity = 0;
+    setTimeout(() => {
+      calc.style.display = "none";
 
-  setTimeout(() => {
-    calc.style.display = "none";
+      const prompt = document.getElementById("languagePrompt");
+      prompt.removeAttribute("hidden");
+      prompt.style.display = "flex";
 
-    const prompt = document.getElementById("languagePrompt");
-
-    prompt.removeAttribute("hidden"); // ✅ this makes it show up
-prompt.style.display = "flex";
-
-    // Force layout refresh to allow fade-in
-    void prompt.offsetWidth;
-
-    prompt.style.opacity = 1;
-
-    // Clear fields (optional reset)
-    document.getElementById("totalCredits").value = "";
-    document.getElementById("startWeek").selectedIndex = 0;
-    document.getElementById("endWeek").selectedIndex = 0;
-    document.getElementById("skipThanksgiving").checked = false;
-    document.getElementById("skipWinter").checked = false;
-    document.getElementById("skipSpring").checked = false;
-    document.getElementById("result").innerHTML = "";
-    document.getElementById("planButtons").style.display = "none";
-    lastResultData = null;
-    storedPlan = {};
-  }, 300);
+      void prompt.offsetWidth; // force reflow
+      prompt.style.opacity = 1;
+    }, 300);
+  }
 }
     // ✅ Then define the function once (not nested)
 function populateWeekDropdowns() {
@@ -896,33 +882,20 @@ distribution = [
   }
 }
 
-    function setLanguage(spanish) {
-  isSpanish = spanish;
-
-  // Fade out language prompt
-  const prompt = document.getElementById("languagePrompt");
-  prompt.style.opacity = 0;
-
-  // After fade-out delay, hide prompt and show calculator
-  setTimeout(() => {
-    prompt.style.display = "none";
-
-    const calc = document.querySelector(".container");
-    calc.style.opacity = 0;
-    calc.style.display = "block";
-
-    // Fade in calculator
+    function setLanguage(isSpanish) {
+    const prompt = document.getElementById("languagePrompt");
+    prompt.style.opacity = 0;
     setTimeout(() => {
-      calc.style.opacity = 1;
-    }, 10);
-
-    // Update language toggle button without flipping language again
-    document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
-
-    // Refresh translations
-    applyTranslations();
-  }, 400); // Matches 0.4s transition time
-}
+      prompt.style.display = "none";
+      prompt.setAttribute("hidden", "");
+      const calc = document.querySelector(".container");
+      if (calc) {
+        calc.style.display = "block";
+        void calc.offsetWidth;
+        calc.style.opacity = 1;
+      }
+    }, 300);
+  }
     
     function applyTranslations() {
   Object.keys(translations).forEach(eng => {
