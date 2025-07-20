@@ -562,39 +562,34 @@ const weeks = [
   ["June 22 - June 26 - End of Semester 2", "22–26 de junio - Fin del semestre 2"]
 ];
 
-    function showLanguagePrompt() {
-  // Fade out calculator
+   function showLanguagePrompt() {
   const calc = document.querySelector(".container");
   calc.style.opacity = 0;
 
   setTimeout(() => {
-    // Hide calculator and show language prompt
     calc.style.display = "none";
+
     const prompt = document.getElementById("languagePrompt");
     prompt.style.display = "flex";
+    
+    // Force layout refresh to allow fade-in
+    void prompt.offsetWidth;
+
     prompt.style.opacity = 1;
 
-    // 🧹 Reset all fields
+    // Clear fields (optional reset)
     document.getElementById("totalCredits").value = "";
     document.getElementById("startWeek").selectedIndex = 0;
     document.getElementById("endWeek").selectedIndex = 0;
-
     document.getElementById("skipThanksgiving").checked = false;
     document.getElementById("skipWinter").checked = false;
     document.getElementById("skipSpring").checked = false;
-
     document.getElementById("result").innerHTML = "";
     document.getElementById("planButtons").style.display = "none";
-
-    // Reset language toggle text in case it's been changed
-    document.getElementById("langToggleBtn").textContent = "Change Language / Cambiar Idioma";
-
-    // Reset tracking data
     lastResultData = null;
     storedPlan = {};
-  }, 400); // Matches fade-out duration
+  }, 300);
 }
-
     // ✅ Then define the function once (not nested)
 function populateWeekDropdowns() {
 
