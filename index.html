@@ -126,11 +126,15 @@
     }
 
     .container {
-      padding: 15px;
-      width: 100%;
-      border-radius: 0;
-      box-shadow: none;
-    }
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
 
     h2 {
       font-size: 1.2em;
@@ -161,13 +165,17 @@
     .output {
       font-size: 14px;
     }
+    #languagePrompt,
+.container {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
   }
 </style>
 </head>
 <body>
 
   <!-- Language Selection Prompt OUTSIDE container -->
-  <!-- Language Selection Prompt -->
 <div id="languagePrompt" style="
   display: flex;
   align-items: center;
@@ -177,36 +185,57 @@
 ">
   <div style="
     background: white;
-    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    text-align: center;
     max-width: 500px;
     width: 90%;
     box-sizing: border-box;
+    overflow: hidden;
   ">
-    <h2 style="margin-bottom: 15px;">Welcome to the Credit Calculator!<br>Bienvenido a la Calculadora de Créditos!</h2>
-    <p style="margin-bottom: 20px;">Please choose your language.<br>Por favor elige tu idioma.</p>
-    <button onclick="setLanguage(false)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">English</button>
-    <button onclick="setLanguage(true)" style="margin: 10px; padding: 12px 24px; font-size: 1em; width: 80%;">Español</button>
+    <div onclick="setLanguage(false)" style="
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+    ">
+      Welcome to the Credit Calculator!<br>
+      Please choose your language.<br><br>
+      <strong>English</strong>
+    </div>
+    <div onclick="setLanguage(true)" style="
+      background-color: #28a745;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+    ">
+      Bienvenido a la Calculadora de Créditos!<br>
+      Por favor elige tu idioma.<br><br>
+      <strong>Español</strong>
+    </div>
   </div>
 </div>
 
   <!-- Actual calculator container (hidden at first) -->
-  <div class="container" style="display: none;">
-    <div style="text-align: right; margin-bottom: 10px;">
-  <button id="langToggleBtn" onclick="toggleLanguage()">Español</button>
-</div>
-    <h2>Weekly Credit Calculator</h2>
-    <p id="currentDate" style="text-align: center; font-weight: bold; margin-top: -10px;"></p>
-<p id="currentWeek" style="text-align: center; font-size: 1.1em; margin-bottom: 15px;"></p>
-    <div class="disclaimer" id="mainDisclaimer">
-      This calculator is designed for students who plan to graduate this school year.
-      <br><br>
-      If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.
-      <br><br>
-      Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.
-    </div>
+  <div class="container" style="
+  display: none;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+">
+  <div style="text-align: right; margin-bottom: 10px;">
+    <button id="langToggleBtn" onclick="toggleLanguage()">Español</button>
+  </div>
+  <h2>Weekly Credit Calculator</h2>
+  <!-- more calculator content continues here -->
 
     <label for="totalCredits">How many credits do you need to finish?</label>
     <input type="number" id="totalCredits" min="1" max="100" required>
@@ -873,10 +902,28 @@ distribution = [
 
     function setLanguage(spanish) {
   isSpanish = spanish;
-  document.getElementById("languagePrompt").style.display = "none";
-  document.querySelector(".container").style.display = "block";
-  document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
-  toggleLanguage();
+
+  // Fade out language prompt
+  const prompt = document.getElementById("languagePrompt");
+  prompt.style.opacity = 0;
+
+  // After fade-out delay, hide prompt and show calculator
+  setTimeout(() => {
+    prompt.style.display = "none";
+
+    const calc = document.querySelector(".container");
+    calc.style.opacity = 0;
+calc.style.display = "block";
+
+    // Fade in calculator
+    setTimeout(() => {
+      calc.style.opacity = 1;
+    }, 10);
+
+    // Update language toggle button and translate
+    document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
+    toggleLanguage();
+  }, 400); // Matches 0.4s transition time
 }
 
     function toggleLanguage() {
