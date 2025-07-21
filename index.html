@@ -198,6 +198,10 @@ select {
   #languagePrompt .prompt-container span {
     font-size: 1.1em !important;
   }
+
+  body.spanish-mode .holiday-option label {
+  font-size: 0.95em;
+  }
 }
 </style>
 </head>
@@ -958,6 +962,12 @@ distribution = [
 
     function setLanguage(spanish) {
   isSpanish = spanish;
+      
+      if (spanish) {
+  document.body.classList.add("spanish-mode");
+} else {
+  document.body.classList.remove("spanish-mode");
+}
 
   // Fade out language prompt
   const prompt = document.getElementById("languagePrompt");
