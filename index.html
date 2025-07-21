@@ -144,15 +144,14 @@ select {
   transition: opacity 0.4s ease;
 }
 
-
-/* Responsive Tweaks */
-@media (max-width: 480px) {
+    /* Responsive Tweaks */
+@media (max-width: 768px) {
   html, body {
     font-size: 18px;
   }
 
   h2 {
-    font-size: 1.6em;
+    font-size: 1.6em !important;
   }
 
   label,
@@ -161,56 +160,43 @@ select {
   .warning,
   .footer-disclaimer,
   .output {
-    font-size: 1.1em;
+    font-size: 1.2em !important;
   }
 
   input[type="number"],
   select {
-    padding: 14px;
-    font-size: 1.1em;
+    padding: 14px !important;
+    font-size: 1.2em !important;
   }
 
   button,
   #langToggleBtn {
-    font-size: 1.1em !important;
-    padding: 14px !important;
+    font-size: 1.2em !important;
+    padding: 16px !important;
     border-radius: 8px;
   }
 
   .plan-buttons button {
-    font-size: 1.1em;
-    padding: 14px;
+    font-size: 1.2em !important;
+    padding: 16px !important;
   }
 
   .holiday-option input[type="checkbox"] {
-    transform: scale(1.5);
+    transform: scale(1.5) !important;
     margin-right: 10px;
   }
 
-  .holiday-option {
-    font-size: 1.05em;
-    flex-wrap: wrap;
-  }
-
   #languagePrompt .prompt-container {
-    font-size: 1.1em;
+    font-size: 1.2em;
   }
 
   #languagePrompt .prompt-container > div > div {
-    font-size: 1.2em !important;
+    font-size: 1.3em !important;
     padding: 18px !important;
   }
 
   #languagePrompt .prompt-container span {
-    font-size: 1em !important;
-  }
-
-  .disclaimer {
-    font-size: 1em;
-  }
-
-  .footer-disclaimer {
-    font-size: 1em;
+    font-size: 1.1em !important;
   }
 }
 </style>
