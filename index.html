@@ -140,6 +140,10 @@ select {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
+#languagePrompt {
+  transition: opacity 0.4s ease;
+}
+
 
 /* Responsive Tweaks */
 @media (max-width: 480px) {
@@ -181,36 +185,44 @@ margin-block: 10px;  /* top and bottom */
 </head>
 <body>
 
-  <!-- Language Selection Prompt OUTSIDE container -->
-<div id="languagePrompt" style="display: none;">
-    <div onclick="setLanguage(false)" style="
-      background-color: #007bff;
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 1.2em;
-      cursor: pointer;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    ">
-      Welcome to the Credit Calculator!<br>
-      Please choose your language.<br><br>
-      <strong>English</strong>
+ <div id="languagePrompt" style="display: none; justify-content: center; align-items: center; min-height: 100vh;">
+  <div class="prompt-container">
+    <div>
+      <p style="text-align: center; font-weight: bold;">Welcome to the Credit Calculator!</p>
+      <p style="text-align: center;">Please choose your language.</p>
+      <div onclick="setLanguage(false)" style="
+        background-color: #e0e0e0;
+        color: #333;
+        text-align: center;
+        padding: 16px;
+        font-size: 1.1em;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        margin-top: 10px;
+      ">
+        <strong>English - Inglés</strong><br>
+        <span style="font-size: 0.9em;">Click Here</span>
+      </div>
     </div>
 
-    <div onclick="setLanguage(true)" style="
-      background-color: #28a745;
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 1.2em;
-      cursor: pointer;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    ">
-      Bienvenido a la Calculadora de Créditos!<br>
-      Por favor elige tu idioma.<br><br>
-      <strong>Español</strong>
+    <div>
+      <p style="text-align: center; font-weight: bold;">¡Bienvenido a la Calculadora de Créditos!</p>
+      <p style="text-align: center;">Por favor elige tu idioma.</p>
+      <div onclick="setLanguage(true)" style="
+        background-color: #e0e0e0;
+        color: #333;
+        text-align: center;
+        padding: 16px;
+        font-size: 1.1em;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        margin-top: 10px;
+      ">
+        <strong>Español - Spanish</strong><br>
+        <span style="font-size: 0.9em;">Click Here</span>
+      </div>
     </div>
   </div>
 </div>
