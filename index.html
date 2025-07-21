@@ -145,6 +145,7 @@ select {
 }
 
     /* Responsive Tweaks */
+/* Responsive Tweaks */
 @media (max-width: 768px) {
   html, body {
     font-size: 18px;
@@ -170,10 +171,10 @@ select {
   }
 
   button,
-#langToggleBtn {
-  font-size: 0.96em !important;   /* 20% smaller */
-  padding: 12.8px !important;     /* 20% smaller */
-  border-radius: 6px;
+  #langToggleBtn {
+    font-size: 0.96em !important;
+    padding: 12.8px !important;
+    border-radius: 6px;
   }
 
   .plan-buttons button {
@@ -200,10 +201,13 @@ select {
   }
 
   body.spanish-mode .holiday-option label {
-  font-size: 0.75em;
-  line-height: 1.1em;
+    font-size: 0.75em;
+    line-height: 1.1em;
   }
-    @media print {
+}
+
+/* ✅ This MUST be outside the above block */
+@media print {
   body {
     background: white !important;
     margin: 0;
