@@ -149,17 +149,18 @@ select {
     padding: 10px; /* adds the thin spacing around the white container */
   }
 
-  .container {
-  max-width: none; /* override the 500px max-width on desktop */
-  width: 100%;
-  height: calc(100vh - 20px); /* subtract body padding (top + bottom) */
-  margin: 0;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  box-sizing: border-box;
-}
+    .container {
+    max-width: none; /* override desktop limit */
+    width: 100%;
+    height: calc(100vh - 20px); /* screen height minus 10px top/bottom padding */
+    margin: 0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
 
   .holiday-option {
     font-size: 14px;
