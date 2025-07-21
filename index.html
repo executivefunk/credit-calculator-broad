@@ -232,7 +232,7 @@ select {
 </div>
 
   <!-- Actual calculator container (hidden at first) -->
-  <div class="container">
+  <div class="container" id="calculator">
   <div style="text-align: right; margin-bottom: 10px;">
     <button id="langToggleBtn" onclick="showLanguagePrompt()">Change Language / Cambiar Idioma</button>
   </div>
@@ -478,7 +478,7 @@ const weeks = [
 ];
 
    function showLanguagePrompt() {
-  const calc = document.querySelector(".container");
+  const calc = document.getElementById("calculator");
   calc.style.opacity = 0;
 
   setTimeout(() => {
@@ -951,7 +951,7 @@ distribution = [
 
     document.body.classList.remove("show-prompt");
 
-    const calc = document.querySelector(".container");
+    const calc = document.getElementById("calculator");
     calc.style.opacity = 0;
     calc.style.display = "block";
 
