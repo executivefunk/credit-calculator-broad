@@ -1041,7 +1041,10 @@ distribution = [
   if (currentDateEl) {
     const today = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    currentDateEl.textContent = today.toLocaleDateString(undefined, options);
+    currentDateEl.textContent = today.toLocaleDateString(
+      isSpanish ? "es-ES" : "en-US",
+      options
+    );
   }
 
   const currentWeekEl = document.getElementById("currentWeek");
@@ -1050,7 +1053,9 @@ distribution = [
     const today = new Date();
     const diffTime = today - startDate;
     const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1;
-    currentWeekEl.textContent = `Week ${diffWeeks}`;
+    currentWeekEl.textContent = isSpanish
+      ? `📅 Semana actual: ${diffWeeks}`
+      : `📅 Current Week: ${diffWeeks}`;
   }
 
   // ✅ Refresh dropdowns with a small delay
