@@ -147,29 +147,12 @@ select {
 
 /* Responsive Tweaks */
 @media (max-width: 480px) {
-  body {
-    background: #f4f4f4;
-    margin: 0;
-    padding: 10px; /* adds the thin spacing around the white container */
+  html, body {
+    font-size: 18px;
   }
 
-  .container {
-  max-width: none;
-  width: calc(100% - 20px);         /* ✅ this is key */
-  min-height: calc(100vh - 20px);   /* ✅ ensures top/bottom spacing */
-  margin-inline: 10px; /* left and right */
-margin-block: 10px;  /* top and bottom */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-  .holiday-option {
-    font-size: 14px;
-    flex-wrap: wrap;
+  h2 {
+    font-size: 1.6em;
   }
 
   label,
@@ -178,7 +161,56 @@ margin-block: 10px;  /* top and bottom */
   .warning,
   .footer-disclaimer,
   .output {
-    font-size: 14px;
+    font-size: 1.1em;
+  }
+
+  input[type="number"],
+  select {
+    padding: 14px;
+    font-size: 1.1em;
+  }
+
+  button,
+  #langToggleBtn {
+    font-size: 1.1em !important;
+    padding: 14px !important;
+    border-radius: 8px;
+  }
+
+  .plan-buttons button {
+    font-size: 1.1em;
+    padding: 14px;
+  }
+
+  .holiday-option input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-right: 10px;
+  }
+
+  .holiday-option {
+    font-size: 1.05em;
+    flex-wrap: wrap;
+  }
+
+  #languagePrompt .prompt-container {
+    font-size: 1.1em;
+  }
+
+  #languagePrompt .prompt-container > div > div {
+    font-size: 1.2em !important;
+    padding: 18px !important;
+  }
+
+  #languagePrompt .prompt-container span {
+    font-size: 1em !important;
+  }
+
+  .disclaimer {
+    font-size: 1em;
+  }
+
+  .footer-disclaimer {
+    font-size: 1em;
   }
 }
 </style>
