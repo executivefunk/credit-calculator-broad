@@ -149,10 +149,10 @@ select {
     padding: 10px; /* adds the thin spacing around the white container */
   }
 
-    .container {
+  .container {
   max-width: none;
-  width: 100%;
-  min-height: calc(100vh - 20px); /* ✅ instead of height */
+  width: calc(100% - 20px);         /* ✅ this is key */
+  min-height: calc(100vh - 20px);   /* ✅ ensures top/bottom spacing */
   margin: 0;
   padding: 20px;
   border-radius: 12px;
