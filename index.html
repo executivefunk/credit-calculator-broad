@@ -106,7 +106,7 @@ select {
   background-color: #e0f8e9;
   border: 1px solid #b6e2c4;
   border-radius: 8px;
-  padding: 15px;
+  padding: 10px 15px 15px;
   margin-top: 15px;
 }
 
@@ -243,6 +243,14 @@ select {
   #languagePrompt {
     display: none !important;
   }
+   table, tr, td, th {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  @media print {
+  .force-page-break {
+    page-break-before: always !important;
+  }
 }
 </style>
 </head>
@@ -317,6 +325,14 @@ select {
     <select id="endWeek"></select>
 
     <div class="holiday-box">
+      <p id="skipBoxTitle" style="
+  text-align: center;
+  font-weight: bold;
+  margin: 0 0 12px;
+">
+  Weeks You Plan to Skip (Optional):
+</p>
+
       <div class="holiday-option">
         <input type="checkbox" id="skipThanksgiving">
         <label for="skipThanksgiving">Skip Thanksgiving Week (Week 22)</label>
@@ -328,6 +344,24 @@ select {
       <div class="holiday-option">
         <input type="checkbox" id="skipSpring">
         <label for="skipSpring">Skip Spring Week (Week 41)</label>
+      </div>
+      <hr style="margin: 10px 0;">
+
+      <div class="holiday-option">
+        <input type="checkbox" id="customSkip1">
+        <select id="customWeek1"></select>
+      </div>
+      <div class="holiday-option">
+       <input type="checkbox" id="customSkip2">
+       <select id="customWeek2"></select>
+      </div>
+      <div class="holiday-option">
+       <input type="checkbox" id="customSkip3">
+       <select id="customWeek3"></select>
+      </div>
+      <div class="holiday-option">
+      <input type="checkbox" id="customSkip4">
+      <select id="customWeek4"></select>
       </div>
     </div>
 
@@ -433,7 +467,12 @@ select {
     "plan_c_affordable_1s": [
   "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
   "Puedes tener hasta {count} semana(s) de 1 crédito si el resto promedia 2 o más"
+],
+    "Weeks You Plan to Skip (Optional):": [
+  "Weeks You Plan to Skip (Optional):",
+  "Semanas que Planeas Omitir (Opcional):"
 ]
+
   };
   return isSpanish ? map[key]?.[1] ?? key : map[key]?.[0] ?? key;
 }
@@ -573,14 +612,12 @@ const weeks = [
 }
     // ✅ Then define the function once (not nested)
 function populateWeekDropdowns() {
-
   const startSelect = document.getElementById("startWeek");
   const endSelect = document.getElementById("endWeek");
 
   if (!startSelect || !endSelect) {
     return;
   }
-
 
   startSelect.innerHTML = "";
   endSelect.innerHTML = "";
@@ -598,6 +635,26 @@ function populateWeekDropdowns() {
     endSelect.appendChild(optionEN2);
   }
 
+  // ✅ Populate the 4 custom skip dropdowns
+  const customWeekSelects = [
+    document.getElementById("customWeek1"),
+    document.getElementById("customWeek2"),
+    document.getElementById("customWeek3"),
+    document.getElementById("customWeek4")
+  ];
+
+  customWeekSelects.forEach(select => {
+    if (!select) return;
+    select.innerHTML = "";
+    for (let i = 0; i < weeks.length; i++) {
+      const opt = document.createElement("option");
+      opt.value = i + 1;
+      opt.textContent = isSpanish
+        ? `Semana ${i + 1}: ${weeks[i][1]}`
+        : `Week ${i + 1}: ${weeks[i][0]}`;
+      select.appendChild(opt);
+    }
+  });
 }
 
 let storedPlan = {};
@@ -609,18 +666,47 @@ let storedPlan = {};
       const startWeek = parseInt(document.getElementById("startWeek").value);
       const endWeek = parseInt(document.getElementById("endWeek").value);
 
-      // === START ADD: Checkbox Reduction Logic ===
-      const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
+            const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
       const skipWinter = document.getElementById("skipWinter").checked;
       const skipSpring = document.getElementById("skipSpring").checked;
 
-      let holidayReduction = 0;
-      if (skipThanksgiving) holidayReduction += 1;
-      if (skipWinter) holidayReduction += 2;
-      if (skipSpring) holidayReduction += 1;
-      // === END ADD ===
+      const customSkips = [];
+const selectedWeeks = new Set();
+let duplicateFound = false;
 
-      let weeksRemaining = endWeek - startWeek + 1 - holidayReduction;
+for (let i = 1; i <= 4; i++) {
+  const cb = document.getElementById(`customSkip${i}`);
+  const sel = document.getElementById(`customWeek${i}`);
+  if (cb?.checked && sel?.value) {
+    const val = parseInt(sel.value);
+    if (!isNaN(val)) {
+      if (selectedWeeks.has(val)) {
+        duplicateFound = true;
+      } else {
+        selectedWeeks.add(val);
+        customSkips.push(val);
+      }
+    }
+  }
+}
+
+if (duplicateFound) {
+  document.getElementById("result").innerHTML = `<div class='warning'>You've selected the same week more than once in custom skip weeks. Each custom week must be different.</div>`;
+  return;
+}
+
+
+      // Combine all skip weeks into one array
+      const allSkips = [
+        ...(skipThanksgiving ? [22] : []),
+        ...(skipWinter ? [26, 27] : []),
+        ...(skipSpring ? [41] : []),
+        ...customSkips
+      ];
+
+      // Only count unique skips
+      const uniqueSkips = [...new Set(allSkips)];
+      let weeksRemaining = endWeek - startWeek + 1 - uniqueSkips.length;
 
       if (!totalCredits || weeksRemaining <= 0) {
         document.getElementById("result").innerText = "Please enter valid numbers.";
@@ -811,18 +897,14 @@ if (totalWeeksD > weeksRemaining) {
   planDButton.title = "";
 }
 
-      document.getElementById("planButtons").style.display = "flex";
-      storedPlan = { 
-  totalCredits, 
-  startWeek, 
-  endWeek, 
-  oneCreditWeeks,
-  skipWeeks: [
-    ...(skipThanksgiving ? [22] : []),
-    ...(skipWinter ? [26, 27] : []),
-    ...(skipSpring ? [41] : [])
-  ]
-};
+  document.getElementById("planButtons").style.display = "flex";
+  storedPlan = { 
+        totalCredits, 
+        startWeek, 
+        endWeek, 
+        oneCreditWeeks,
+        skipWeeks: uniqueSkips
+      };
     }
 
     function renderResult() {
@@ -868,13 +950,16 @@ if (totalWeeksD > weeksRemaining) {
    function generatePlan(type) {
   const { totalCredits, startWeek, endWeek, oneCreditWeeks, skipWeeks } = storedPlan;
 
-  // Prepare the usable weeks excluding skipWeeks
-  let allWeeks = [];
-  for (let w = startWeek; w <= endWeek; w++) {
-    allWeeks.push({ week: w, skip: skipWeeks.includes(w) });
-  }
-  const usableWeeks = allWeeks.filter(w => !w.skip);
-  const usableWeekCount = usableWeeks.length;
+// Step 1: Mark all weeks with skip status
+let allWeeks = [];
+for (let w = startWeek; w <= endWeek; w++) {
+  const isSkipped = skipWeeks.includes(w);
+  allWeeks.push({ week: w, skip: isSkipped });
+}
+
+// Step 2: Pull only usable weeks (not skipped) for assigning credits
+const usableWeeks = allWeeks.filter(w => !w.skip);
+const usableWeekCount = usableWeeks.length;
 
   // Determine credit distribution per plan
   let distribution = [];
@@ -926,7 +1011,14 @@ distribution = [
   // Apply distribution to usable weeks
   usableWeeks.forEach((w, i) => w.credits = distribution[i] ?? 0);
   // Add 0 credits for skipped weeks
-  allWeeks = allWeeks.map(w => w.skip ? { ...w, credits: 0 } : usableWeeks.shift());
+  allWeeks = allWeeks.map(w => {
+  if (w.skip) {
+    return { ...w, credits: 0 };
+  } else {
+    const next = usableWeeks.shift();
+    return { ...w, credits: next?.credits ?? 0 };
+  }
+});
 
   // Render table
   const table = `
@@ -946,6 +1038,7 @@ distribution = [
         const rowClass = w.skip ? ' class="skip-row"' : '';
         const row = `<td>${w.week}</td><td>${dateRanges[w.week]}</td><td>${w.credits}</td>`;
         const cells = Array(4).fill(`<td><div class="credit-cell"><input type="checkbox" /> ________</div></td>`).join('');
+        const forceBreak = w.week === 46 ? ' class="force-page-break skip-row"' : rowClass;
         return `<tr${rowClass}>${row}${cells}</tr>`;
       }).join('')}
     </table></body></html>
@@ -1083,6 +1176,11 @@ distribution = [
       : `📅 Current Week: ${diffWeeks}`;
   }
 
+  const skipBoxTitleEl = document.getElementById("skipBoxTitle");
+if (skipBoxTitleEl) {
+  skipBoxTitleEl.textContent = getText("Weeks You Plan to Skip (Optional):");
+}
+
   setTimeout(() => {
     populateWeekDropdowns();
     document.getElementById("endWeek").value = "46";
@@ -1141,6 +1239,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
   document.getElementById("skipWinter").addEventListener("change", calculateCredits);
   document.getElementById("skipSpring").addEventListener("change", calculateCredits);
+  for (let i = 1; i <= 4; i++) {
+  document.getElementById(`customSkip${i}`).addEventListener("change", calculateCredits);
+  document.getElementById(`customWeek${i}`).addEventListener("change", calculateCredits);
+}
 
   // ✅ Add Enter key triggers
   ["totalCredits", "startWeek", "endWeek"].forEach(id => {
