@@ -492,9 +492,17 @@ select {
 "then_x_weeks_of_4": ["then {x} week(s) of 4/week", "luego {x} semana(s) de 4/semana"],
 "plus_1_week_of_n": ["+ 1 week of {n} credit(s)", "+ 1 semana de {n} crédito(s)"],
 "weeks_total": ["({x} weeks total)", "({x} semanas en total)"],
-    "plan_c_affordable_1s": [
+    "plan_c_exactly_2": [
+  "You can afford 0 week(s) at 1 credit if the rest average 2+",
+  "Puedes tener 0 semana(s) de 1 crédito si el resto promedia 2 o más"
+],
+"plan_c_less_than_2": [
   "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
   "Puedes tener hasta {count} semana(s) de 1 crédito si el resto promedia 2 o más"
+],
+"plan_c_more_than_2": [
+  "You can afford 0 week(s) at 1 credit",
+  "Puedes tener 0 semana(s) de 1 crédito"
 ],
     "Weeks You Plan to Skip (Optional):": [
   "Weeks You Plan to Skip (Optional):",
@@ -811,28 +819,40 @@ planDNote += `</li>`;
     .replace("{x}", "2")
     .replace("{y}", planAWeeks);
 
+const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
+
 if (planAWeeks > weeksRemaining) {
   const weeksOver = planAWeeks - weeksRemaining;
   weeksOf3 = weeksOver * 2;
-  const creditsFrom3s = weeksOf3 * 3;
-  const creditsRemaining = totalCredits - creditsFrom3s;
-  const weeksOf2 = Math.floor(creditsRemaining / 2);
-  const leftover = creditsRemaining % 2;
-  const weeksOf1 = leftover > 0 ? 1 : 0;
 
-  const segments = [];
-  if (weeksOf3 > 0) segments.push(
-    getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3)
-  );
-  if (weeksOf2 > 0) segments.push(
-    getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2)
-  );
-  if (weeksOf1 > 0) segments.push(
-    getText("weeks_of_x_credits").replace("{count}", 1).replace("{credit}", 1)
-  );
+  planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span>`;
 
-  planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span><br>`;
-  planANote += `<em>${getText("you_need_segments").replace("{segments}", segments.join(" and "))}</em>`;
+  if (weeksOf3 < planBWeeks) {
+    // ✅ Fallback is viable
+    const creditsFrom3s = weeksOf3 * 3;
+    const creditsRemaining = totalCredits - creditsFrom3s;
+    const weeksOf2 = Math.floor(creditsRemaining / 2);
+    const leftover = creditsRemaining % 2;
+    const weeksOf1 = leftover > 0 ? 1 : 0;
+
+    const segments = [];
+    if (weeksOf3 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3));
+    if (weeksOf2 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2));
+    if (weeksOf1 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", 1).replace("{credit}", 1));
+
+    planANote += `<br><em>${getText("you_need_segments").replace("{segments}", segments.join(" and "))}</em>`;
+
+    planAButton.disabled = false;
+    planAButton.title = "";
+  } else {
+    // ❌ Fallback not viable
+    planAButton.disabled = true;
+    planAButton.title = "Disabled: Plan A fallback uses too many 3-credit weeks — not realistic.";
+  }
+} else {
+  // ✅ Standard Plan A fits
+  planAButton.disabled = false;
+  planAButton.title = "";
 }
 planANote += `</li>`;
 
@@ -851,7 +871,23 @@ if (planBWeeks > weeksRemaining) {
   planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
 }
 planBNote += `</li>`;
-      let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${getText("plan_c_affordable_1s").replace("{count}", oneCreditWeeks)}</li>`;
+      let planCText = "";
+
+if (weeklyAvgNum < 2.0) {
+  planCText = isSpanish
+    ? `Puedes tener hasta ${oneCreditWeeks} semana(s) de 1 crédito si el resto promedia 2 o más`
+    : `You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+`;
+} else if (weeklyAvgNum === 2.0) {
+  planCText = isSpanish
+    ? `Puedes tener 0 semana(s) de 1 crédito si el resto promedia 2 o más`
+    : `You can afford 0 week(s) at 1 credit if the rest average 2+`;
+} else {
+  planCText = isSpanish
+    ? `Puedes tener 0 semana(s) de 1 crédito`
+    : `You can afford 0 week(s) at 1 credit`;
+}
+
+let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${planCText}</li>`;
 
       const result = `
   <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
@@ -885,16 +921,6 @@ planBNote += `</li>`;
   planCNote,
   planDNote
 };
-
-      // Disable Plan A button if weeksOf3 exceeds weeksRemaining
-const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
-if (typeof weeksOf3 !== 'undefined' && weeksOf3 > weeksRemaining) {
-  planAButton.disabled = true;
-  planAButton.title = "Disabled: Not enough time — too many 3-credit weeks required.";
-} else {
-  planAButton.disabled = false;
-  planAButton.title = "";
-}
 
       // Disable Plan C button if Plan A exceeds weeks
 const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
