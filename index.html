@@ -219,7 +219,7 @@ select {
     line-height: 1.1em;
   }
 }
-  #printButton {
+ #printButton {
   position: fixed;
   top: 16px;
   right: 16px;
@@ -234,20 +234,12 @@ select {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s;
 }
+#printButton:hover { background-color: #555; color: white; }
 
-#printButton:hover {
-  background-color: #555;
-  color: white;
-}
-
+/* ✅ One single print block only */
 @media print {
-  #printButton {
-    display: none;
-  }
-}
+  #printButton { display: none; }
 
-/* ✅ This MUST be outside the above block */
-@media print {
   body {
     background: white !important;
     margin: 0;
@@ -261,28 +253,22 @@ select {
     padding: 20px !important;
   }
 
-  .print-page-1 {
-    page-break-after: always;
-  }
+  .print-page-1 { page-break-after: always; }
 
-  #langToggleBtn,
-  #languagePrompt {
-    display: none !important;
-  }
-   table, tr, td, th {
+  #langToggleBtn, #languagePrompt { display: none !important; }
+
+  table, tr, td, th {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
-  @media print {
-  .force-page-break {
-    page-break-before: always !important;
-  }
+
+  .force-page-break { page-break-before: always !important; }
 }
 </style>
 </head>
 <body>
 
- <div id="languagePrompt" style="display: none; justify-content: center; padding-top: 20px;">
+<div id="languagePrompt" style="display: none; justify-content: center; padding-top: 20px;">
   <div class="prompt-container">
     <div>
       <p style="text-align: center; font-weight: bold; font-size: 1.8em; margin-bottom: 20px;">
@@ -418,7 +404,30 @@ select {
 } catch (e) {
   alert("Script error: " + e.message);
 }
-    let isSpanish = false;
+
+// === Feature flags ===
+const FEATURES = { dualEnrollment: false }; // flip to true to enable/show
+
+// (Optional) URL/localStorage toggle: ?dual=on / ?dual=off, or window.setDual(true/false)
+(() => {
+  const url = new URL(location.href);
+  const q = url.searchParams.get('dual');
+  if (q === 'on') FEATURES.dualEnrollment = true;
+  if (q === 'off') FEATURES.dualEnrollment = false;
+
+  const saved = localStorage.getItem('feature.dualEnrollment');
+  if (saved !== null) FEATURES.dualEnrollment = saved === 'true';
+
+  window.setDual = (enabled) => {
+    FEATURES.dualEnrollment = !!enabled;
+    localStorage.setItem('feature.dualEnrollment', String(enabled));
+    if (typeof calculateCredits === 'function') {
+      try { calculateCredits(); } catch {}
+    }
+  };
+})();
+
+let isSpanish = false;
     function getText(key) {
   const map = {
     "Credits Needed": ["Credits Needed", "Créditos Necesarios"],
@@ -913,11 +922,39 @@ if (totalCredits <= weeksRemaining) {
 }
 
 let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${planCText}</li>`;
+      // ✅ Dual Enrollment Recommendation
+// ✅ Dual Enrollment (feature-gated)
+let dualEnrollmentMarkup = "";
+if (FEATURES.dualEnrollment) {
+  const dualEnrollmentWeeklyAvg = totalCredits / weeksRemaining;
+  let dualEnrollmentMessage = "";
+
+  if (dualEnrollmentWeeklyAvg <= 1.5) {
+    dualEnrollmentMessage = isSpanish
+      ? "✅ Seguro – Carga manejable y con buen margen"
+      : "✅ Safe – Strong buffer and manageable load";
+  } else if (dualEnrollmentWeeklyAvg <= 2.0) {
+    dualEnrollmentMessage = isSpanish
+      ? "✅ Mayormente seguro – Razonable, pero monitorear consistencia"
+      : "✅ Mostly Safe – Reasonable, monitor consistency";
+  } else if (dualEnrollmentWeeklyAvg <= 2.5) {
+    dualEnrollmentMessage = isSpanish
+      ? "⚠️ Precaución – Solo si el estudiante demuestra alta constancia."
+      : "⚠️ Caution – Only consider if student is highly consistent";
+  } else {
+    dualEnrollmentMessage = isSpanish
+      ? "🚫 No recomendable – Ritmo semanal alto; DE podría causar retrasos"
+      : "🚫 Not Advisable – Weekly pace too high; DE likely to cause setbacks";
+  }
+
+  dualEnrollmentMarkup = `<p><strong>Dual Enrollment:</strong> ${dualEnrollmentMessage}</p>`;
+}
 
       const result = `
   <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
   <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
   <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
+    ${dualEnrollmentMarkup}
   <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
   <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
   ${bufferWarning}
@@ -944,7 +981,8 @@ let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${planCText}</li>`;
   planANote,
   planBNote,
   planCNote,
-  planDNote
+  planDNote,
+  dualEnrollmentMarkup
 };
 
       // Disable Plan C button if Plan A exceeds weeks
@@ -991,25 +1029,26 @@ if (totalWeeksD > weeksRemaining) {
   if (!lastResultData) return;
 
   const {
-    totalCredits,
-    weeksRemaining,
-    weeklyAvg,
-    riskLevel,
-    suggestion,
-    bufferWarningKey,
-    strongStart,
-    planANote,
-    planBNote,
-    planCNote,
-    planDNote
-  } = lastResultData;
-
+  totalCredits,
+  weeksRemaining,
+  weeklyAvg,
+  riskLevel,
+  suggestion,
+  bufferWarningKey,
+  strongStart,
+  planANote,
+  planBNote,
+  planCNote,
+  planDNote,
+  dualEnrollmentMarkup
+} = lastResultData;
   const bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
 
   const result = `
     <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
     <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
     <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
+        ${dualEnrollmentMarkup || ""}
     <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
     <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
     ${bufferWarning}
@@ -1027,201 +1066,459 @@ if (totalWeeksD > weeksRemaining) {
   document.getElementById("result").innerHTML = result;
 }
 
-   function generatePlan(type) {
-  const { totalCredits, startWeek, endWeek, oneCreditWeeks, skipWeeks } = storedPlan;
+ function generatePlan(type) {
+  const { totalCredits, startWeek, endWeek, skipWeeks } = storedPlan;
 
-// Step 1: Mark all weeks with skip status
-let allWeeks = [];
-for (let w = startWeek; w <= endWeek; w++) {
-  const isSkipped = skipWeeks.includes(w);
-  allWeeks.push({ week: w, skip: isSkipped });
-}
-
-// Step 2: Pull only usable weeks (not skipped) for assigning credits
-const usableWeeks = allWeeks.filter(w => !w.skip);
-const usableWeekCount = usableWeeks.length;
-
-  // Determine credit distribution per plan
-  let distribution = [];
-  if (type === 'A') {
-  const neededWeeks = Math.ceil(totalCredits / 2);
-  if (neededWeeks <= usableWeekCount) {
-    distribution = [
-      ...Array(neededWeeks).fill(2),
-      ...Array(usableWeekCount - neededWeeks).fill(0)
-    ];
-  } else {
-    const weeksOver = neededWeeks - usableWeekCount;
-    const weeksOf3 = weeksOver * 2; // ✅ Each 3-credit week gives 1 extra credit
-    const creditsFrom3s = weeksOf3 * 3;
-    const remainingCredits = totalCredits - creditsFrom3s;
-    const weeksOf2 = Math.floor(remainingCredits / 2);
-const leftover = remainingCredits % 2;
-const weeksOf1 = leftover > 0 ? 1 : 0;
-const fillerZeros = usableWeekCount - weeksOf3 - weeksOf2 - weeksOf1;
-
-distribution = [
-  ...Array(weeksOf3).fill(3),
-  ...Array(weeksOf2).fill(2),
-  ...Array(weeksOf1).fill(1),
-  ...Array(Math.max(0, fillerZeros)).fill(0)
-];
+  // 1) Build week objects with skip flags
+  let allWeeks = [];
+  for (let w = startWeek; w <= endWeek; w++) {
+    const isSkipped = skipWeeks.includes(w);
+    allWeeks.push({ week: w, skip: isSkipped });
   }
-}
-  if (type === 'B') {
-    const full3 = Math.floor(totalCredits / 3);
-    const rem = totalCredits % 3;
-    distribution = [...Array(full3).fill(3)];
-    if (rem > 0) distribution.push(rem);
-  }
-  if (type === 'C') {
-  // Recompute with usableWeekCount (skips already removed)
-  const W = usableWeekCount;
+
+  // 2) Determine usable weeks and an initial distribution for this plan
+  const usable = allWeeks.filter(w => !w.skip);
+  const W = usable.length;
   const C = totalCredits;
 
-  if (C <= W) {
-    // C weeks @1, (W - C) weeks @0
-    distribution = [
-      ...Array(C).fill(1),
-      ...Array(W - C).fill(0)
-    ];
-  } else if (C <= 2 * W) {
-    // Base 1 each → W credits; need (C - W) extra +1's → those weeks become 2
-    const extras = C - W;                  // number of 2-credit weeks
-    const ones   = W - extras;             // remaining 1-credit weeks
-    distribution = [
-      ...Array(extras).fill(2),
-      ...Array(ones).fill(1)
-    ];
-  } else {
-    // Not feasible under Plan C (cap is 2 per week). Fill with 2's so the table is honest.
-    distribution = Array(W).fill(2);
-  }
-}
-  if (type === 'D') {
-    const part1 = Array(8).fill(3);
-    const rem = totalCredits - 24;
-    const w4 = Math.floor(rem / 4);
-    const r4 = rem % 4;
-    const part2 = Array(w4).fill(4);
-    if (r4 > 0) part2.push(r4);
-    distribution = [...part1, ...part2];
+  function baseDistribution(planType) {
+    if (planType === 'A') {
+      const need = Math.ceil(C / 2);
+      if (need <= W) {
+        return [...Array(need).fill(2), ...Array(W - need).fill(0)];
+      } else {
+        const weeksOver = need - W;
+        const weeksOf3 = weeksOver * 2;           // each 3 gives +1 more than 2
+        const creditsFrom3s = weeksOf3 * 3;
+        const remaining = C - creditsFrom3s;
+        const w2 = Math.floor(remaining / 2);
+        const leftover = remaining % 2;
+        const w1 = leftover > 0 ? 1 : 0;
+        const zeros = Math.max(0, W - weeksOf3 - w2 - w1);
+        return [
+          ...Array(weeksOf3).fill(3),
+          ...Array(w2).fill(2),
+          ...Array(w1).fill(1),
+          ...Array(zeros).fill(0)
+        ];
+      }
+    }
+    if (planType === 'B') {
+      const full3 = Math.floor(C / 3);
+      const rem = C % 3;
+      const arr = [...Array(full3).fill(3)];
+      if (rem > 0) arr.push(rem);
+      if (arr.length < W) arr.push(...Array(W - arr.length).fill(0));
+      return arr.slice(0, W);
+    }
+    if (planType === 'C') {
+      if (C <= W) {
+        return [...Array(C).fill(1), ...Array(W - C).fill(0)];
+      } else if (C <= 2 * W) {
+        const extras = C - W;         // these must be 2s
+        const ones = W - extras;      // rest can be 1s
+        return [...Array(extras).fill(2), ...Array(ones).fill(1)];
+      } else {
+        return Array(W).fill(2);      // infeasible under ≤2/wk; keep honest
+      }
+    }
+    if (planType === 'D') {
+      const part1 = Array(Math.min(8, W)).fill(3);
+      const remCredits = C - (3 * part1.length);
+      let after = [];
+      if (remCredits > 0) {
+        const w4 = Math.floor(remCredits / 4);
+        const r4 = remCredits % 4;
+        after = Array(Math.min(w4, Math.max(0, W - part1.length))).fill(4);
+        if (r4 > 0 && part1.length + after.length < W) after.push(r4);
+      }
+      const zeros = Math.max(0, W - (part1.length + after.length));
+      return [...part1, ...after, ...Array(zeros).fill(0)];
+    }
+    return Array(W).fill(0);
   }
 
-  // Apply distribution to usable weeks
-  usableWeeks.forEach((w, i) => w.credits = distribution[i] ?? 0);
-  // Add 0 credits for skipped weeks
+  const initial = baseDistribution(type);
+
+  // Apply to allWeeks (keep 0 for skip rows)
+  let pointer = 0;
   allWeeks = allWeeks.map(w => {
-  if (w.skip) {
-    return { ...w, credits: 0 };
-  } else {
-    const next = usableWeeks.shift();
-    return { ...w, credits: next?.credits ?? 0 };
+    if (w.skip) return { ...w, credits: 0 };
+    const val = initial[pointer] ?? 0;
+    pointer += 1;
+    return { ...w, credits: val };
+  });
+
+  // Open a new window
+  const printWin = window.open("", "_blank");
+  const maxPerWeek = (type === 'D') ? 4 : 3;
+   function formatDateForCell(str) {
+  // Handle parentheses notes: e.g. "Dec 22 - Dec 26 (Winter Break)"
+  const paren = str.match(/^(.*?)(\s*\((.+)\))$/);
+  if (paren) {
+    const core = paren[1].trim();     // e.g. "Dec 22 - Dec 26"
+    const note = paren[3].trim();     // e.g. "Winter Break"
+    return `<span class="date-core">${core}</span><span class="date-note">${note}</span>`;
   }
-});
 
-  // Render table
-  const table = `
-<html><head><title>Plan ${type} Credit Tracker</title>
-  <style>
-    body {
-      font-family: Arial;
-      padding: 20px;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    td, th {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-    input[type="checkbox"] {
-      transform: scale(1.2);
-      margin-right: 6px;
-    }
-    .credit-cell {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .skip-row {
-      background-color: #ffd6d6;
-    }
-    /* ✅ Print Button Styling */
-    #printBtn {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-  padding: 10px 16px;
-  font-size: 1.1em;
-  border-radius: 6px;
-  cursor: pointer;
-  z-index: 999;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, color 0.3s;
+  // Handle dash notes: e.g. "Jan 19 - Jan 23 - End of Semester 1"
+  const dash = str.match(/^(.*?)-\s*(End of Semester.*|Graduation.*)$/i);
+  if (dash) {
+    const core = dash[1].trim();      // e.g. "Jan 19 - Jan 23"
+    const note = dash[2].trim();      // e.g. "End of Semester 1"
+    return `<span class="date-core">${core}</span><span class="date-note">${note}</span>`;
+  }
+
+  // Default: just return the date
+  return `<span class="date-core">${str}</span>`;
 }
 
-#printBtn:hover {
-  background-color: #555;
-  color: white;
-}
+ const rowsHtml = allWeeks.map(w => {
+  const rowClass = w.skip ? ' class="skip-row"' : '';
+  const controls = w.skip
+    ? '<em>Skip</em>'
+    : '<button class="minus">–</button><button class="plus">+</button>';
 
-@media print {
+  // 4 items: [checkbox] [number] [one-inch line], laid out in a mini 4-column grid
+  const boxes = [1, 2, 3, 4].map(i => {
+    const id = `wk${w.week}-c${i}`;
+    return `
+      <label class="chk">
+        <input type="checkbox" id="${id}" />
+        ${i}
+        <span class="credit-line"></span>
+      </label>
+    `;
+  }).join('');
+
+  return `
+  <tr${rowClass} data-week="${w.week}" data-skip="${w.skip ? '1':'0'}">
+    <td class="col-week">${w.week}</td>
+    <td class="col-date">${formatDateForCell(dateRanges[w.week] || '')}</td>
+    <td class="col-credits"><strong class="val">${w.credits}</strong></td>
+    <td class="col-progress"><div class="progress-grid">${boxes}</div></td>
+    <td class="controls col-adjust">${controls}</td>
+  </tr>
+`;
+}).join('');
+
+// Write the static HTML (NO <script> tag here)
+const html = `
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Plan ${type} – Editable Credit Tracker</title>
+ <style>
+  /* --- General screen styles --- */
+  body { font-family: Arial, sans-serif; padding: 16px; }
+  table { border-collapse: collapse; width: 100%; margin-top: 12px; table-layout: fixed; }
+  th, td { border: 1px solid #ccc; padding: 6px; text-align: center; vertical-align: middle; }
+  .skip-row { background: #ffd6d6; }
+  .controls { display:flex; gap:8px; align-items:center; justify-content:center; }
+  .controls button { padding: 4px 8px; }
+
+  .topbar {
+    position: sticky; top: 0; background: #fff; border: 1px solid #ddd;
+    padding: 8px 12px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; align-items:center; z-index: 5;
+  }
+  .topbar .nums { display: flex; gap: 12px; justify-content: center; }
+  .topbar .tools {
+    display: flex; flex-direction: column; align-items: flex-start;
+    margin-left: auto; margin-right: 60px;
+  }
+  .badge { border: 1px solid #999; border-radius: 6px; padding: 4px 6px; font-size: 0.85em; }
+
+  /* Progress: 4 items inside single Progress cell */
+  .col-progress .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 8px;
+    align-items: center;
+    justify-items: center;
+  }
+  .chk {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .chk input { width: 14px; height: 14px; }
+  .credit-line {
+    display: inline-block;
+    border-bottom: 1px solid #000;
+    height: 1em;
+    width: clamp(0.4in, 12vw, 0.95in);
+  }
+
+  /* Column widths (screen) */
+  col.col-week     { width: 5%; }
+  col.col-date     { width: 18%; }
+  col.col-credits  { width: 6%; }
+  col.col-progress { width: 51%; }
+  col.col-adjust   { width: 20%; }
+
+  td.col-week, th.col-week,
+  td.col-credits, th.col-credits { font-size: 0.85rem; }
+
+  /* Date cell: core date stays one line; note can sit underneath and wrap */
+  .col-date .date-core { white-space: nowrap !important; display: block !important; }
+  .col-date .date-note {
+    display: block !important;
+    white-space: normal !important;
+    font-size: 0.85em;
+    line-height: 1.1;
+    margin-top: 2px;
+  }
+
   #printBtn {
-    display: none;
+    position: fixed; top: 16px; right: 16px; background-color: white; color: black;
+    border: 1px solid black; padding: 8px 12px; border-radius: 6px; cursor: pointer; z-index: 9;
+  }
+  #printBtn:hover { background:#555; color:#fff; }
+
+  /* --- Print Tips bar (screen only) --- */
+  .print-tips {
+    background: #fff3cd;           /* soft yellow */
+    border: 1px solid #ffe49a;
+    color: #6b5b00;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 8px 0 14px;
+    font-size: 0.95rem;
+  }
+  .print-tips strong { font-weight: 700; }
+  .print-tips ul {
+    margin: 6px 0 0 1.1em;
+    padding: 0;
+  }
+  .print-tips li { margin: 2px 0; }
+
+  /* --- Print overrides --- */
+  @media print {
+  @page {
+    size: letter portrait;
+    margin: 0.5in;
   }
 
-  #printNotice {
-    display: none;
+  /* Hide UI on paper */
+  #printBtn { display: none; }
+  .topbar .tools { display: none; }
+  .print-tips { display: none !important; }
+  th.col-adjust, td.col-adjust, .col-adjust { display: none !important; }
+
+  /* Column widths to prevent wrapping and keep 4 items in Progress */
+  col.col-week     { width: 5%; }
+  col.col-date     { width: 20%; }
+  col.col-credits  { width: 5%; }
+  col.col-progress { width: 70%; }
+
+  /* Comfortable rows + avoid splitting */
+  th, td { padding: 8px 6px; }
+  tr { page-break-inside: avoid; }
+
+  /* Date behavior: core on one line, note below */
+  td.col-date { overflow: visible !important; text-overflow: clip !important; }
+  .col-date .date-core { white-space: nowrap !important; display: block !important; }
+  .col-date .date-note { white-space: normal !important; display: block !important; }
+
+  /* Progress layout: 4 across, compact spacing */
+  .col-progress .progress-grid {
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 6px;
+    justify-items: start;
   }
+  .chk { font-size: 0.82rem; gap: 2px; }
+  .chk input { width: 12px; height: 12px; }
+  .credit-line { width: 0.9in !important; }
+
+  /* Hide screen-only notes */
+  .notes { display: none !important; }
 }
-  </style>
-</head><body>
+</style>
+</head>
+<body>
+  <button id="printBtn" onclick="window.print()">Print</button>
 
-<!-- ✅ Print Button -->
-<button id="printBtn" onclick="window.print()" title="Print this page">Print</button>
-
-<div id="printNotice" style="
-  margin-top: 70px;
-  background: #fff3cd;
-  border: 1px solid #ffeeba;
-  color: #856404;
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-size: 0.95em;
-  max-width: 700px;
-">
+  <div class="topbar">
+    <div class="nums">
+      <span class="badge">Target: <strong id="tgt">${C}</strong></span>
+      <span class="badge">Assigned: <strong id="asgn">0</strong></span>
+      <span class="badge">Remaining: <strong id="rem">0</strong></span>
+    </div>
+    <div class="nums">
+      <span class="badge">0s: <strong id="c0">0</strong></span>
+      <span class="badge">1s: <strong id="c1">0</strong></span>
+      <span class="badge">2s: <strong id="c2">0</strong></span>
+      <span class="badge">3s: <strong id="c3">0</strong></span>
+      ${maxPerWeek === 4 ? '<span class="badge">4s: <strong id="c4">0</strong></span>' : ''}
+    </div>
+    <div class="tools">
+      <button id="btnSpread1">Spread 1-credit weeks evenly</button>
+      <button id="btnFill2">Spread 2-credit weeks evenly</button>
+      <button id="btnClear">Clear all to 0</button>
+    </div>
+    <div class="print-tips">
   <strong>Print Tips:</strong> For best results, set your printer settings to:
-  <ul style="margin-top: 6px; padding-left: 20px;">
-    <li>📄 <strong>Margins:</strong> Default</li>
-    <li>🎨 <strong>Enable Background Graphics</strong></li>
+  <ul>
+    <li>Margins: <strong>Minimum</strong></li>
+    <li>Enable <strong>Background Graphics</strong></li>
   </ul>
 </div>
+  </div>
 
-<h2>
-  Credit Tracker – Plan ${type}
-  <span style="font-weight: normal; font-size: 0.6em;"> - (Credit completion is allowed during self-selected “0” credit weeks.)</span>
-</h2>
+  <h2>Credit Tracker – Plan ${type}
+    <span style="font-weight: normal; font-size: 0.6em;"> - (Credit completion is allowed during self-selected “0” credit weeks.)</span>
+  </h2>
 
-<table>
-  <tr><th>Week</th><th>Date Range</th><th>Credits</th><th colspan="4">Credits</th></tr>
-  ${allWeeks.map(w => {
-    const rowClass = w.skip ? ' class="skip-row"' : '';
-    const row = `<td>${w.week}</td><td>${dateRanges[w.week]}</td><td>${w.credits}</td>`;
-    const cells = Array(4).fill(`<td><div class="credit-cell"><input type="checkbox" /> ________</div></td>`).join('');
-    return `<tr${rowClass}>${row}${cells}</tr>`;
-  }).join('')}
-</table>
-</body></html>
+  <table id="tbl">
+    <colgroup>
+      <col class="col-week">
+      <col class="col-date">
+      <col class="col-credits">
+      <col class="col-progress">
+      <col class="col-adjust">
+    </colgroup>
+    <thead>
+  <tr>
+    <th>Week</th>
+    <th>Date Range</th>
+    <th>Credits</th>
+    <th>Progress</th>
+    <th class="col-adjust">Adjust</th>
+  </tr>
+</thead>
+    <tbody>
+      ${rowsHtml}
+    </tbody>
+  </table>
+
+ <p class="notes" style="margin-top:10px; font-size:0.95em; color:#555;">
+  Notes: Skip weeks are locked at 0. Per-week limit is 3. The table won’t let you exceed your total target credits (${C}).
+</p>
+</body>
+</html>
 `;
+  printWin.document.write(html);
 
-  const printWin = window.open("", "_blank");
-  printWin.document.write(table);
+  // Inject behavior via a real <script> element (no template-string parsing issues)
+  const behavior = `
+    (function() {
+      const maxPerWeek = ${maxPerWeek};
+      const target = ${C};
+      const table = document.getElementById('tbl');
+
+      function currentValues() {
+        const vals = [];
+        table.querySelectorAll('tbody tr').forEach(tr => {
+          const skip = tr.getAttribute('data-skip') === '1';
+          const v = parseInt(tr.querySelector('.val').textContent) || 0;
+          vals.push({ tr, skip, v });
+        });
+        return vals;
+      }
+
+      function sum(arr){ return arr.reduce((a,b)=>a+b,0); }
+
+      function refreshSummary() {
+        const items = currentValues();
+        const nums = items.map(x => x.v);
+        const assigned = sum(nums);
+        const rem = Math.max(0, target - assigned);
+        const cnt = {0:0,1:0,2:0,3:0,4:0};
+        nums.forEach(n => { if (cnt[n] !== undefined) cnt[n]++; });
+
+        document.getElementById('asgn').textContent = assigned;
+        document.getElementById('rem').textContent = rem;
+        document.getElementById('c0').textContent = cnt[0] || 0;
+        document.getElementById('c1').textContent = cnt[1] || 0;
+        document.getElementById('c2').textContent = cnt[2] || 0;
+        document.getElementById('c3').textContent = cnt[3] || 0;
+        const c4El = document.getElementById('c4');
+        if (c4El) c4El.textContent = cnt[4] || 0;
+      }
+
+      function trySet(tr, newVal) {
+        const skip = tr.getAttribute('data-skip') === '1';
+        if (skip) return;
+        newVal = Math.max(0, Math.min(maxPerWeek, newVal));
+
+        const items = currentValues();
+        const old = parseInt(tr.querySelector('.val').textContent) || 0;
+        const assignedNow = items.reduce((s,i)=>s+i.v,0);
+        const assignedMinusOld = assignedNow - old;
+        const room = Math.max(0, target - assignedMinusOld);
+        if (newVal > room) newVal = room;
+
+        tr.querySelector('.val').textContent = newVal;
+        refreshSummary();
+      }
+
+      table.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const tr = e.target.closest('tr');
+        const valEl = tr.querySelector('.val');
+        let v = parseInt(valEl.textContent) || 0;
+
+        if (btn.classList.contains('plus')) trySet(tr, v + 1);
+        if (btn.classList.contains('minus')) trySet(tr, v - 1);
+      });
+
+      document.getElementById('btnClear').addEventListener('click', () => {
+        table.querySelectorAll('tbody tr').forEach(tr => {
+          if (tr.getAttribute('data-skip') === '1') return;
+          tr.querySelector('.val').textContent = '0';
+        });
+        refreshSummary();
+      });
+
+      document.getElementById('btnFill2').addEventListener('click', () => {
+        const rows = currentValues().filter(i => !i.skip);
+        let assigned = rows.reduce((s,i)=>s+i.v,0);
+        let room = Math.max(0, target - assigned);
+        if (room <= 0) return;
+
+        for (const it of rows) {
+          while (it.v < Math.min(2, maxPerWeek) && room > 0) {
+            it.v += 1;
+            room -= 1;
+            it.tr.querySelector('.val').textContent = it.v;
+          }
+          if (room <= 0) break;
+        }
+        refreshSummary();
+      });
+
+      document.getElementById('btnSpread1').addEventListener('click', () => {
+        const rows = currentValues().filter(i => !i.skip);
+        let assigned = rows.reduce((s,i)=>s+i.v,0);
+        let remaining = Math.max(0, target - assigned);
+        if (remaining <= 0) return;
+
+        const zeroIdxs = rows
+          .map((it, idx) => ({it, idx}))
+          .filter(x => x.it.v === 0)
+          .map(x => x.idx);
+
+        const toPlace = Math.min(remaining, zeroIdxs.length);
+        for (let k = 0; k < toPlace; k++) {
+          const pos = Math.floor(k * zeroIdxs.length / toPlace);
+          const tr = rows[zeroIdxs[pos]].tr;
+          trySet(tr, 1);
+        }
+      });
+
+      refreshSummary();
+    })();
+  `;
+  const scriptEl = printWin.document.createElement('script');
+  scriptEl.textContent = behavior;
+  printWin.document.body.appendChild(scriptEl);
+
+  // finalize
   printWin.document.close();
 }
 
