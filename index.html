@@ -1173,13 +1173,22 @@ if (totalWeeksD > weeksRemaining) {
   return `<span class="date-core">${str}</span>`;
 }
 
- const rowsHtml = allWeeks.map(w => {
+ // Build two chunks: rows 1–30 and 31+ (but only split on mobile)
+const isIOS = /iPhone|iPad|iPod/i.test(printWin.navigator.userAgent || '');
+const isSmallViewport = printWin.matchMedia && printWin.matchMedia('(max-width: 900px)').matches;
+const shouldSplit = isIOS || isSmallViewport;  // <— use this below
+const splitAfter = 17;
+
+let rowCount = 0;
+let part1 = '';
+let part2 = '';
+
+allWeeks.forEach((w, idx) => {
   const rowClass = w.skip ? ' class="skip-row"' : '';
   const controls = w.skip
     ? '<em>Skip</em>'
     : '<button class="minus">–</button><button class="plus">+</button>';
 
-  // 4 items: [checkbox] [number] [one-inch line], laid out in a mini 4-column grid
   const boxes = [1, 2, 3, 4].map(i => {
     const id = `wk${w.week}-c${i}`;
     return `
@@ -1191,16 +1200,53 @@ if (totalWeeksD > weeksRemaining) {
     `;
   }).join('');
 
-  return `
-  <tr${rowClass} data-week="${w.week}" data-skip="${w.skip ? '1':'0'}">
-    <td class="col-week">${w.week}</td>
-    <td class="col-date">${formatDateForCell(dateRanges[w.week] || '')}</td>
-    <td class="col-credits"><strong class="val">${w.credits}</strong></td>
-    <td class="col-progress"><div class="progress-grid">${boxes}</div></td>
-    <td class="controls col-adjust">${controls}</td>
-  </tr>
+  const oneRow = `
+    <tr${rowClass} data-week="${w.week}" data-skip="${w.skip ? '1':'0'}">
+      <td class="col-week">${w.week}</td>
+      <td class="col-date">${formatDateForCell(dateRanges[w.week] || '')}</td>
+      <td class="col-credits"><strong class="val">${w.credits}</strong></td>
+      <td class="col-progress"><div class="progress-grid">${boxes}</div></td>
+      <td class="controls col-adjust">${controls}</td>
+    </tr>
+  `;
+
+  rowCount++;
+  if (shouldSplit && rowCount > splitAfter) {
+    part2 += oneRow;       // rows 31+ on mobile go to table 2
+  } else {
+    part1 += oneRow;       // rows 1–30 (or all rows on desktop)
+  }
+});
+
+// Table shells reused for 1 or 2 tables
+const tableStart = `
+  <table class="planner">
+    <colgroup>
+      <col class="col-week">
+      <col class="col-date">
+      <col class="col-credits">
+      <col class="col-progress">
+      <col class="col-adjust">
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="col-week">Week</th>
+        <th class="col-date">Date Range</th>
+        <th class="col-credits">Credits</th>
+        <th class="col-progress">Progress</th>
+        <th class="col-adjust">Adjust</th>
+      </tr>
+    </thead>
 `;
-}).join('');
+
+const tableEnd = `</table>`;
+
+// Final HTML: two tables on mobile, one table on desktop
+const tablesHtml = shouldSplit
+  ? `${tableStart}<tbody>${part1}</tbody>${tableEnd}
+     <div class="hard-break"></div>
+     ${tableStart}<tbody>${part2}</tbody>${tableEnd}`
+  : `${tableStart}<tbody>${part1}${part2}</tbody>${tableEnd}`;
 
 // Write the static HTML (NO <script> tag here)
 const html = `
@@ -1223,6 +1269,45 @@ const html = `
     padding: 8px 12px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr 1fr;
     gap: 8px; align-items:center; z-index: 5;
   }
+  /* Summary bar look (screen) */
+.summarywrap {
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 6px 8px;
+  background: #fafafa;
+}
+
+.summarybar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* refine badge look to match screenshot */
+.summarybar .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  font-size: 0.82rem;
+  border: 1px solid #bfbfbf;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.summarybar .badge strong {
+  font-weight: 700;
+  display: inline-block;
+  min-width: 1.2em;  /* keeps numbers from jittering */
+  text-align: right;
+}
+
+.summarybar .badge-lg {
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-color: #a8a8a8;
+}
   .topbar .nums { display: flex; gap: 12px; justify-content: center; }
   .topbar .tools {
     display: flex; flex-direction: column; align-items: flex-start;
@@ -1296,35 +1381,98 @@ const html = `
   }
   .print-tips li { margin: 2px 0; }
 
-  /* --- Print overrides --- */
-  @media print {
+ /* --- Print overrides --- */
+@media print {
   @page {
     size: letter portrait;
     margin: 0.5in;
   }
 
-  /* Hide UI on paper */
+  /* iOS/WebKit-friendly table behavior */
+  thead { display: table-header-group !important; }
+  tfoot { display: table-footer-group !important; }
+
+  /* Stronger "don't split" rules for iOS */
+  tr, td, th {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    -webkit-region-break-inside: avoid !important;
+    -webkit-column-break-inside: avoid !important;
+  }
+
+  /* Keep title with the table start */
+  h2 {
+    page-break-after: avoid;
+    break-after: avoid;
+    margin-bottom: 6px; /* tighter to table */
+  }
+  /* Optional: move the parenthetical to a note under H2 */
+  .subtitle-note {
+    margin: 0 0 6px 0;
+    font-size: 0.9em;
+    color: #555;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Small boost helps WebKit pagination */
+  table { line-height: 1.15; }
+
+  /* Manual soft page-break utility (used by inserted <tr class="page-break">) */
+  .page-break {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+
+   /* Strong page break between the two tables (iOS-friendly) */
+  .hard-break {
+    display: block !important;
+    height: 0 !important;
+    break-before: page !important;
+    page-break-before: always !important;
+    -webkit-column-break-before: always !important;
+  }
+
+  /* Hide on-paper UI elements */
   #printBtn { display: none; }
-  .topbar .tools { display: none; }
+  .topbar .tools { display: none !important; }
   .print-tips { display: none !important; }
   th.col-adjust, td.col-adjust, .col-adjust { display: none !important; }
 
-  /* Column widths to prevent wrapping and keep 4 items in Progress */
-  col.col-week     { width: 5%; }
-  col.col-date     { width: 20%; }
-  col.col-credits  { width: 5%; }
-  col.col-progress { width: 70%; }
+  /* ✅ Summary bar: show once at top of page 1 (no repeat) */
+  .topbar{
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: auto !important;
+    background: #fff;
 
-  /* Comfortable rows + avoid splitting */
+    page-break-before: avoid;
+    page-break-inside: avoid;
+    page-break-after: avoid;
+    break-before: avoid;
+    break-inside: avoid;
+    break-after: avoid;
+    margin-bottom: 8px;
+  }
+
+  /* Column widths (gives Date a bit more room on phones) */
+  col.col-week     { width: 5%; }
+  col.col-date     { width: 22%; }  /* was 20% */
+  col.col-credits  { width: 5%; }
+  col.col-progress { width: 68%; }  /* was 70% */
+
+  /* Comfortable rows + prevent splitting */
   th, td { padding: 8px 6px; }
   tr { page-break-inside: avoid; }
 
-  /* Date behavior: core on one line, note below */
+  /* Date behavior: main line + note on its own wrapped line */
   td.col-date { overflow: visible !important; text-overflow: clip !important; }
   .col-date .date-core { white-space: nowrap !important; display: block !important; }
   .col-date .date-note { white-space: normal !important; display: block !important; }
 
-  /* Progress layout: 4 across, compact spacing */
+  /* Progress layout + sizing for print */
   .col-progress .progress-grid {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 6px;
@@ -1332,68 +1480,84 @@ const html = `
   }
   .chk { font-size: 0.82rem; gap: 2px; }
   .chk input { width: 12px; height: 12px; }
-  .credit-line { width: 0.9in !important; }
+  .credit-line { width: 0.86in !important; } /* was 0.9in; trims crowding on iPhone */
 
   /* Hide screen-only notes */
   .notes { display: none !important; }
+    /* Hide screen-only notes */
+  .notes { display: none !important; }
+
+  /* Slightly tighter print to fit in 2 pages on phones */
+  .topbar {
+    padding: 4px 8px;         /* was 8px 12px */
+    margin-bottom: 6px;       /* was 8px */
+    grid-template-columns: 1fr; /* stack badges vertically */
+    row-gap: 4px;
+  }
+  .badge { padding: 2px 4px; font-size: 0.78em; }
+
+  th, td { padding: 6px 4px; }     /* was 8px 6px */
+  table { line-height: 1.12; }     /* was 1.15 */
+
+  /* (optional) if still tight, trim progress lines slightly */
+  .credit-line { width: 0.80in !important; } /* was 0.86in */
+  /* Tighten tables slightly so page 2 always fits */
+table.planner { margin-top: 6px !important; margin-bottom: 6px !important; }
+thead th { padding-top: 4px !important; padding-bottom: 4px !important; }
+td, th { padding-top: 5px !important; padding-bottom: 5px !important; }  /* was 6–8px */
+
+/* Already present? Keep these at the end so they take precedence */
+.credit-line { width: 0.78in !important; } /* was 0.80in */
+body { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+table:last-of-type { margin-bottom: 0 !important; }
 }
+.summarywrap { border-color: #d0d0d0; background: #fff; }
+.summarybar .badge { border-color: #bdbdbd; }
 </style>
 </head>
 <body>
   <button id="printBtn" onclick="window.print()">Print</button>
 
   <div class="topbar">
-    <div class="nums">
-      <span class="badge">Target: <strong id="tgt">${C}</strong></span>
-      <span class="badge">Assigned: <strong id="asgn">0</strong></span>
-      <span class="badge">Remaining: <strong id="rem">0</strong></span>
-    </div>
-    <div class="nums">
-      <span class="badge">0s: <strong id="c0">0</strong></span>
-      <span class="badge">1s: <strong id="c1">0</strong></span>
-      <span class="badge">2s: <strong id="c2">0</strong></span>
-      <span class="badge">3s: <strong id="c3">0</strong></span>
-      ${maxPerWeek === 4 ? '<span class="badge">4s: <strong id="c4">0</strong></span>' : ''}
-    </div>
-    <div class="tools">
-      <button id="btnSpread1">Spread 1-credit weeks evenly</button>
-      <button id="btnFill2">Spread 2-credit weeks evenly</button>
-      <button id="btnClear">Clear all to 0</button>
-    </div>
-    <div class="print-tips">
-  <strong>Print Tips:</strong> For best results, set your printer settings to:
-  <ul>
-    <li>Margins: <strong>Minimum</strong></li>
-    <li>Enable <strong>Background Graphics</strong></li>
-  </ul>
-</div>
+  <div class="summarywrap">
+  <div class="summarybar">
+    <span class="badge badge-lg">Target: <strong id="tgt">${C}</strong></span>
+    <span class="badge badge-lg">Assigned: <strong id="asgn">0</strong></span>
   </div>
+
+  <div class="summarybar" style="margin-top:6px;">
+    <span class="badge badge-lg">Remaining: <strong id="rem">0</strong></span>
+  </div>
+
+  <div class="summarybar" style="margin-top:6px;">
+    <span class="badge">0s: <strong id="c0">0</strong></span>
+    <span class="badge">1s: <strong id="c1">0</strong></span>
+    <span class="badge">2s: <strong id="c2">0</strong></span>
+    <span class="badge">3s: <strong id="c3">0</strong></span>
+    ${maxPerWeek === 4 ? '<span class="badge">4s: <strong id="c4">0</strong></span>' : ''}
+  </div>
+</div>
+
+  <div class="tools">
+    <button id="btnSpread1">Spread 1-credit weeks evenly</button>
+    <button id="btnFill2">Spread 2-credit weeks evenly</button>
+    <button id="btnClear">Clear all to 0</button>
+  </div>
+
+  <div class="print-tips">
+    <strong>Print Tips:</strong> For best results, set your printer settings to:
+    <ul>
+      <li>Margins: <strong>Minimum</strong></li>
+      <li>Enable <strong>Background Graphics</strong></li>
+    </ul>
+  </div>
+</div>
 
   <h2>Credit Tracker – Plan ${type}
     <span style="font-weight: normal; font-size: 0.6em;"> - (Credit completion is allowed during self-selected “0” credit weeks.)</span>
   </h2>
 
-  <table id="tbl">
-    <colgroup>
-      <col class="col-week">
-      <col class="col-date">
-      <col class="col-credits">
-      <col class="col-progress">
-      <col class="col-adjust">
-    </colgroup>
-    <thead>
-  <tr>
-    <th>Week</th>
-    <th>Date Range</th>
-    <th>Credits</th>
-    <th>Progress</th>
-    <th class="col-adjust">Adjust</th>
-  </tr>
-</thead>
-    <tbody>
-      ${rowsHtml}
-    </tbody>
-  </table>
+  ${tablesHtml}
 
  <p class="notes" style="margin-top:10px; font-size:0.95em; color:#555;">
   Notes: Skip weeks are locked at 0. Per-week limit is 3. The table won’t let you exceed your total target credits (${C}).
@@ -1408,72 +1572,80 @@ const html = `
     (function() {
       const maxPerWeek = ${maxPerWeek};
       const target = ${C};
-      const table = document.getElementById('tbl');
+         const tables = Array.from(document.querySelectorAll('table.planner'));
 
-      function currentValues() {
-        const vals = [];
-        table.querySelectorAll('tbody tr').forEach(tr => {
-          const skip = tr.getAttribute('data-skip') === '1';
-          const v = parseInt(tr.querySelector('.val').textContent) || 0;
-          vals.push({ tr, skip, v });
-        });
-        return vals;
-      }
+   function eachRow(cb) {
+     tables.forEach(t => t.querySelectorAll('tbody tr').forEach(cb));
+   }
 
-      function sum(arr){ return arr.reduce((a,b)=>a+b,0); }
+   function currentValues() {
+     const vals = [];
+     eachRow(tr => {
+       const skip = tr.getAttribute('data-skip') === '1';
+       const v = parseInt(tr.querySelector('.val').textContent) || 0;
+       vals.push({ tr, skip, v });
+     });
+     return vals;
+   }
 
-      function refreshSummary() {
-        const items = currentValues();
-        const nums = items.map(x => x.v);
-        const assigned = sum(nums);
-        const rem = Math.max(0, target - assigned);
-        const cnt = {0:0,1:0,2:0,3:0,4:0};
-        nums.forEach(n => { if (cnt[n] !== undefined) cnt[n]++; });
+   function sum(arr){ return arr.reduce((a,b)=>a+b,0); }
 
-        document.getElementById('asgn').textContent = assigned;
-        document.getElementById('rem').textContent = rem;
-        document.getElementById('c0').textContent = cnt[0] || 0;
-        document.getElementById('c1').textContent = cnt[1] || 0;
-        document.getElementById('c2').textContent = cnt[2] || 0;
-        document.getElementById('c3').textContent = cnt[3] || 0;
-        const c4El = document.getElementById('c4');
-        if (c4El) c4El.textContent = cnt[4] || 0;
-      }
+   function refreshSummary() {
+     const items = currentValues();
+     const nums = items.map(x => x.v);
+     const assigned = sum(nums);
+     const rem = Math.max(0, target - assigned);
+     const cnt = {0:0,1:0,2:0,3:0,4:0};
+     nums.forEach(n => { if (cnt[n] !== undefined) cnt[n]++; });
 
-      function trySet(tr, newVal) {
-        const skip = tr.getAttribute('data-skip') === '1';
-        if (skip) return;
-        newVal = Math.max(0, Math.min(maxPerWeek, newVal));
+     document.getElementById('asgn').textContent = assigned;
+     document.getElementById('rem').textContent = rem;
+     document.getElementById('c0').textContent = cnt[0] || 0;
+     document.getElementById('c1').textContent = cnt[1] || 0;
+     document.getElementById('c2').textContent = cnt[2] || 0;
+     document.getElementById('c3').textContent = cnt[3] || 0;
+     const c4El = document.getElementById('c4');
+     if (c4El) c4El.textContent = cnt[4] || 0;
+   }
 
-        const items = currentValues();
-        const old = parseInt(tr.querySelector('.val').textContent) || 0;
-        const assignedNow = items.reduce((s,i)=>s+i.v,0);
-        const assignedMinusOld = assignedNow - old;
-        const room = Math.max(0, target - assignedMinusOld);
-        if (newVal > room) newVal = room;
+   function trySet(tr, newVal) {
+     const skip = tr.getAttribute('data-skip') === '1';
+     if (skip) return;
+     newVal = Math.max(0, Math.min(maxPerWeek, newVal));
 
-        tr.querySelector('.val').textContent = newVal;
-        refreshSummary();
-      }
+     const items = currentValues();
+     const old = parseInt(tr.querySelector('.val').textContent) || 0;
+     const assignedNow = items.reduce((s,i)=>s+i.v,0);
+     const assignedMinusOld = assignedNow - old;
+     const room = Math.max(0, target - assignedMinusOld);
+     if (newVal > room) newVal = room;
 
-      table.addEventListener('click', (e) => {
-        const btn = e.target.closest('button');
-        if (!btn) return;
-        const tr = e.target.closest('tr');
-        const valEl = tr.querySelector('.val');
-        let v = parseInt(valEl.textContent) || 0;
+     tr.querySelector('.val').textContent = newVal;
+     refreshSummary();
+   }
 
-        if (btn.classList.contains('plus')) trySet(tr, v + 1);
-        if (btn.classList.contains('minus')) trySet(tr, v - 1);
-      });
+   // click +/- on any table
+   tables.forEach(table => {
+     table.addEventListener('click', (e) => {
+       const btn = e.target.closest('button');
+       if (!btn) return;
+       const tr = e.target.closest('tr');
+       const valEl = tr.querySelector('.val');
+       let v = parseInt(valEl.textContent) || 0;
 
-      document.getElementById('btnClear').addEventListener('click', () => {
-        table.querySelectorAll('tbody tr').forEach(tr => {
-          if (tr.getAttribute('data-skip') === '1') return;
-          tr.querySelector('.val').textContent = '0';
-        });
-        refreshSummary();
-      });
+       if (btn.classList.contains('plus')) trySet(tr, v + 1);
+       if (btn.classList.contains('minus')) trySet(tr, v - 1);
+     });
+   });
+
+   // Clear across all tables
+   document.getElementById('btnClear').addEventListener('click', () => {
+     eachRow(tr => {
+       if (tr.getAttribute('data-skip') === '1') return;
+       tr.querySelector('.val').textContent = '0';
+     });
+     refreshSummary();
+   });
 
       document.getElementById('btnFill2').addEventListener('click', () => {
         const rows = currentValues().filter(i => !i.skip);
