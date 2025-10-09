@@ -1173,17 +1173,17 @@ if (totalWeeksD > weeksRemaining) {
   return `<span class="date-core">${str}</span>`;
 }
 
- // Build two chunks: rows 1–30 and 31+ (but only split on mobile)
+// Paginate rows for mobile/iOS print: 21 rows on page 1, 26 on page 2, rest on page 3+
 const isIOS = /iPhone|iPad|iPod/i.test(printWin.navigator.userAgent || '');
 const isSmallViewport = printWin.matchMedia && printWin.matchMedia('(max-width: 900px)').matches;
-const shouldSplit = isIOS || isSmallViewport;  // <— use this below
-const splitAfter = 17;
+const shouldSplit = isIOS || isSmallViewport;
 
-let rowCount = 0;
-let part1 = '';
-let part2 = '';
+// capacities you observed; tweak if you change row padding/sizing
+const maxRowsFirst = 16;
+const maxRowsNext = 23;
 
-allWeeks.forEach((w, idx) => {
+let rows = [];
+allWeeks.forEach((w) => {
   const rowClass = w.skip ? ' class="skip-row"' : '';
   const controls = w.skip
     ? '<em>Skip</em>'
@@ -1209,16 +1209,10 @@ allWeeks.forEach((w, idx) => {
       <td class="controls col-adjust">${controls}</td>
     </tr>
   `;
-
-  rowCount++;
-  if (shouldSplit && rowCount > splitAfter) {
-    part2 += oneRow;       // rows 31+ on mobile go to table 2
-  } else {
-    part1 += oneRow;       // rows 1–30 (or all rows on desktop)
-  }
+  rows.push(oneRow);
 });
 
-// Table shells reused for 1 or 2 tables
+// table shell (same header every chunk; header hidden on-screen for chunks > 1)
 const tableStart = `
   <table class="planner">
     <colgroup>
@@ -1241,12 +1235,34 @@ const tableStart = `
 
 const tableEnd = `</table>`;
 
-// Final HTML: two tables on mobile, one table on desktop
-const tablesHtml = shouldSplit
-  ? `${tableStart}<tbody>${part1}</tbody>${tableEnd}
-     <div class="hard-break"></div>
-     ${tableStart}<tbody>${part2}</tbody>${tableEnd}`
-  : `${tableStart}<tbody>${part1}${part2}</tbody>${tableEnd}`;
+// Make chunks
+let chunks = [];
+if (shouldSplit) {
+  let i = 0;
+  // first page
+  chunks.push(rows.slice(i, i + maxRowsFirst)); i += maxRowsFirst;
+  // subsequent pages at maxRowsNext
+  while (i < rows.length) {
+    chunks.push(rows.slice(i, i + maxRowsNext));
+    i += maxRowsNext;
+  }
+} else {
+  // desktop / large view: one chunk
+  chunks = [rows];
+}
+
+// Build HTML with page cuts between chunks (print only)
+let tablesHtml = '';
+chunks.forEach((chunkRows, idx) => {
+  if (idx > 0) tablesHtml += `<div class="page-cut"></div>`;
+  tablesHtml += `
+    <div class="print-chunk${idx === 0 ? ' first' : ''}">
+      ${tableStart}
+      <tbody>${chunkRows.join('')}</tbody>
+      ${tableEnd}
+    </div>
+  `;
+});
 
 // Write the static HTML (NO <script> tag here)
 const html = `
@@ -1310,9 +1326,12 @@ const html = `
 }
   .topbar .nums { display: flex; gap: 12px; justify-content: center; }
   .topbar .tools {
-    display: flex; flex-direction: column; align-items: flex-start;
-    margin-left: auto; margin-right: 60px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 40px;     /* pushes it slightly away from summary box */
+  margin-right: 160px;   /* adds a safe buffer from the Print button */
+}
   .badge { border: 1px solid #999; border-radius: 6px; padding: 4px 6px; font-size: 0.85em; }
 
   /* Progress: 4 items inside single Progress cell */
@@ -1366,14 +1385,15 @@ const html = `
 
   /* --- Print Tips bar (screen only) --- */
   .print-tips {
-    background: #fff3cd;           /* soft yellow */
-    border: 1px solid #ffe49a;
-    color: #6b5b00;
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin: 8px 0 14px;
-    font-size: 0.95rem;
-  }
+  background: #fff3cd;
+  border: 1px solid #ffe49a;
+  color: #6b5b00;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 8px 0 14px 40px;  /* adds left margin to align under tools */
+  font-size: 0.95rem;
+  max-width: 320px;          /* keeps it narrow, away from print button */
+}
   .print-tips strong { font-weight: 700; }
   .print-tips ul {
     margin: 6px 0 0 1.1em;
@@ -1381,18 +1401,99 @@ const html = `
   }
   .print-tips li { margin: 2px 0; }
 
- /* --- Print overrides --- */
-@media print {
-  @page {
-    size: letter portrait;
-    margin: 0.5in;
+  /* --- Align Print Tips box to the right of the three buttons --- */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr auto auto; /* summary | tools | tips */
+  align-items: start;
+  column-gap: 116px; /* space between buttons and tips */
+  padding-right: 120px; /* keeps space for floating Print button */
+}
+
+/* keep summary box left */
+.summarywrap {
+  justify-self: start;
+}
+
+/* keep buttons centered vertically */
+.topbar .tools {
+  justify-self: start;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* move print tips beside buttons */
+.print-tips {
+  justify-self: start;  /* align left edge with button stack */
+  align-self: start;
+  max-width: 420px;
+  margin-top: 0;
+  margin-left: 10px; /* optional slight spacing for balance */
+}
+
+.summarywrap { border-color: #d0d0d0; background: #fff; }
+.summarybar .badge { border-color: #bdbdbd; }
+  .notes { display: none !important; }
+
+  /* Merge the two tables visually on-screen */
+/* —— Screen-only: merge the two tables and hide headers —— */
+/* —— Screen-only: merge tables, keep first header, hide the rest —— */
+@media screen {
+  /* hide the artificial page-break spacer on screen */
+  .page-cut { display: none !important; }
+
+  /* make both tables look like a single continuous table */
+  table.planner { border-collapse: collapse; width: 100%; }
+  .print-chunk { break-inside: auto; page-break-inside: auto; }
+
+  /* remove the visual seam between tables (account for .page-cut in between) */
+  .print-chunk + .page-cut + .print-chunk table.planner,
+  .print-chunk ~ .print-chunk table.planner {
+    margin-top: -1px;   /* eat the double border (use -1px for crisp edges) */
+    border-top: 0;
   }
 
-  /* iOS/WebKit-friendly table behavior */
-  thead { display: table-header-group !important; }
-  tfoot { display: table-footer-group !important; }
+  /* ✅ show header on the FIRST chunk only */
+  .print-chunk:first-of-type table.planner thead {
+    display: table-header-group !important;
+  }
 
-  /* Stronger "don't split" rules for iOS */
+  /* 🚫 hide headers on all subsequent chunks (2nd, 3rd, …) */
+  .print-chunk ~ .print-chunk table.planner thead {
+    display: none !important;
+  }
+}
+ /* --- Print overrides --- */
+@media print {
+  @page { size: letter portrait; margin: 0.4in; }
+  body { padding: 0 !important; }
+
+  /* Keep title/summary with the first table; don't force a break */
+  .topbar,
+  h2 {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Never push the first table/chunk to page 2 */
+  .print-chunk:first-of-type,
+  .print-chunk:first-of-type table.planner,
+  .print-chunk:first-of-type .planner.first-chunk {
+    break-before: auto !important;
+    page-break-before: auto !important;
+    -webkit-column-break-before: auto !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* General table behavior for print/iOS */
+  table { line-height: 1.12; }
   tr, td, th {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -1400,79 +1501,44 @@ const html = `
     -webkit-column-break-inside: avoid !important;
   }
 
-  /* Keep title with the table start */
-  h2 {
-    page-break-after: avoid;
-    break-after: avoid;
-    margin-bottom: 6px; /* tighter to table */
-  }
-  /* Optional: move the parenthetical to a note under H2 */
-  .subtitle-note {
-    margin: 0 0 6px 0;
-    font-size: 0.9em;
-    color: #555;
-    page-break-after: avoid;
-    break-after: avoid;
-  }
+  /* Repeat header/footer each printed page */
+  table.planner thead { display: table-header-group !important; }
+  table.planner tfoot { display: table-footer-group !important; } /* optional */
 
-  /* Small boost helps WebKit pagination */
-  table { line-height: 1.15; }
-
-  /* Manual soft page-break utility (used by inserted <tr class="page-break">) */
-  .page-break {
-    break-before: page !important;
-    page-break-before: always !important;
-  }
-
-   /* Strong page break between the two tables (iOS-friendly) */
-  .hard-break {
-    display: block !important;
-    height: 0 !important;
-    break-before: page !important;
-    page-break-before: always !important;
-    -webkit-column-break-before: always !important;
-  }
-
-  /* Hide on-paper UI elements */
+  /* Hide on-paper UI */
   #printBtn { display: none; }
-  .topbar .tools { display: none !important; }
-  .print-tips { display: none !important; }
-  th.col-adjust, td.col-adjust, .col-adjust { display: none !important; }
+  .topbar .tools,
+  .print-tips,
+  .notes,
+  th.col-adjust, td.col-adjust, .col-adjust {
+    display: none !important;
+  }
 
-  /* ✅ Summary bar: show once at top of page 1 (no repeat) */
-  .topbar{
+  /* Layout tweaks */
+  .topbar {
     position: static !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
     z-index: auto !important;
     background: #fff;
-
-    page-break-before: avoid;
-    page-break-inside: avoid;
-    page-break-after: avoid;
-    break-before: avoid;
-    break-inside: avoid;
-    break-after: avoid;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    padding: 4px 8px;
+    grid-template-columns: 1fr;
+    row-gap: 4px;
   }
+  .badge { padding: 2px 4px; font-size: 0.78em; }
+  th, td { padding: 5px 4px; }           /* tighter */
 
-  /* Column widths (gives Date a bit more room on phones) */
+  /* Column widths for print */
   col.col-week     { width: 5%; }
-  col.col-date     { width: 22%; }  /* was 20% */
+  col.col-date     { width: 22%; }
   col.col-credits  { width: 5%; }
-  col.col-progress { width: 68%; }  /* was 70% */
+  col.col-progress { width: 68%; }
 
-  /* Comfortable rows + prevent splitting */
-  th, td { padding: 8px 6px; }
-  tr { page-break-inside: avoid; }
-
-  /* Date behavior: main line + note on its own wrapped line */
+  /* Date cell wrapping */
   td.col-date { overflow: visible !important; text-overflow: clip !important; }
   .col-date .date-core { white-space: nowrap !important; display: block !important; }
   .col-date .date-note { white-space: normal !important; display: block !important; }
 
-  /* Progress layout + sizing for print */
+  /* Progress sizing */
   .col-progress .progress-grid {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 6px;
@@ -1480,39 +1546,72 @@ const html = `
   }
   .chk { font-size: 0.82rem; gap: 2px; }
   .chk input { width: 12px; height: 12px; }
-  .credit-line { width: 0.86in !important; } /* was 0.9in; trims crowding on iPhone */
+  .credit-line { width: 0.78in !important; }
 
-  /* Hide screen-only notes */
-  .notes { display: none !important; }
-    /* Hide screen-only notes */
-  .notes { display: none !important; }
+  /* Tighten spacing so pages fit neatly */
+  table.planner { margin-top: 4px !important; margin-bottom: 4px !important; }
+  thead th { padding-top: 3px !important; padding-bottom: 3px !important; }
+  td, th  { padding-top: 5px !important; padding-bottom: 5px !important; }
+  body { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+  table:last-of-type { margin-bottom: 0 !important; }
 
-  /* Slightly tighter print to fit in 2 pages on phones */
-  .topbar {
-    padding: 4px 8px;         /* was 8px 12px */
-    margin-bottom: 6px;       /* was 8px */
-    grid-template-columns: 1fr; /* stack badges vertically */
-    row-gap: 4px;
+  /* --- CHUNK / PAGE-BREAK LOGIC --- */
+
+  /* Keep each chunk intact */
+  .print-chunk {
+    display: block !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
-  .badge { padding: 2px 4px; font-size: 0.78em; }
 
-  th, td { padding: 6px 4px; }     /* was 8px 6px */
-  table { line-height: 1.12; }     /* was 1.15 */
-
-  /* (optional) if still tight, trim progress lines slightly */
-  .credit-line { width: 0.80in !important; } /* was 0.86in */
-  /* Tighten tables slightly so page 2 always fits */
-table.planner { margin-top: 6px !important; margin-bottom: 6px !important; }
-thead th { padding-top: 4px !important; padding-bottom: 4px !important; }
-td, th { padding-top: 5px !important; padding-bottom: 5px !important; }  /* was 6–8px */
-
-/* Already present? Keep these at the end so they take precedence */
-.credit-line { width: 0.78in !important; } /* was 0.80in */
-body { margin-bottom: 0 !important; padding-bottom: 0 !important; }
-table:last-of-type { margin-bottom: 0 !important; }
+  /* Let the first chunk split so it can begin on page 1 */
+.print-chunk.first {
+  page-break-inside: auto !important;
+  break-inside: auto !important;
 }
-.summarywrap { border-color: #d0d0d0; background: #fff; }
-.summarybar .badge { border-color: #bdbdbd; }
+
+  /* Force a page break between chunks (even without .page-cut) */
+  .print-chunk + .print-chunk {
+    break-before: page !important;
+    page-break-before: always !important;
+    -webkit-column-break-before: always !important;
+  }
+
+  /* Allow the second chunk to start on page 1 (don't push it to page 2) */
+.print-chunk:first-of-type + .print-chunk {
+  break-before: auto !important;
+  page-break-before: auto !important;
+  -webkit-column-break-before: auto !important;
+}
+
+  /* --- Page break between chunks: minimal gap for full-page use --- */
+.page-cut {
+  display: block !important;
+  height: 0.25in !important;       /* small nudge triggers real page break */
+  margin: 0 !important;
+  border: 0 !important;
+  break-before: page !important;
+  page-break-before: always !important;
+  -webkit-column-break-before: always !important;
+}
+
+/* iOS/WebKit nudge */
+@supports (-webkit-touch-callout: none) {
+  .page-cut { height: 0.3in !important; }
+}
+
+  /* Keep only the header special; let tbody split normally */
+table.planner thead { 
+  display: table-header-group !important; 
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+/* Allow tbody to break across pages */
+table.planner tbody {
+  page-break-inside: auto !important;
+  break-inside: auto !important;
+}
 </style>
 </head>
 <body>
