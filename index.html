@@ -1362,7 +1362,7 @@ const html = `
   col.col-date     { width: 18%; }
   col.col-credits  { width: 6%; }
   col.col-progress { width: 51%; }
-  col.col-adjust   { width: 20%; }
+  col.col-adjust   { width: 7%; }
 
   td.col-week, th.col-week,
   td.col-credits, th.col-credits { font-size: 0.85rem; }
@@ -1433,6 +1433,28 @@ const html = `
   max-width: 420px;
   margin-top: 0;
   margin-left: 10px; /* optional slight spacing for balance */
+}
+
+.print-tips {
+  justify-self: start;
+  align-self: start;
+  max-width: 420px;
+  margin-top: 0;
+  margin-left: 10px;
+}
+
+/* --- Desktop-only: nudge ONLY the 3 action buttons left --- */
+@media screen and (min-width: 1024px) {
+  .topbar .tools {
+    position: relative;
+    left: -77px; /* adjust: -8px to -40px depending on how far left you want */
+  }
+}
+
+/* Merge the two tables visually on-screen */
+/* —— Screen-only: merge the two tables and hide headers —— */
+@media screen {
+  /* ... */
 }
 
 .summarywrap { border-color: #d0d0d0; background: #fff; }
@@ -1783,6 +1805,72 @@ table.planner tbody {
       });
 
       refreshSummary();
+      
+      // --- Visually swap Progress (cell 4) and Adjust (cell 5) on screen,
+//     while preserving each column's own widths by swapping <col> too. ---
+(function addScreenOnlyColumnSwap() {
+  const tables = Array.from(document.querySelectorAll('table.planner'));
+
+  // Swap the 4th (Progress) and 5th (Adjust) cells within a row
+  function swapCellsInRow(tr) {
+    const cells = Array.from(tr.children);
+    if (cells.length < 5) return;
+    const progress = cells[3]; // 4th child
+    const adjust   = cells[4]; // 5th child
+    tr.insertBefore(adjust, progress); // ... Adjust, Progress
+  }
+
+  // Swap the 4th and 5th <col> in the colgroup so widths follow the moved columns
+  function swapColgroup(table) {
+    const colgroup = table.querySelector('colgroup');
+    if (!colgroup) return;
+    const cols = colgroup.querySelectorAll('col');
+    if (cols.length < 5) return;
+    const progressCol = cols[3]; // 4th <col>
+    const adjustCol   = cols[4]; // 5th <col>
+    // Move Adjust col before Progress col
+    colgroup.insertBefore(adjustCol, progressCol);
+  }
+
+  function swapTable(table) {
+    // swap header cells
+    const theadRow = table.tHead && table.tHead.rows[0];
+    if (theadRow) swapCellsInRow(theadRow);
+
+    // swap body cells
+    Array.from(table.tBodies).forEach(tbody => {
+      Array.from(tbody.rows).forEach(tr => swapCellsInRow(tr));
+    });
+
+    // swap column width definitions to match the new order
+    swapColgroup(table);
+  }
+
+  // Swapping twice restores original order (cells + colgroup), so we can toggle.
+  function toggleSwapAll() {
+    tables.forEach(swapTable);
+  }
+
+  // Apply swap for on-screen view now
+  toggleSwapAll();
+
+  // Restore original order for print; re-apply after print
+  function beforePrint() { toggleSwapAll(); }
+  function afterPrint()  { toggleSwapAll(); }
+
+  if ('onbeforeprint' in window) {
+    window.addEventListener('beforeprint', beforePrint);
+    window.addEventListener('afterprint',  afterPrint);
+  }
+
+  const mql = window.matchMedia && window.matchMedia('print');
+  if (mql && typeof mql.addEventListener === 'function') {
+    mql.addEventListener('change', e => { if (e.matches) beforePrint(); else afterPrint(); });
+  } else if (mql && typeof mql.addListener === 'function') {
+    mql.addListener(e => { if (e.matches) beforePrint(); else afterPrint(); }); // legacy
+  }
+})();
+
     })();
   `;
   const scriptEl = printWin.document.createElement('script');
