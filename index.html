@@ -16,8 +16,6 @@ html, body {
   height: 100%;
   box-sizing: border-box;
 }
-
-/* Default container (desktop and up) */
 .container {
   max-width: 500px;
   margin: 0 auto;
@@ -27,17 +25,8 @@ html, body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
-/* Headings and Labels */
-h2 {
-  text-align: center;
-}
-
-label {
-  display: block;
-  margin-top: 15px;
-}
-
-/* Form Elements */
+h2 { text-align: center; }
+label { display: block; margin-top: 15px; }
 input[type="number"],
 select {
   width: 100%;
@@ -47,273 +36,100 @@ select {
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
-
-/* Checkbox Groups */
-.checkbox-container {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-/* Output / Messages */
-.output {
-  margin-top: 20px;
-  padding: 10px;
-  background: #eef;
-  border-radius: 6px;
-}
-
-.warning {
-  background: #ffeeba;
-  padding: 10px;
-  border-radius: 6px;
-  margin-top: 10px;
-  border: 1px solid #f0ad4e;
-}
-
-.disclaimer {
-  background: #fff89a;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ffeeba;
-  margin-top: 10px;
-  font-size: 0.95em;
-}
-
-.footer-disclaimer {
-  margin-top: 20px;
-  font-size: 0.9em;
-  color: #555;
-  text-align: center;
-}
-
-/* Buttons */
-.plan-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.plan-buttons button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Holiday Options */
-.holiday-box {
-  background-color: #e0f8e9;
-  border: 1px solid #b6e2c4;
-  border-radius: 8px;
-  padding: 10px 15px 15px;
-  margin-top: 15px;
-}
-
-.holiday-option {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-.holiday-option input[type="checkbox"] {
-  margin-right: 10px;
-  transform: scale(1.2);
-}
-
-.holiday-option label {
-  white-space: nowrap;
-  position: relative;
-  top: -5px;
-}
-
-/* Language Prompt Box */
+.checkbox-container { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.output { margin-top: 20px; padding: 10px; background: #eef; border-radius: 6px; }
+.warning { background: #ffeeba; padding: 10px; border-radius: 6px; margin-top: 10px; border: 1px solid #f0ad4e; }
+.disclaimer { background: #fff89a; padding: 10px; border-radius: 6px; border: 1px solid #ffeeba; margin-top: 10px; font-size: 0.95em; }
+.footer-disclaimer { margin-top: 20px; font-size: 0.9em; color: #555; text-align: center; }
+.plan-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.plan-buttons button:disabled { opacity: 0.5; cursor: not-allowed; }
+.holiday-box { background-color: #e0f8e9; border: 1px solid #b6e2c4; border-radius: 8px; padding: 10px 15px 15px; margin-top: 15px; }
+.holiday-option { display: flex; align-items: center; margin-bottom: 10px; font-size: 16px; }
+.holiday-option input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+.holiday-option label { white-space: nowrap; position: relative; top: -5px; }
 #languagePrompt > .prompt-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 500px;
-  width: 100%;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  display: flex; flex-direction: column; gap: 20px; max-width: 500px; width: 100%;
+  background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); box-sizing: border-box;
 }
-#languagePrompt {
-  transition: opacity 0.4s ease;
+#languagePrompt { transition: opacity 0.4s ease; }
+
+/* Year Toggle */
+.year-toggle { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; }
+.year-btn {
+  padding: 8px 16px; border: 2px solid #ccc; border-radius: 6px;
+  background: white; cursor: pointer; font-size: 1em; font-weight: bold; transition: all 0.3s;
+}
+.year-btn.active { border-color: #4a90d9; background: #e8f0fe; color: #1a56a0; }
+.year-btn:hover:not(.active) { background: #f0f0f0; }
+.next-year-notice {
+  background: #e0f0ff; border: 1px solid #b0d4f1; padding: 10px;
+  border-radius: 6px; margin-bottom: 15px; font-size: 0.95em; text-align: center;
 }
 
-    /* Responsive Tweaks */
 /* Responsive Tweaks */
 @media (max-width: 768px) {
-  html, body {
-    font-size: 15px !important;
-  }
-
-  h2 {
-    font-size: 1.6em !important;
-  }
-  .container {
-    padding: 10px !important;
-  }
-
-  label,
-  .holiday-option label,
-  .disclaimer,
-  .warning,
-  .footer-disclaimer,
-  .output {
-    font-size: 0.95em !important;
-  }
-
-  input[type="number"],
-  select {
-    padding: 14px !important;
-    font-size: 1.2em !important;
-  }
-
-  button,
-  #langToggleBtn {
-    font-size: 0.96em !important;
-    padding: 12.8px !important;
-    border-radius: 6px;
-  }
-
-  .plan-buttons button {
-    font-size: 1.2em !important;
-    padding: 16px !important;
-  }
-
-  .holiday-option input[type="checkbox"] {
-    transform: scale(1.5) !important;
-    margin-right: 10px;
-  }
-
-  .holiday-option label {
-    font-size: 0.85em !important; /* ✅ Reduce font size */
-    white-space: nowrap;          /* ✅ Prevent wrapping */
-    max-width: 100%;
-  }
-
-  .holiday-box {
-    font-size: 0.95em;            /* Optional: shrink whole box text */
-  }
-
-  #languagePrompt .prompt-container {
-    font-size: 1.2em;
-  }
-
-  #languagePrompt .prompt-container > div > div {
-    font-size: 1.3em !important;
-    padding: 18px !important;
-  }
-
-  #languagePrompt .prompt-container span {
-    font-size: 1.1em !important;
-  }
-
-  body.spanish-mode .holiday-option label {
-    font-size: 0.75em;
-    line-height: 1.1em;
-  }
+  html, body { font-size: 15px !important; }
+  h2 { font-size: 1.6em !important; }
+  .container { padding: 10px !important; }
+  label, .holiday-option label, .disclaimer, .warning, .footer-disclaimer, .output { font-size: 0.95em !important; }
+  input[type="number"], select { padding: 14px !important; font-size: 1.2em !important; }
+  button, #langToggleBtn { font-size: 0.96em !important; padding: 12.8px !important; border-radius: 6px; }
+  .plan-buttons button { font-size: 1.2em !important; padding: 16px !important; }
+  .holiday-option input[type="checkbox"] { transform: scale(1.5) !important; margin-right: 10px; }
+  .holiday-option label { font-size: 0.85em !important; white-space: nowrap; max-width: 100%; }
+  .holiday-box { font-size: 0.95em; }
+  #languagePrompt .prompt-container { font-size: 1.2em; }
+  #languagePrompt .prompt-container > div > div { font-size: 1.3em !important; padding: 18px !important; }
+  #languagePrompt .prompt-container span { font-size: 1.1em !important; }
+  body.spanish-mode .holiday-option label { font-size: 0.75em; line-height: 1.1em; }
+  .year-btn { font-size: 0.9em !important; padding: 8px 12px !important; }
 }
- #printButton {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-  padding: 10px 16px;
-  font-size: 1.1em;
-  border-radius: 6px;
-  cursor: pointer;
-  z-index: 999;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+#printButton {
+  position: fixed; top: 16px; right: 16px; background-color: white; color: black;
+  border: 1px solid black; padding: 10px 16px; font-size: 1.1em; border-radius: 6px;
+  cursor: pointer; z-index: 999; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s;
 }
 #printButton:hover { background-color: #555; color: white; }
-
-/* ✅ One single print block only */
 @media print {
   #printButton { display: none; }
-
-  body {
-    background: white !important;
-    margin: 0;
-    padding: 0;
-  }
-
-  .container {
-    max-width: 100% !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 20px !important;
-  }
-
+  body { background: white !important; margin: 0; padding: 0; }
+  .container { max-width: 100% !important; box-shadow: none !important; border-radius: 0 !important; padding: 20px !important; }
   .print-page-1 { page-break-after: always; }
-
-  #langToggleBtn, #languagePrompt { display: none !important; }
-
-  table, tr, td, th {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-
+  #langToggleBtn, #languagePrompt, .year-toggle { display: none !important; }
+  table, tr, td, th { page-break-inside: avoid !important; break-inside: avoid !important; }
   .force-page-break { page-break-before: always !important; }
 }
 </style>
 </head>
 <body>
-
 <div id="languagePrompt" style="display: none; justify-content: center; padding-top: 20px;">
   <div class="prompt-container">
     <div>
       <p style="text-align: center; font-weight: bold; font-size: 1.8em; margin-bottom: 20px;">
         Weekly Credit Calculator
       </p>
-
-      <div onclick="setLanguage(false)" style="
-  background-color: #fff89a;
-  color: #333;
-  text-align: center;
-  padding: 12.8px !important;
-  font-size: 1.28em !important;
-  cursor: pointer;
-  border-radius: 6.4px !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-top: 10px;
-">
-  <strong>English - Inglés</strong><br>
-  <span style="font-size: 0.64em !important;">Click Here</span>
-</div>
-
-<div onclick="setLanguage(true)" style="
-  background-color: #fff89a;
-  color: #333;
-  text-align: center;
-  padding: 12.8px !important;
-  font-size: 1.28em !important;
-  cursor: pointer;
-  border-radius: 6.4px !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-top: 10px;
-">
-  <strong>Español - Spanish</strong><br>
-  <span style="font-size: 0.64em !important;">Click Here</span>
-</div>
+      <div onclick="setLanguage(false)" style="background-color:#fff89a;color:#333;text-align:center;padding:12.8px;font-size:1.28em;cursor:pointer;border-radius:6.4px;box-shadow:0 2px 6px rgba(0,0,0,0.1);margin-top:10px;">
+        <strong>English - Ingl&eacute;s</strong><br><span style="font-size:0.64em">Click Here</span>
+      </div>
+      <div onclick="setLanguage(true)" style="background-color:#fff89a;color:#333;text-align:center;padding:12.8px;font-size:1.28em;cursor:pointer;border-radius:6.4px;box-shadow:0 2px 6px rgba(0,0,0,0.1);margin-top:10px;">
+        <strong>Espa&ntilde;ol - Spanish</strong><br><span style="font-size:0.64em">Click Here</span>
+      </div>
     </div>
   </div>
 </div>
-  
-  <button onclick="window.print()" id="printButton" title="Print this page">Print</button>
 
-  <!-- Actual calculator container (hidden at first) -->
-  <div class="container">
+<button onclick="window.print()" id="printButton" title="Print this page">Print</button>
+
+<div class="container">
   <div style="text-align: center; margin-bottom: 10px;">
-    <button id="langToggleBtn" onclick="showLanguagePrompt()">Español</button>
+    <button id="langToggleBtn" onclick="showLanguagePrompt()">Espa&ntilde;ol</button>
+  </div>
+
+  <!-- Year Toggle -->
+  <div class="year-toggle" id="yearToggle">
+    <button class="year-btn active" id="yearCurrentBtn" onclick="switchYear('current')">2025–2026</button>
+    <button class="year-btn" id="yearNextBtn" onclick="switchYear('next')">2026–2027</button>
   </div>
 
   <div class="print-page-1">
@@ -321,762 +137,679 @@ select {
     <p id="currentDate" style="text-align: center; font-weight: bold; margin-top: -10px;"></p>
     <p id="currentWeek" style="text-align: center; font-size: 1.1em; margin-bottom: 15px;"></p>
 
+    <!-- Next-year notice (hidden by default) -->
+    <div id="nextYearNotice" class="next-year-notice" style="display: none;"></div>
+
     <div id="mainDisclaimer" class="disclaimer" style="margin-bottom: 15px;">
       This calculator is designed for students who plan to graduate this school year.
       <br><br>
-      If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.
+      If you're planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.
       <br><br>
       Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.
     </div>
-
     <label for="totalCredits">How many credits do you need to finish?</label>
     <input type="number" id="totalCredits" min="1" max="100" required>
-
     <label for="startWeek">What week are you starting from?</label>
     <select id="startWeek"></select>
-
     <label for="endWeek">Which week do you want to finish by?</label>
     <select id="endWeek"></select>
-
     <div class="holiday-box">
-      <p id="skipBoxTitle" style="
-  text-align: center;
-  font-weight: bold;
-  margin: 0 0 12px;
-">
-  Weeks You Plan to Skip (Optional):
-</p>
-
+      <p id="skipBoxTitle" style="text-align:center;font-weight:bold;margin:0 0 12px;">Weeks You Plan to Skip (Optional):</p>
       <div class="holiday-option">
         <input type="checkbox" id="skipThanksgiving">
-        <label for="skipThanksgiving">Skip Thanksgiving Week (Week 22)</label>
-      </div> 
+        <label for="skipThanksgiving" id="labelThanksgiving">Skip Thanksgiving Week (Week 22)</label>
+      </div>
       <div class="holiday-option">
         <input type="checkbox" id="skipWinter">
-        <label for="skipWinter">Skip Winter Break (Weeks 26–27)</label>
+        <label for="skipWinter" id="labelWinter">Skip Winter Break (Weeks 26–27)</label>
       </div>
       <div class="holiday-option">
         <input type="checkbox" id="skipSpring">
-        <label for="skipSpring">Skip Spring Week (Week 41)</label>
+        <label for="skipSpring" id="labelSpring">Skip Spring Week (Week 41)</label>
       </div>
       <hr style="margin: 10px 0;">
-
-      <div class="holiday-option">
-        <input type="checkbox" id="customSkip1">
-        <select id="customWeek1"></select>
-      </div>
-      <div class="holiday-option">
-       <input type="checkbox" id="customSkip2">
-       <select id="customWeek2"></select>
-      </div>
-      <div class="holiday-option">
-       <input type="checkbox" id="customSkip3">
-       <select id="customWeek3"></select>
-      </div>
-      <div class="holiday-option">
-      <input type="checkbox" id="customSkip4">
-      <select id="customWeek4"></select>
-      </div>
+      <div class="holiday-option"><input type="checkbox" id="customSkip1"><select id="customWeek1"></select></div>
+      <div class="holiday-option"><input type="checkbox" id="customSkip2"><select id="customWeek2"></select></div>
+      <div class="holiday-option"><input type="checkbox" id="customSkip3"><select id="customWeek3"></select></div>
+      <div class="holiday-option"><input type="checkbox" id="customSkip4"><select id="customWeek4"></select></div>
     </div>
-
     <button onclick="calculateCredits()" id="calculateBtn" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
   </div>
-
   <div class="print-page-2">
     <div class="output" id="result"></div>
-
     <div class="plan-buttons" id="planButtons" style="display: none;">
-      <button onclick="generatePlan('A')">🟢 Open Plan A</button>
-      <button onclick="generatePlan('B')">🟡 Open Plan B</button>
-      <button onclick="generatePlan('C')">🔵 Open Plan C</button>
-      <button onclick="generatePlan('D')">🔴 Open Plan D</button>
+      <button onclick="generatePlan('A')">&#x1F7E2; Open Plan A</button>
+      <button onclick="generatePlan('B')">&#x1F7E1; Open Plan B</button>
+      <button onclick="generatePlan('C')">&#x1F535; Open Plan C</button>
+      <button onclick="generatePlan('D')">&#x1F534; Open Plan D</button>
     </div>
-
     <div class="footer-disclaimer" id="footerDisclaimer">
       <strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.
     </div>
   </div>
-  </div>
+</div>
 
-  <script>
-
-    try {
+<script>
+try {
 } catch (e) {
   alert("Script error: " + e.message);
 }
 
 // === Feature flags ===
-const FEATURES = { dualEnrollment: false }; // flip to true to enable/show
-
-// (Optional) URL/localStorage toggle: ?dual=on / ?dual=off, or window.setDual(true/false)
+const FEATURES = { dualEnrollment: false };
 (() => {
   const url = new URL(location.href);
   const q = url.searchParams.get('dual');
   if (q === 'on') FEATURES.dualEnrollment = true;
   if (q === 'off') FEATURES.dualEnrollment = false;
-
   const saved = localStorage.getItem('feature.dualEnrollment');
   if (saved !== null) FEATURES.dualEnrollment = saved === 'true';
-
   window.setDual = (enabled) => {
     FEATURES.dualEnrollment = !!enabled;
     localStorage.setItem('feature.dualEnrollment', String(enabled));
-    if (typeof calculateCredits === 'function') {
-      try { calculateCredits(); } catch {}
-    }
+    if (typeof calculateCredits === 'function') { try { calculateCredits(); } catch {} }
   };
 })();
 
+// =====================================================
+// DATE GENERATION ENGINE
+// =====================================================
+function generateSchoolYear(year) {
+  const monthEN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+  const monthES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+  function fmtEN(d) { return monthEN[d.getMonth()] + ' ' + d.getDate(); }
+  function fmtES(d) { return d.getDate() + ' de ' + monthES[d.getMonth()]; }
+  function isoDate(d) {
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+  function formatRangeEN(s, e) {
+    if (s.getTime() === e.getTime()) return fmtEN(s);
+    return fmtEN(s) + ' - ' + fmtEN(e);
+  }
+  function formatRangeES(s, e) {
+    if (s.getTime() === e.getTime()) return fmtES(s);
+    if (s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear()) {
+      return s.getDate() + '\u2013' + e.getDate() + ' de ' + monthES[s.getMonth()];
+    }
+    return fmtES(s) + '\u2013' + fmtES(e);
+  }
+
+  const july1 = new Date(year, 6, 1);
+  const dow = july1.getDay();
+  const daysToFri = (5 - dow + 7) % 7;
+  const week1End = new Date(year, 6, 1 + daysToFri);
+  const june30 = new Date(year + 1, 5, 30);
+
+  const allWeeks = [];
+  allWeeks.push({ start: new Date(year, 6, 1), end: new Date(week1End) });
+
+  // Weeks 2+: Monday-Friday blocks
+  const nextMon = new Date(week1End);
+  nextMon.setDate(nextMon.getDate() + 3); // Friday + 3 = Monday
+
+  while (nextMon <= june30) {
+    const mon = new Date(nextMon);
+    const fri = new Date(mon);
+    fri.setDate(fri.getDate() + 4);
+    let endDate;
+    if (fri <= june30) {
+      endDate = new Date(fri);
+    } else {
+      endDate = new Date(june30);
+      while (endDate.getDay() === 0 || endDate.getDay() === 6) {
+        endDate.setDate(endDate.getDate() - 1);
+      }
+      if (endDate < mon) break;
+    }
+    allWeeks.push({ start: new Date(mon), end: new Date(endDate) });
+    nextMon.setDate(nextMon.getDate() + 7);
+  }
+
+  // Milestone annotations by fixed week number
+  const milestones = {
+    26: { en: '(Winter Break)', es: '(Vacaciones de invierno)' },
+    27: { en: '(Winter Break)', es: '(Vacaciones de invierno)' },
+    30: { en: '- End of Semester 1', es: '- Fin del semestre 1' },
+    46: { graduation: true },
+    52: { en: '- End of Semester 2', es: '- Fin del semestre 2' }
+  };
+
+  const result = {
+    dateRangesEN: [''],
+    weeks: [],
+    isoStarts: [''],
+    totalWeeks: allWeeks.length,
+    yearLabel: year + '\u2013' + (year + 1),
+    startYear: year
+  };
+
+  allWeeks.forEach((w, idx) => {
+    const weekNum = idx + 1;
+    let labelEN = formatRangeEN(w.start, w.end);
+    let labelES = formatRangeES(w.start, w.end);
+
+    const ms = milestones[weekNum];
+    if (ms) {
+      if (ms.graduation) {
+        const dlEN = fmtEN(w.end);
+        const dlES = fmtES(w.end);
+        labelEN += ' (Graduation Ceremony Credit Deadline - ' + dlEN + ')';
+        labelES += ' (Fecha l\u00edmite para cr\u00e9ditos de graduaci\u00f3n - ' + dlES + ')';
+      } else {
+        labelEN += ' ' + ms.en;
+        labelES += ' ' + ms.es;
+      }
+    }
+
+    result.dateRangesEN.push(labelEN);
+    result.weeks.push([labelEN, labelES]);
+    result.isoStarts.push(isoDate(w.start));
+  });
+
+  return result;
+}
+
+function getCurrentSchoolYear() {
+  const today = new Date();
+  return today.getMonth() < 6 ? today.getFullYear() - 1 : today.getFullYear();
+}
+
+// =====================================================
+// GLOBAL STATE
+// =====================================================
 let isSpanish = false;
-    function getText(key) {
+let activeStartYear = null;
+let schoolYearData = null;
+let dateRanges = [];  // populated from schoolYearData
+let weeks = [];       // populated from schoolYearData
+let storedPlan = {};
+let lastResultData = null;
+
+function initializeYear(year) {
+  activeStartYear = year;
+  schoolYearData = generateSchoolYear(year);
+  dateRanges = schoolYearData.dateRangesEN;
+  weeks = schoolYearData.weeks;
+}
+
+// =====================================================
+// YEAR TOGGLE
+// =====================================================
+function switchYear(mode) {
+  const baseYear = getCurrentSchoolYear();
+  const newYear = (mode === 'next') ? baseYear + 1 : baseYear;
+  initializeYear(newYear);
+  updateYearToggle();
+  populateWeekDropdowns();
+  document.getElementById("endWeek").value = "46";
+  displayCurrentDateAndWeek();
+
+  // Clear results and inputs
+  document.getElementById("totalCredits").value = "";
+  document.getElementById("skipThanksgiving").checked = false;
+  document.getElementById("skipWinter").checked = false;
+  document.getElementById("skipSpring").checked = false;
+  for (let i = 1; i <= 4; i++) {
+    const cb = document.getElementById('customSkip' + i);
+    const sel = document.getElementById('customWeek' + i);
+    if (cb) cb.checked = false;
+    if (sel) sel.selectedIndex = 0;
+  }
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("planButtons").style.display = "none";
+  lastResultData = null;
+  storedPlan = {};
+
+  // Show/hide next year notice
+  const notice = document.getElementById("nextYearNotice");
+  if (notice) {
+    if (mode === 'next') {
+      notice.innerHTML = isSpanish
+        ? 'Est\u00e1s viendo la calculadora del <strong>pr\u00f3ximo a\u00f1o escolar (' + schoolYearData.yearLabel + ')</strong>. Las fechas son proyectadas a partir del 1 de julio.'
+        : 'You are viewing the <strong>next school year (' + schoolYearData.yearLabel + ')</strong> calculator. Dates are projected from July 1.';
+      notice.style.display = 'block';
+    } else {
+      notice.style.display = 'none';
+    }
+  }
+}
+
+function updateYearToggle() {
+  const baseYear = getCurrentSchoolYear();
+  const currentLabel = baseYear + '\u2013' + (baseYear + 1);
+  const nextLabel = (baseYear + 1) + '\u2013' + (baseYear + 2);
+  const currentBtn = document.getElementById("yearCurrentBtn");
+  const nextBtn = document.getElementById("yearNextBtn");
+  if (currentBtn) {
+    currentBtn.textContent = currentLabel;
+    currentBtn.classList.toggle("active", activeStartYear === baseYear);
+  }
+  if (nextBtn) {
+    nextBtn.textContent = nextLabel;
+    nextBtn.classList.toggle("active", activeStartYear !== baseYear);
+  }
+}
+
+// =====================================================
+// TRANSLATION SYSTEM
+// =====================================================
+function getText(key) {
   const map = {
-    "Credits Needed": ["Credits Needed", "Créditos Necesarios"],
+    "Credits Needed": ["Credits Needed", "Cr\u00e9ditos Necesarios"],
     "Weeks Remaining": ["Weeks Remaining", "Semanas Restantes"],
-    "Average Credits per Week": ["Average Credits per Week", "Promedio de Créditos por Semana"],
+    "Average Credits per Week": ["Average Credits per Week", "Promedio de Cr\u00e9ditos por Semana"],
     "Risk Level": ["Risk Level", "Nivel de Riesgo"],
     "Suggestion": ["Suggestion", "Sugerencia"],
-    "Workflow Options": ["Workflow Options", "Opciones de Planificación"],
-    "✅ Low Risk": ["✅ Low Risk", "✅ Riesgo Bajo"],
-    "⚠️ Medium Risk": ["⚠️ Medium Risk", "⚠️ Riesgo Medio"],
-    "⚠️ Medium–High Risk": ["⚠️ Medium–High Risk", "⚠️ Riesgo Medio–Alto"],
-    "⚠️ High Risk – Near Limit": ["⚠️ High Risk – Near Limit", "⚠️ Riesgo Alto – Cerca del límite"],
-    "🚨 High Risk": ["🚨 High Risk", "🚨 Riesgo Alto"],
-    "✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.": [
-      "✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.",
-      "✅ ¡Vas bien! Intenta entregar 2 créditos por semana para mantenerte al día y terminar a tiempo."
+    "Workflow Options": ["Workflow Options", "Opciones de Planificaci\u00f3n"],
+    "\u2705 Low Risk": ["\u2705 Low Risk", "\u2705 Riesgo Bajo"],
+    "\u26a0\ufe0f Medium Risk": ["\u26a0\ufe0f Medium Risk", "\u26a0\ufe0f Riesgo Medio"],
+    "\u26a0\ufe0f Medium\u2013High Risk": ["\u26a0\ufe0f Medium\u2013High Risk", "\u26a0\ufe0f Riesgo Medio\u2013Alto"],
+    "\u26a0\ufe0f High Risk \u2013 Near Limit": ["\u26a0\ufe0f High Risk \u2013 Near Limit", "\u26a0\ufe0f Riesgo Alto \u2013 Cerca del l\u00edmite"],
+    "\ud83d\udea8 High Risk": ["\ud83d\udea8 High Risk", "\ud83d\udea8 Riesgo Alto"],
+    "\u2705 You're on track! Aim to turn in 2 credits a week to stay steady and finish on time.": [
+      "\u2705 You're on track! Aim to turn in 2 credits a week to stay steady and finish on time.",
+      "\u2705 \u00a1Vas bien! Intenta entregar 2 cr\u00e9ditos por semana para mantenerte al d\u00eda y terminar a tiempo."
     ],
-    "⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.": [
-      "⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.",
-      "⚠️ Necesitarás hacer un poco más de 2 por semana. Intenta entregar 3 créditos por semana para avanzar y reducir tu carga semanal."
+    "\u26a0\ufe0f You'll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.": [
+      "\u26a0\ufe0f You'll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.",
+      "\u26a0\ufe0f Necesitar\u00e1s hacer un poco m\u00e1s de 2 por semana. Intenta entregar 3 cr\u00e9ditos por semana para avanzar y reducir tu carga semanal."
     ],
-    "⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.": [
-      "⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.",
-      "⚠️ Estás cerca del límite semanal de 3 créditos. Entrega 3 por semana ahora para reducir tu carga y evitar agotarte más adelante."
+    "\u26a0\ufe0f You're getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.": [
+      "\u26a0\ufe0f You're getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.",
+      "\u26a0\ufe0f Est\u00e1s cerca del l\u00edmite semanal de 3 cr\u00e9ditos. Entrega 3 por semana ahora para reducir tu carga y evitar agotarte m\u00e1s adelante."
     ],
-    "⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.": [
-      "⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.",
-      "⚠️ Muy cerca del límite semanal de 3 créditos. Entrega 3 por semana para bajar tu carga."
+    "\u26a0\ufe0f You're getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.": [
+      "\u26a0\ufe0f You're getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.",
+      "\u26a0\ufe0f Muy cerca del l\u00edmite semanal de 3 cr\u00e9ditos. Entrega 3 por semana para bajar tu carga."
     ],
-    "🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.": [
-      "🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.",
-      "🚨 Este plan requiere 3 o más créditos cada semana sin descansos. Es difícil de mantener, y la mayoría de estudiantes necesitan apoyo extra. Habla con tu maestro para armar un plan realista y con respaldo."
+    "\ud83d\udea8 This plan needs 3 or more credits every week without any breaks. That's a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.": [
+      "\ud83d\udea8 This plan needs 3 or more credits every week without any breaks. That's a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.",
+      "\ud83d\udea8 Este plan requiere 3 o m\u00e1s cr\u00e9ditos cada semana sin descansos. Es dif\u00edcil de mantener, y la mayor\u00eda de estudiantes necesitan apoyo extra. Habla con tu maestro para armar un plan realista y con respaldo."
     ],
     "Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.": [
-  "Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.",
-  "Consejo para un buen comienzo: Intenta completar 3 créditos/semana durante las primeras 6 semanas. Después puedes bajar el ritmo."
-],
-
-"bufferWarning44": [
-  "⚠️ Heads up: You’re planning to finish right at the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.",
-  "⚠️ Aviso: Estás planeando terminar justo en la fecha límite. Intenta terminar para la Semana 44 o antes para darte un margen por si surge algo inesperado."
-],
-"bufferWarning45": [
-  "⚠️ Heads up: You’re planning to finish really close to the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.",
-  "⚠️ Aviso: Estás planeando terminar muy cerca de la fecha límite. Intenta terminar para la Semana 44 o antes para darte un margen por si surge algo inesperado."
-],
-"bufferWarningAfter46": [
-  "⚠️ Heads up: Week 46 is the last week to turn in credits to walk in the graduation ceremony. You’ve selected a week after that — talk with your teacher to make sure your plan still works.",
-  "⚠️ Aviso: La Semana 46 es la última semana para entregar créditos y participar en la ceremonia de graduación. Has seleccionado una semana posterior — habla con tu maestro para asegurarte de que tu plan aún funcione."
-],
+      "Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.",
+      "Consejo para un buen comienzo: Intenta completar 3 cr\u00e9ditos/semana durante las primeras 6 semanas. Despu\u00e9s puedes bajar el ritmo."
+    ],
+    "bufferWarning44": [
+      "\u26a0\ufe0f Heads up: You're planning to finish right at the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.",
+      "\u26a0\ufe0f Aviso: Est\u00e1s planeando terminar justo en la fecha l\u00edmite. Intenta terminar para la Semana 44 o antes para darte un margen por si surge algo inesperado."
+    ],
+    "bufferWarning45": [
+      "\u26a0\ufe0f Heads up: You're planning to finish really close to the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.",
+      "\u26a0\ufe0f Aviso: Est\u00e1s planeando terminar muy cerca de la fecha l\u00edmite. Intenta terminar para la Semana 44 o antes para darte un margen por si surge algo inesperado."
+    ],
+    "bufferWarningAfter46": [
+      "\u26a0\ufe0f Heads up: Week 46 is the last week to turn in credits to walk in the graduation ceremony. You've selected a week after that \u2014 talk with your teacher to make sure your plan still works.",
+      "\u26a0\ufe0f Aviso: La Semana 46 es la \u00faltima semana para entregar cr\u00e9ditos y participar en la ceremonia de graduaci\u00f3n. Has seleccionado una semana posterior \u2014 habla con tu maestro para asegurarte de que tu plan a\u00fan funcione."
+    ],
     "Plan A": ["Plan A", "Plan A"],
-"Plan B": ["Plan B", "Plan B"],
-"Plan C": ["Plan C", "Plan C"],
-"Plan D (Special Approval Needed)": ["Plan D (Special Approval Needed)", "Plan D (Se Requiere Aprobación Especial)"],
-
-"credits_per_week_for_weeks": ["{x} credits/week for {y} weeks", "{x} créditos/semana por {y} semanas"],
-"exceeds_weeks_by": ["(Exceeds weeks left by {z})", "(Excede las semanas restantes por {z})"],
-"you_need_segments": ["(You need {segments} to stay within your available weeks)", "(Necesitas {segments} para mantenerte dentro de tus semanas disponibles)"],
-
-"weeks_of_x_credits": ["{count} week(s) of {credit} credit(s)", "{count} semana(s) de {credit} crédito(s)"],
-
-"can_afford_1_credit": [
-  "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
-  "Puedes tener hasta {count} semana(s) de 1 crédito si el resto promedia 2 o más"
-],
-
-"plan_d_header": [
-  "Plan D (Special Approval Needed): 3/week for 8 weeks (to unlock 4 credits a week max)",
-  "Plan D (Se Requiere Aprobación Especial): 3/semana por 8 semanas (para desbloquear hasta 4 créditos por semana)"
-],
-"then_x_weeks_of_4": ["then {x} week(s) of 4/week", "luego {x} semana(s) de 4/semana"],
-"plus_1_week_of_n": ["+ 1 week of {n} credit(s)", "+ 1 semana de {n} crédito(s)"],
-"weeks_total": ["({x} weeks total)", "({x} semanas en total)"],
+    "Plan B": ["Plan B", "Plan B"],
+    "Plan C": ["Plan C", "Plan C"],
+    "Plan D (Special Approval Needed)": ["Plan D (Special Approval Needed)", "Plan D (Se Requiere Aprobaci\u00f3n Especial)"],
+    "credits_per_week_for_weeks": ["{x} credits/week for {y} weeks", "{x} cr\u00e9ditos/semana por {y} semanas"],
+    "exceeds_weeks_by": ["(Exceeds weeks left by {z})", "(Excede las semanas restantes por {z})"],
+    "you_need_segments": ["(You need {segments} to stay within your available weeks)", "(Necesitas {segments} para mantenerte dentro de tus semanas disponibles)"],
+    "weeks_of_x_credits": ["{count} week(s) of {credit} credit(s)", "{count} semana(s) de {credit} cr\u00e9dito(s)"],
+    "can_afford_1_credit": [
+      "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
+      "Puedes tener hasta {count} semana(s) de 1 cr\u00e9dito si el resto promedia 2 o m\u00e1s"
+    ],
+    "plan_d_header": [
+      "Plan D (Special Approval Needed): 3/week for 8 weeks (to unlock 4 credits a week max)",
+      "Plan D (Se Requiere Aprobaci\u00f3n Especial): 3/semana por 8 semanas (para desbloquear hasta 4 cr\u00e9ditos por semana)"
+    ],
+    "then_x_weeks_of_4": ["then {x} week(s) of 4/week", "luego {x} semana(s) de 4/semana"],
+    "plus_1_week_of_n": ["+ 1 week of {n} credit(s)", "+ 1 semana de {n} cr\u00e9dito(s)"],
+    "weeks_total": ["({x} weeks total)", "({x} semanas en total)"],
     "plan_c_exactly_2": [
-  "You can afford 0 week(s) at 1 credit if the rest average 2+",
-  "Puedes tener 0 semana(s) de 1 crédito si el resto promedia 2 o más"
-],
-"plan_c_less_than_2": [
-  "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
-  "Puedes tener hasta {count} semana(s) de 1 crédito si el resto promedia 2 o más"
-],
-"plan_c_more_than_2": [
-  "You can afford 0 week(s) at 1 credit",
-  "Puedes tener 0 semana(s) de 1 crédito"
-],
+      "You can afford 0 week(s) at 1 credit if the rest average 2+",
+      "Puedes tener 0 semana(s) de 1 cr\u00e9dito si el resto promedia 2 o m\u00e1s"
+    ],
+    "plan_c_less_than_2": [
+      "You can afford up to {count} week(s) at 1 credit if the rest average 2+",
+      "Puedes tener hasta {count} semana(s) de 1 cr\u00e9dito si el resto promedia 2 o m\u00e1s"
+    ],
+    "plan_c_more_than_2": [
+      "You can afford 0 week(s) at 1 credit",
+      "Puedes tener 0 semana(s) de 1 cr\u00e9dito"
+    ],
     "Weeks You Plan to Skip (Optional):": [
-  "Weeks You Plan to Skip (Optional):",
-  "Semanas que Planeas Omitir (Opcional):"
-]
-
+      "Weeks You Plan to Skip (Optional):",
+      "Semanas que Planeas Omitir (Opcional):"
+    ]
   };
   return isSpanish ? map[key]?.[1] ?? key : map[key]?.[0] ?? key;
 }
 
 const translations = {
-  "Weekly Credit Calculator": "Calculadora de Créditos Semanales",
-  "How many credits do you need to finish?": "¿Cuántos créditos necesitas completar?",
-  "What week are you starting from?": "¿Desde qué semana comienzas?",
-  "Which week do you want to finish by?": "¿En qué semana quieres terminar?",
-  "Skip Thanksgiving Week (Week 22)": "Saltar semana - Acción de Gracias (Semana 22)",
-  "Skip Winter Break (Weeks 26–27)": "Saltar vacaciones - Invierno (Semanas 26–27)",
+  "Weekly Credit Calculator": "Calculadora de Cr\u00e9ditos Semanales",
+  "How many credits do you need to finish?": "\u00bfCu\u00e1ntos cr\u00e9ditos necesitas completar?",
+  "What week are you starting from?": "\u00bfDesde qu\u00e9 semana comienzas?",
+  "Which week do you want to finish by?": "\u00bfEn qu\u00e9 semana quieres terminar?",
+  "Skip Thanksgiving Week (Week 22)": "Saltar semana - Acci\u00f3n de Gracias (Semana 22)",
+  "Skip Winter Break (Weeks 26\u201327)": "Saltar vacaciones - Invierno (Semanas 26\u201327)",
   "Skip Spring Week (Week 41)": "Saltar semana - Primavera (Semana 41)",
   "Calculate": "Calcular",
   "Disclaimer:": "Aviso:",
-  "This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.": "Esta calculadora es una herramienta útil para planificar, pero es importante verificar tus créditos y el número de semanas. Si no estás seguro, habla con tu maestro o consejero escolar.",
-  "This calculator is designed for students who plan to graduate this school year.": "Esta calculadora está diseñada para estudiantes que planean graduarse este año escolar.",
-  "If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.": "Si planeas graduarte el próximo año o después, aún puedes usarla para establecer una meta de créditos para el año o semestre.",
-  "Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.": "Habla con tu maestro para decidir cuántos créditos necesitas, luego usa ese número en la calculadora.",
-    "Credits Needed": "Créditos necesarios",
-  "Weeks Remaining": "Semanas restantes",
-  "Average Credits per Week": "Promedio de créditos por semana",
-  "Risk Level": "Nivel de riesgo",
-  "Suggestion": "Sugerencia",
-  "⚠️ Heads up: You’re planning to finish right at the deadline. Try to finish by Week 44 or earlier to give yourself a buffer in case anything unexpected comes up.": "⚠️ Aviso: Estás planeando terminar justo en la fecha límite. Intenta terminar para la Semana 44 o antes para darte un margen por si surge algo inesperado.",
-  "⚠️ Heads up: Week 46 is the last week to turn in credits to walk in the graduation ceremony. You’ve selected a week after that — talk with your teacher to make sure your plan still works.": "⚠️ Aviso: La Semana 46 es la última semana para entregar créditos y participar en la ceremonia de graduación. Has seleccionado una semana posterior — habla con tu maestro para asegurarte de que tu plan aún funcione.",
-
-  "mainDisclaimerFull": `This calculator is designed for students who plan to graduate this school year.<br><br>If you’re planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.<br><br>Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.`,
-
-  "mainDisclaimerFull_ES": `Esta calculadora está diseñada para estudiantes que planean graduarse este año escolar.<br><br>Si planeas graduarte el próximo año o después, igual puedes usarla para establecer una meta de créditos para el año o semestre escolar.<br><br>Habla con tu maestro para decidir cuántos créditos deberías completar y usa ese número en la calculadora.`,
-
-  "footerDisclaimerFull": `<strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.`,
-
-  "footerDisclaimerFull_ES": `<strong>Aviso:</strong> Esta calculadora es una herramienta útil para planificar, pero es importante verificar tus créditos totales y cuántas semanas tienes.<br>Si no estás seguro, habla con tu maestro o consejero escolar para revisar tu plan.`,
-
+  "This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.": "Esta calculadora es una herramienta \u00fatil para planificar, pero es importante verificar tus cr\u00e9ditos y el n\u00famero de semanas. Si no est\u00e1s seguro, habla con tu maestro o consejero escolar.",
+  "This calculator is designed for students who plan to graduate this school year.": "Esta calculadora est\u00e1 dise\u00f1ada para estudiantes que planean graduarse este a\u00f1o escolar.",
+  "If you're planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.": "Si planeas graduarte el pr\u00f3ximo a\u00f1o o despu\u00e9s, a\u00fan puedes usarla para establecer una meta de cr\u00e9ditos para el a\u00f1o o semestre.",
+  "Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.": "Habla con tu maestro para decidir cu\u00e1ntos cr\u00e9ditos necesitas, luego usa ese n\u00famero en la calculadora.",
+  "mainDisclaimerFull": "This calculator is designed for students who plan to graduate this school year.<br><br>If you're planning to graduate next year or later, you can still use it to set a credit goal for the school year or semester.<br><br>Talk with your teacher to decide how many credits to aim for, then use that number in the calculator.",
+  "mainDisclaimerFull_ES": "Esta calculadora est\u00e1 dise\u00f1ada para estudiantes que planean graduarse este a\u00f1o escolar.<br><br>Si planeas graduarte el pr\u00f3ximo a\u00f1o o despu\u00e9s, igual puedes usarla para establecer una meta de cr\u00e9ditos para el a\u00f1o o semestre escolar.<br><br>Habla con tu maestro para decidir cu\u00e1ntos cr\u00e9ditos deber\u00edas completar y usa ese n\u00famero en la calculadora.",
+  "footerDisclaimerFull": "<strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.",
+  "footerDisclaimerFull_ES": "<strong>Aviso:</strong> Esta calculadora es una herramienta \u00fatil para planificar, pero es importante verificar tus cr\u00e9ditos totales y cu\u00e1ntas semanas tienes.<br>Si no est\u00e1s seguro, habla con tu maestro o consejero escolar para revisar tu plan.",
 };
 
-    const dateRanges = [
-  "", "July 1 - July 4", "July 7 - July 11", "July 14 - July 18", "July 21 - July 25",
-  "July 28 - Aug 1", "Aug 4 - Aug 8", "Aug 11 - Aug 15", "Aug 18 - Aug 22", "Aug 25 - Aug 29",
-  "Sept 1 - Sept 5", "Sept 8 - Sept 12", "Sept 15 - Sept 19", "Sept 22 - Sept 26", "Sept 29 - Oct 3",
-  "Oct 6 - Oct 10", "Oct 13 - Oct 17", "Oct 20 - Oct 24", "Oct 27 - Oct 31", "Nov 3 - Nov 7",
-  "Nov 10 - Nov 14", "Nov 17 - Nov 21", "Nov 24 - Nov 28", "Dec 1 - Dec 5", "Dec 8 - Dec 12",
-  "Dec 15 - Dec 19", "Dec 22 - Dec 26 (Winter Break)", "Dec 29 - Jan 2 (Winter Break)", "Jan 5 - Jan 9",
-  "Jan 12 - Jan 16", "Jan 19 - Jan 23 - End of Semester 1", "Jan 26 - Jan 30", "Feb 2 - Feb 6",
-  "Feb 9 - Feb 13", "Feb 16 - Feb 20", "Feb 23 - Feb 27", "Mar 2 - Mar 6", "Mar 9 - Mar 13",
-  "Mar 16 - Mar 20", "Mar 23 - Mar 27", "Mar 30 - Apr 3", "Apr 6 - Apr 10", "Apr 13 - Apr 17",
-  "Apr 20 - Apr 24", "Apr 27 - May 1", "May 4 - May 8", "May 11- May 15 (Graduation Credit Deadline - May 15)",
-  "May 18 - May 22", "May 25 - May 29", "June 1 - June 5", "June 8 - June 12", "June 15 - June 19",
-  "June 22 - June 26 - End of Semester 2", "June 29 - June 30"
-];
-
-// ✅ Define weeks array globally (outside any function)
-const weeks = [
-  ["July 1 - July 4", "1–4 de julio"],
-  ["July 7 - July 11", "7–11 de julio"],
-  ["July 14 - July 18", "14–18 de julio"],
-  ["July 21 - July 25", "21–25 de julio"],
-  ["July 28 - Aug 1", "28 de julio–1 de agosto"],
-  ["Aug 4 - Aug 8", "4–8 de agosto"],
-  ["Aug 11 - Aug 15", "11–15 de agosto"],
-  ["Aug 18 - Aug 22", "18–22 de agosto"],
-  ["Aug 25 - Aug 29", "25–29 de agosto"],
-  ["Sept 1 - Sept 5", "1–5 de septiembre"],
-  ["Sept 8 - Sept 12", "8–12 de septiembre"],
-  ["Sept 15 - Sept 19", "15–19 de septiembre"],
-  ["Sept 22 - Sept 26", "22–26 de septiembre"],
-  ["Sept 29 - Oct 3", "29 de septiembre–3 de octubre"],
-  ["Oct 6 - Oct 10", "6–10 de octubre"],
-  ["Oct 13 - Oct 17", "13–17 de octubre"],
-  ["Oct 20 - Oct 24", "20–24 de octubre"],
-  ["Oct 27 - Oct 31", "27–31 de octubre"],
-  ["Nov 3 - Nov 7", "3–7 de noviembre"],
-  ["Nov 10 - Nov 14", "10–14 de noviembre"],
-  ["Nov 17 - Nov 21", "17–21 de noviembre"],
-  ["Nov 24 - Nov 28", "24–28 de noviembre"],
-  ["Dec 1 - Dec 5", "1–5 de diciembre"],
-  ["Dec 8 - Dec 12", "8–12 de diciembre"],
-  ["Dec 15 - Dec 19", "15–19 de diciembre"],
-  ["Dec 22 - Dec 26 (Winter Break)", "22–26 de diciembre (Vacaciones de invierno)"],
-  ["Dec 29 - Jan 2 (Winter Break)", "29 de diciembre–2 de enero (Vacaciones de invierno)"],
-  ["Jan 5 - Jan 9", "5–9 de enero"],
-  ["Jan 12 - Jan 16", "12–16 de enero"],
-  ["Jan 19 - Jan 23 - End of Semester 1", "19–23 de enero - Fin del semestre 1"],
-  ["Jan 26 - Jan 30", "26–30 de enero"],
-  ["Feb 2 - Feb 6", "2–6 de febrero"],
-  ["Feb 9 - Feb 13", "9–13 de febrero"],
-  ["Feb 16 - Feb 20", "16–20 de febrero"],
-  ["Feb 23 - Feb 27", "23–27 de febrero"],
-  ["Mar 2 - Mar 6", "2–6 de marzo"],
-  ["Mar 9 - Mar 13", "9–13 de marzo"],
-  ["Mar 16 - Mar 20", "16–20 de marzo"],
-  ["Mar 23 - Mar 27", "23–27 de marzo"],
-  ["Mar 30 - Apr 3", "30 de marzo–3 de abril"],
-  ["Apr 6 - Apr 10", "6–10 de abril"],
-  ["Apr 13 - Apr 17", "13–17 de abril"],
-  ["Apr 20 - Apr 24", "20–24 de abril"],
-  ["Apr 27 - May 1", "27 de abril–1 de mayo"],
-  ["May 4 - May 8", "4–8 de mayo"],
-  ["May 11 - May 15 ( Graduation Ceremony Credit Deadline - May 15)", "11–15 de mayo (Fecha límite para créditos de graduación)"],
-  ["May 18 - May 22", "18–22 de mayo"],
-  ["May 25 - May 29", "25–29 de mayo"],
-  ["June 1 - June 5", "1–5 de junio"],
-  ["June 8 - June 12", "8–12 de junio"],
-  ["June 15 - June 19", "15–19 de junio"],
-  ["June 22 - June 26 - End of Semester 2", "22–26 de junio - Fin del semestre 2"]
-];
-
-   function showLanguagePrompt() {
+// =====================================================
+// LANGUAGE PROMPT
+// =====================================================
+function showLanguagePrompt() {
   const calc = document.querySelector(".container");
   calc.style.opacity = 0;
-
   setTimeout(() => {
     calc.style.display = "none";
-
     document.body.classList.add("show-prompt");
-
     const prompt = document.getElementById("languagePrompt");
     prompt.style.display = "flex";
-    
-    // Force layout refresh to allow fade-in
     void prompt.offsetWidth;
-
     prompt.style.opacity = 1;
-
-    // Clear fields (optional reset)
+    // Reset form
     document.getElementById("totalCredits").value = "";
     document.getElementById("startWeek").selectedIndex = 0;
     document.getElementById("endWeek").selectedIndex = 0;
     document.getElementById("skipThanksgiving").checked = false;
     document.getElementById("skipWinter").checked = false;
     document.getElementById("skipSpring").checked = false;
-
-    // ✅ Add this block to also reset custom skip checkboxes
     for (let i = 1; i <= 4; i++) {
-      const cb = document.getElementById(`customSkip${i}`);
-      const sel = document.getElementById(`customWeek${i}`);
+      const cb = document.getElementById('customSkip' + i);
+      const sel = document.getElementById('customWeek' + i);
       if (cb) cb.checked = false;
       if (sel) sel.selectedIndex = 0;
     }
-
     document.getElementById("result").innerHTML = "";
     document.getElementById("planButtons").style.display = "none";
     lastResultData = null;
     storedPlan = {};
+    // Reset year to current
+    initializeYear(getCurrentSchoolYear());
+    updateYearToggle();
+    var notice = document.getElementById("nextYearNotice");
+    if (notice) notice.style.display = 'none';
   }, 300);
 }
-    // ✅ Then define the function once (not nested)
+
+// =====================================================
+// POPULATE DROPDOWNS (uses generated data)
+// =====================================================
 function populateWeekDropdowns() {
   const startSelect = document.getElementById("startWeek");
   const endSelect = document.getElementById("endWeek");
-
-  if (!startSelect || !endSelect) {
-    return;
-  }
-
+  if (!startSelect || !endSelect) return;
   startSelect.innerHTML = "";
   endSelect.innerHTML = "";
-
   for (let i = 0; i < weeks.length; i++) {
-    const optionEN = document.createElement("option");
-    optionEN.value = i + 1;
-    optionEN.innerHTML = isSpanish
-      ? `Semana ${i + 1}: ${weeks[i][1]}`
-      : `Week ${i + 1}: ${weeks[i][0]}`;
-
-    const optionEN2 = optionEN.cloneNode(true);
-
-    startSelect.appendChild(optionEN);
-    endSelect.appendChild(optionEN2);
+    const opt1 = document.createElement("option");
+    opt1.value = i + 1;
+    opt1.innerHTML = isSpanish
+      ? 'Semana ' + (i + 1) + ': ' + weeks[i][1]
+      : 'Week ' + (i + 1) + ': ' + weeks[i][0];
+    const opt2 = opt1.cloneNode(true);
+    startSelect.appendChild(opt1);
+    endSelect.appendChild(opt2);
   }
-
-  // ✅ Populate the 4 custom skip dropdowns
-  const customWeekSelects = [
-    document.getElementById("customWeek1"),
-    document.getElementById("customWeek2"),
-    document.getElementById("customWeek3"),
-    document.getElementById("customWeek4")
-  ];
-
-  customWeekSelects.forEach(select => {
-    if (!select) return;
-    select.innerHTML = "";
+  // Custom skip dropdowns
+  for (let c = 1; c <= 4; c++) {
+    const sel = document.getElementById('customWeek' + c);
+    if (!sel) continue;
+    sel.innerHTML = "";
     for (let i = 0; i < weeks.length; i++) {
       const opt = document.createElement("option");
       opt.value = i + 1;
       opt.textContent = isSpanish
-        ? `Semana ${i + 1}: ${weeks[i][1]}`
-        : `Week ${i + 1}: ${weeks[i][0]}`;
-      select.appendChild(opt);
-    }
-  });
-}
-
-let storedPlan = {};
-
-    let lastResultData = null;
-    function calculateCredits() {
-        
-      const totalCredits = parseInt(document.getElementById("totalCredits").value);
-      const startWeek = parseInt(document.getElementById("startWeek").value);
-      const endWeek = parseInt(document.getElementById("endWeek").value);
-
-            const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
-      const skipWinter = document.getElementById("skipWinter").checked;
-      const skipSpring = document.getElementById("skipSpring").checked;
-
-      const customSkips = [];
-const selectedWeeks = new Set();
-let duplicateFound = false;
-
-for (let i = 1; i <= 4; i++) {
-  const cb = document.getElementById(`customSkip${i}`);
-  const sel = document.getElementById(`customWeek${i}`);
-  if (cb?.checked && sel?.value) {
-    const val = parseInt(sel.value);
-    if (!isNaN(val)) {
-      if (selectedWeeks.has(val)) {
-        duplicateFound = true;
-      } else {
-        selectedWeeks.add(val);
-        customSkips.push(val);
-      }
+        ? 'Semana ' + (i + 1) + ': ' + weeks[i][1]
+        : 'Week ' + (i + 1) + ': ' + weeks[i][0];
+      sel.appendChild(opt);
     }
   }
 }
 
-if (duplicateFound) {
-  document.getElementById("result").innerHTML = `<div class='warning'>You've selected the same week more than once in custom skip weeks. Each custom week must be different.</div>`;
-  return;
-}
+// =====================================================
+// CALCULATE CREDITS (unchanged logic)
+// =====================================================
+function calculateCredits() {
+  const totalCredits = parseInt(document.getElementById("totalCredits").value);
+  const startWeek = parseInt(document.getElementById("startWeek").value);
+  const endWeek = parseInt(document.getElementById("endWeek").value);
+  const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
+  const skipWinter = document.getElementById("skipWinter").checked;
+  const skipSpring = document.getElementById("skipSpring").checked;
 
-
-      // Combine all skip weeks into one array
-      const allSkips = [
-        ...(skipThanksgiving ? [22] : []),
-        ...(skipWinter ? [26, 27] : []),
-        ...(skipSpring ? [41] : []),
-        ...customSkips
-      ];
-
-      // Only count unique skips
-      // Only count unique skip weeks that fall within the selected planning window
-const uniqueSkips = [...new Set(allSkips)].filter(week => week >= startWeek && week <= endWeek);
-let weeksRemaining = endWeek - startWeek + 1 - uniqueSkips.length;
-
-      if (!totalCredits || weeksRemaining <= 0) {
-        document.getElementById("result").innerText = "Please enter valid numbers.";
-        return;
+  const customSkips = [];
+  const selectedWeeks = new Set();
+  let duplicateFound = false;
+  for (let i = 1; i <= 4; i++) {
+    const cb = document.getElementById('customSkip' + i);
+    const sel = document.getElementById('customWeek' + i);
+    if (cb?.checked && sel?.value) {
+      const val = parseInt(sel.value);
+      if (!isNaN(val)) {
+        if (selectedWeeks.has(val)) { duplicateFound = true; }
+        else { selectedWeeks.add(val); customSkips.push(val); }
       }
+    }
+  }
+  if (duplicateFound) {
+    document.getElementById("result").innerHTML = "<div class='warning'>You've selected the same week more than once in custom skip weeks. Each custom week must be different.</div>";
+    return;
+  }
 
-      const weeklyAvg = (totalCredits / weeksRemaining).toFixed(2);
-      const weeklyAvgNum = parseFloat(weeklyAvg);
+  const allSkips = [
+    ...(skipThanksgiving ? [22] : []),
+    ...(skipWinter ? [26, 27] : []),
+    ...(skipSpring ? [41] : []),
+    ...customSkips
+  ];
+  const uniqueSkips = [...new Set(allSkips)].filter(week => week >= startWeek && week <= endWeek);
+  let weeksRemaining = endWeek - startWeek + 1 - uniqueSkips.length;
 
-      let suggestion = "";
-      let riskLevel = "✅ Low Risk";
+  if (!totalCredits || weeksRemaining <= 0) {
+    document.getElementById("result").innerText = "Please enter valid numbers.";
+    return;
+  }
 
-      if (weeklyAvgNum <= 2.00) {
-        suggestion = `✅ You’re on track! Aim to turn in 2 credits a week to stay steady and finish on time.`;
-      } else if (weeklyAvgNum > 2.00 && weeklyAvgNum <= 2.50) {
-        suggestion = `⚠️ You’ll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.`;
-        riskLevel = "⚠️ Medium Risk";
-      } else if (weeklyAvgNum > 2.50 && weeklyAvgNum <= 2.79) {
-        suggestion = `⚠️ You’re getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.`;
-        riskLevel = "⚠️ Medium–High Risk";
-      } else if (weeklyAvgNum > 2.79 && weeklyAvgNum < 3.00) {
-        suggestion = `⚠️ You’re getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.`;
-        riskLevel = "⚠️ High Risk – Near Limit";
-      } else {
-        suggestion = `🚨 This plan needs 3 or more credits every week without any breaks. That’s a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.`;
-        riskLevel = "🚨 High Risk";
-      }
+  const weeklyAvg = (totalCredits / weeksRemaining).toFixed(2);
+  const weeklyAvgNum = parseFloat(weeklyAvg);
+  let suggestion = "";
+  let riskLevel = "\u2705 Low Risk";
 
-      let bufferWarningKey = "";
-if (endWeek === 46) {
-  bufferWarningKey = "bufferWarning44";
-} else if (endWeek === 45) {
-  bufferWarningKey = "bufferWarning45";
-} else if (endWeek > 46) {
-  bufferWarningKey = "bufferWarningAfter46";
-}
-let bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
+  if (weeklyAvgNum <= 2.00) {
+    suggestion = "\u2705 You're on track! Aim to turn in 2 credits a week to stay steady and finish on time.";
+  } else if (weeklyAvgNum <= 2.50) {
+    suggestion = "\u26a0\ufe0f You'll need to do a bit more than 2 each week. Try turning in 3 credits weekly to get ahead and lower your weekly credit load.";
+    riskLevel = "\u26a0\ufe0f Medium Risk";
+  } else if (weeklyAvgNum <= 2.79) {
+    suggestion = "\u26a0\ufe0f You're getting close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load and avoid burnout later.";
+    riskLevel = "\u26a0\ufe0f Medium\u2013High Risk";
+  } else if (weeklyAvgNum < 3.00) {
+    suggestion = "\u26a0\ufe0f You're getting very close to the weekly credit limit of 3. Try turning in 3 credits a week now so you can lower your credit load.";
+    riskLevel = "\u26a0\ufe0f High Risk \u2013 Near Limit";
+  } else {
+    suggestion = "\ud83d\udea8 This plan needs 3 or more credits every week without any breaks. That's a challenging pace, and most students need extra support to manage it. Talk with your teacher to build a plan that works for you and gives you backup options.";
+    riskLevel = "\ud83d\udea8 High Risk";
+  }
 
-      const strongStart = startWeek <= 10 ? `<p><strong>Strong Start Tip:</strong> Try completing 3 credits/week for the first 6 weeks. You can slow down later.</p>` : "";
+  let bufferWarningKey = "";
+  if (endWeek === 46) bufferWarningKey = "bufferWarning44";
+  else if (endWeek === 45) bufferWarningKey = "bufferWarning45";
+  else if (endWeek > 46) bufferWarningKey = "bufferWarningAfter46";
+  let bufferWarning = bufferWarningKey ? "<div class='warning'>" + getText(bufferWarningKey) + "</div>" : "";
 
-      const fullWeeksAt3 = Math.floor(totalCredits / 3);
-      const remainder = totalCredits % 3;
-      let planB = remainder === 0 ? `3 credits/week for ${fullWeeksAt3} weeks - (${fullWeeksAt3} weeks total)` : `3 credits/week for ${fullWeeksAt3} weeks + 1 week of ${remainder} credit${remainder > 1 ? 's' : ''} - (${fullWeeksAt3 + 1} weeks total)`;
-      const planBWeeks = remainder === 0 ? fullWeeksAt3 : fullWeeksAt3 + 1;
+  const fullWeeksAt3 = Math.floor(totalCredits / 3);
+  const remainder = totalCredits % 3;
+  const planBWeeks = remainder === 0 ? fullWeeksAt3 : fullWeeksAt3 + 1;
 
-      const creditsAfter3PerWeek = 3 * 8;
-      const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
-      const fullWeeksAt4 = Math.floor(remainingCredits / 4);
-      const remainderD = remainingCredits % 4;
-      const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
+  const creditsAfter3PerWeek = 3 * 8;
+  const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
+  const fullWeeksAt4 = Math.floor(remainingCredits / 4);
+  const remainderD = remainingCredits % 4;
+  const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
 
-let planD = `<span style='color:red'><strong>${getText("plan_d_header")}</strong></span>, ` +
-  getText("then_x_weeks_of_4").replace("{x}", fullWeeksAt4);
+  let planD = "<span style='color:red'><strong>" + getText("plan_d_header") + "</strong></span>, " +
+    getText("then_x_weeks_of_4").replace("{x}", fullWeeksAt4);
+  if (remainderD > 0) planD += " " + getText("plus_1_week_of_n").replace("{n}", remainderD);
+  planD += " - " + getText("weeks_total").replace("{x}", totalWeeksD);
 
-if (remainderD > 0) {
-  planD += ` ${getText("plus_1_week_of_n").replace("{n}", remainderD)}`;
-}
+  let planDNote = "<li>" + planD;
+  if (totalWeeksD > weeksRemaining) {
+    planDNote += ' <span style="color: red;">' + getText("exceeds_weeks_by").replace("{z}", totalWeeksD - weeksRemaining) + '</span>';
+  }
+  planDNote += "</li>";
 
-planD += ` - ${getText("weeks_total").replace("{x}", totalWeeksD)}`;
-      let planDNote = `<li>${planD}`;
-if (totalWeeksD > weeksRemaining) {
-  const diff = totalWeeksD - weeksRemaining;
-  planDNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
-}
-planDNote += `</li>`;
+  const planAWeeks = Math.ceil(totalCredits / 2);
+  let weeksOf3 = 0;
+  let planANote = "<li><strong>" + getText("Plan A") + ":</strong> " +
+    getText("credits_per_week_for_weeks").replace("{x}", "2").replace("{y}", planAWeeks);
+  const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
 
-      const planAWeeks = Math.ceil(totalCredits / 2);
-      let weeksOf3 = 0; // Make this available outside the if-block
-     let planANote = `<li><strong>${getText("Plan A")}:</strong> ` +
-  getText("credits_per_week_for_weeks")
-    .replace("{x}", "2")
-    .replace("{y}", planAWeeks);
-
-const planAButton = document.querySelector('button[onclick="generatePlan(\'A\')"]');
-
-if (planAWeeks > weeksRemaining) {
-  const weeksOver = planAWeeks - weeksRemaining;
-  weeksOf3 = weeksOver * 2;
-
-  planANote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", weeksOver)}</span>`;
-
-  if (weeksOf3 < planBWeeks) {
-    // ✅ Fallback is viable
-    const creditsFrom3s = weeksOf3 * 3;
-    const creditsRemaining = totalCredits - creditsFrom3s;
-    const weeksOf2 = Math.floor(creditsRemaining / 2);
-    const leftover = creditsRemaining % 2;
-    const weeksOf1 = leftover > 0 ? 1 : 0;
-
-    const segments = [];
-    if (weeksOf3 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3));
-    if (weeksOf2 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2));
-    if (weeksOf1 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", 1).replace("{credit}", 1));
-
-    planANote += `<br><em>${getText("you_need_segments").replace("{segments}", segments.join(" and "))}</em>`;
-
+  if (planAWeeks > weeksRemaining) {
+    const weeksOver = planAWeeks - weeksRemaining;
+    weeksOf3 = weeksOver * 2;
+    planANote += ' <span style="color: red;">' + getText("exceeds_weeks_by").replace("{z}", weeksOver) + '</span>';
+    if (weeksOf3 < planBWeeks) {
+      const creditsFrom3s = weeksOf3 * 3;
+      const creditsRemaining2 = totalCredits - creditsFrom3s;
+      const weeksOf2 = Math.floor(creditsRemaining2 / 2);
+      const leftover = creditsRemaining2 % 2;
+      const weeksOf1 = leftover > 0 ? 1 : 0;
+      const segments = [];
+      if (weeksOf3 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf3).replace("{credit}", 3));
+      if (weeksOf2 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", weeksOf2).replace("{credit}", 2));
+      if (weeksOf1 > 0) segments.push(getText("weeks_of_x_credits").replace("{count}", 1).replace("{credit}", 1));
+      planANote += '<br><em>' + getText("you_need_segments").replace("{segments}", segments.join(" and ")) + '</em>';
+      planAButton.disabled = false;
+      planAButton.title = "";
+    } else {
+      planAButton.disabled = true;
+      planAButton.title = "Disabled: Plan A no longer works with remaining weeks left.";
+    }
+  } else {
     planAButton.disabled = false;
     planAButton.title = "";
-  } else {
-    // ❌ Fallback not viable
-    planAButton.disabled = true;
-    planAButton.title = "Disabled: Plan A no longer works with remaining weeks left.";
   }
-} else {
-  // ✅ Standard Plan A fits
-  planAButton.disabled = false;
-  planAButton.title = "";
-}
-planANote += `</li>`;
+  planANote += "</li>";
 
-      let planBNote = `<li><strong>${getText("Plan B")}:</strong> ` +
-  getText("credits_per_week_for_weeks")
-    .replace("{x}", "3")
-    .replace("{y}", fullWeeksAt3);
+  let planBNote = "<li><strong>" + getText("Plan B") + ":</strong> " +
+    getText("credits_per_week_for_weeks").replace("{x}", "3").replace("{y}", fullWeeksAt3);
+  if (remainder > 0) planBNote += " " + getText("plus_1_week_of_n").replace("{n}", remainder);
+  planBNote += " - " + getText("weeks_total").replace("{x}", planBWeeks);
+  if (planBWeeks > weeksRemaining) {
+    planBNote += ' <span style="color: red;">' + getText("exceeds_weeks_by").replace("{z}", planBWeeks - weeksRemaining) + '</span>';
+  }
+  planBNote += "</li>";
 
-if (remainder > 0) {
-  planBNote += ` ${getText("plus_1_week_of_n").replace("{n}", remainder)}`;
-}
-planBNote += ` - ${getText("weeks_total").replace("{x}", planBWeeks)}`;
+  let oneCreditWeeks = 0;
+  if (totalCredits <= weeksRemaining) oneCreditWeeks = totalCredits;
+  else if (totalCredits <= 2 * weeksRemaining) oneCreditWeeks = (2 * weeksRemaining) - totalCredits;
+  else oneCreditWeeks = 0;
 
-if (planBWeeks > weeksRemaining) {
-  const diff = planBWeeks - weeksRemaining;
-  planBNote += ` <span style="color: red;">${getText("exceeds_weeks_by").replace("{z}", diff)}</span>`;
-}
-planBNote += `</li>`;
-
-// ✅ Correct Plan C math:
-// W = weeksRemaining (usable weeks), C = totalCredits
-// If C <= W: we can do C weeks @1 and leave (W - C) weeks @0
-// If W < C <= 2W: we can do (2W - C) weeks @1 and the rest @2
-// If C > 2W: Plan C not feasible (0 weeks @1)
-let oneCreditWeeks = 0;
-if (totalCredits <= weeksRemaining) {
-  oneCreditWeeks = totalCredits;
-} else if (totalCredits <= 2 * weeksRemaining) {
-  oneCreditWeeks = (2 * weeksRemaining) - totalCredits;
-} else {
-  oneCreditWeeks = 0;
-}
-
-// ✅ Text rules:
-// - If C <= W  → "You can afford {C} week(s) at 1 credit"  (no clause)
-// - If W < C <= 2W → "You can afford up to {oneCreditWeeks} week(s) at 1 credit if the rest average 2+"
-// - If C > 2W → "You can afford 0 week(s) at 1 credit"
-let planCText = "";
-if (totalCredits <= weeksRemaining) {
-  planCText = isSpanish
-    ? `Puedes tener ${oneCreditWeeks} semana(s) de 1 crédito`
-    : `You can afford ${oneCreditWeeks} week(s) at 1 credit`;
-} else if (totalCredits <= 2 * weeksRemaining) {
-  planCText = isSpanish
-    ? `Puedes tener hasta ${oneCreditWeeks} semana(s) de 1 crédito si el resto promedia 2 o más`
-    : `You can afford up to ${oneCreditWeeks} week(s) at 1 credit if the rest average 2+`;
-} else {
-  planCText = isSpanish
-    ? `Puedes tener 0 semana(s) de 1 crédito`
-    : `You can afford 0 week(s) at 1 credit`;
-}
-
-let planCNote = `<li><strong>${getText("Plan C")}:</strong> ${planCText}</li>`;
-      // ✅ Dual Enrollment Recommendation
-// ✅ Dual Enrollment (feature-gated)
-let dualEnrollmentMarkup = "";
-if (FEATURES.dualEnrollment) {
-  const dualEnrollmentWeeklyAvg = totalCredits / weeksRemaining;
-  let dualEnrollmentMessage = "";
-
-  if (dualEnrollmentWeeklyAvg <= 1.5) {
-    dualEnrollmentMessage = isSpanish
-      ? "✅ Seguro – Carga manejable y con buen margen"
-      : "✅ Safe – Strong buffer and manageable load";
-  } else if (dualEnrollmentWeeklyAvg <= 2.0) {
-    dualEnrollmentMessage = isSpanish
-      ? "✅ Mayormente seguro – Razonable, pero monitorear consistencia"
-      : "✅ Mostly Safe – Reasonable, monitor consistency";
-  } else if (dualEnrollmentWeeklyAvg <= 2.5) {
-    dualEnrollmentMessage = isSpanish
-      ? "⚠️ Precaución – Solo si el estudiante demuestra alta constancia."
-      : "⚠️ Caution – Only consider if student is highly consistent";
+  let planCText = "";
+  if (totalCredits <= weeksRemaining) {
+    planCText = isSpanish
+      ? 'Puedes tener ' + oneCreditWeeks + ' semana(s) de 1 cr\u00e9dito'
+      : 'You can afford ' + oneCreditWeeks + ' week(s) at 1 credit';
+  } else if (totalCredits <= 2 * weeksRemaining) {
+    planCText = isSpanish
+      ? 'Puedes tener hasta ' + oneCreditWeeks + ' semana(s) de 1 cr\u00e9dito si el resto promedia 2 o m\u00e1s'
+      : 'You can afford up to ' + oneCreditWeeks + ' week(s) at 1 credit if the rest average 2+';
   } else {
-    dualEnrollmentMessage = isSpanish
-      ? "🚫 No recomendable – Ritmo semanal alto; DE podría causar retrasos"
-      : "🚫 Not Advisable – Weekly pace too high; DE likely to cause setbacks";
+    planCText = isSpanish
+      ? 'Puedes tener 0 semana(s) de 1 cr\u00e9dito'
+      : 'You can afford 0 week(s) at 1 credit';
+  }
+  let planCNote = "<li><strong>" + getText("Plan C") + ":</strong> " + planCText + "</li>";
+
+  // Dual Enrollment (feature-gated)
+  let dualEnrollmentMarkup = "";
+  if (FEATURES.dualEnrollment) {
+    const dualAvg = totalCredits / weeksRemaining;
+    let dualMsg = "";
+    if (dualAvg <= 1.5) dualMsg = isSpanish ? "\u2705 Seguro \u2013 Carga manejable y con buen margen" : "\u2705 Safe \u2013 Strong buffer and manageable load";
+    else if (dualAvg <= 2.0) dualMsg = isSpanish ? "\u2705 Mayormente seguro \u2013 Razonable, pero monitorear consistencia" : "\u2705 Mostly Safe \u2013 Reasonable, monitor consistency";
+    else if (dualAvg <= 2.5) dualMsg = isSpanish ? "\u26a0\ufe0f Precauci\u00f3n \u2013 Solo si el estudiante demuestra alta constancia." : "\u26a0\ufe0f Caution \u2013 Only consider if student is highly consistent";
+    else dualMsg = isSpanish ? "\ud83d\udeab No recomendable \u2013 Ritmo semanal alto; DE podr\u00eda causar retrasos" : "\ud83d\udeab Not Advisable \u2013 Weekly pace too high; DE likely to cause setbacks";
+    dualEnrollmentMarkup = "<p><strong>Dual Enrollment:</strong> " + dualMsg + "</p>";
   }
 
-  dualEnrollmentMarkup = `<p><strong>Dual Enrollment:</strong> ${dualEnrollmentMessage}</p>`;
-}
+  const result = '<p><strong>' + getText("Credits Needed") + ':</strong> ' + totalCredits + '</p>' +
+    '<p><strong>' + getText("Weeks Remaining") + ':</strong> ' + weeksRemaining + '</p>' +
+    '<p><strong>' + getText("Average Credits per Week") + ':</strong> ' + weeklyAvg + '</p>' +
+    dualEnrollmentMarkup +
+    '<p><strong>' + getText("Risk Level") + ':</strong> ' + getText(riskLevel) + '</p>' +
+    '<p><strong>' + getText("Suggestion") + ':</strong> ' + getText(suggestion) + '</p>' +
+    bufferWarning +
+    (startWeek <= 10 ? '<p><strong>' + getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.") + '</strong></p>' : '') +
+    '<hr><p><strong>' + getText("Workflow Options") + ':</strong></p><ul>' +
+    planANote + '<br>' + planBNote + '<br>' + planCNote + '<br>' + planDNote + '</ul>';
 
-      const result = `
-  <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
-  <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
-  <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
-    ${dualEnrollmentMarkup}
-  <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
-  <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
-  ${bufferWarning}
-  ${startWeek <= 10 ? `<p><strong>${getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.")}</strong></p>` : ""}
-  <hr>
-  <p><strong>${getText("Workflow Options")}:</strong></p>
-  <ul>
-    ${planANote}<br>
-    ${planBNote}<br>
-    ${planCNote}<br>
-    ${planDNote}
-  </ul>
-`;
+  document.getElementById("result").innerHTML = result;
 
-      document.getElementById("result").innerHTML = result;
-      lastResultData = {
-  totalCredits,
-  weeksRemaining,
-  weeklyAvg,
-  riskLevel,
-  suggestion,
-  bufferWarningKey,
-  strongStart: startWeek <= 10,
-  planANote,
-  planBNote,
-  planCNote,
-  planDNote,
-  dualEnrollmentMarkup
-};
+  lastResultData = {
+    totalCredits, weeksRemaining, weeklyAvg, riskLevel, suggestion,
+    bufferWarningKey, strongStart: startWeek <= 10,
+    planANote, planBNote, planCNote, planDNote, dualEnrollmentMarkup
+  };
 
-      // Disable Plan C button if Plan A exceeds weeks
-const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
-if (totalCredits > 2 * weeksRemaining) {
-  planCButton.disabled = true;
-  planCButton.title = "Disabled: Plan C needs 1–2 credits/week, which can't reach your total in time.";
-} else {
-  planCButton.disabled = false;
-  planCButton.title = "";
-}
-      
-      // Disable Plan B button if Plan B exceeds weeks
-const planBButton = document.querySelector('button[onclick="generatePlan(\'B\')"]');
-if (planBWeeks > weeksRemaining) {
-  planBButton.disabled = true;
-  planBButton.title = "Disabled: 3 credits/week plan won't fit in your remaining time.";
-} else {
-  planBButton.disabled = false;
-  planBButton.title = "";
-}
+  // Disable buttons as needed
+  const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
+  if (totalCredits > 2 * weeksRemaining) { planCButton.disabled = true; planCButton.title = "Disabled: Plan C needs 1\u20132 credits/week, which can't reach your total in time."; }
+  else { planCButton.disabled = false; planCButton.title = ""; }
 
-      // Disable Plan D button if Plan D exceeds weeks
-const planDButton = document.querySelector('button[onclick="generatePlan(\'D\')"]');
-if (totalWeeksD > weeksRemaining) {
-  planDButton.disabled = true;
-  planDButton.title = "Disabled: Plan D requires more weeks than you have left.";
-} else {
-  planDButton.disabled = false;
-  planDButton.title = "";
-}
+  const planBButton = document.querySelector('button[onclick="generatePlan(\'B\')"]');
+  if (planBWeeks > weeksRemaining) { planBButton.disabled = true; planBButton.title = "Disabled: 3 credits/week plan won't fit in your remaining time."; }
+  else { planBButton.disabled = false; planBButton.title = ""; }
+
+  const planDButton = document.querySelector('button[onclick="generatePlan(\'D\')"]');
+  if (totalWeeksD > weeksRemaining) { planDButton.disabled = true; planDButton.title = "Disabled: Plan D requires more weeks than you have left."; }
+  else { planDButton.disabled = false; planDButton.title = ""; }
 
   document.getElementById("planButtons").style.display = "flex";
-  storedPlan = { 
-        totalCredits, 
-        startWeek, 
-        endWeek, 
-        oneCreditWeeks,
-        skipWeeks: uniqueSkips
-      };
-    }
+  storedPlan = { totalCredits, startWeek, endWeek, oneCreditWeeks, skipWeeks: uniqueSkips };
+}
 
-    function renderResult() {
+// =====================================================
+// RENDER RESULT (for language switching)
+// =====================================================
+function renderResult() {
   if (!lastResultData) return;
-
-  const {
-  totalCredits,
-  weeksRemaining,
-  weeklyAvg,
-  riskLevel,
-  suggestion,
-  bufferWarningKey,
-  strongStart,
-  planANote,
-  planBNote,
-  planCNote,
-  planDNote,
-  dualEnrollmentMarkup
-} = lastResultData;
-  const bufferWarning = bufferWarningKey ? `<div class='warning'>${getText(bufferWarningKey)}</div>` : "";
-
-  const result = `
-    <p><strong>${getText("Credits Needed")}:</strong> ${totalCredits}</p>
-    <p><strong>${getText("Weeks Remaining")}:</strong> ${weeksRemaining}</p>
-    <p><strong>${getText("Average Credits per Week")}:</strong> ${weeklyAvg}</p>
-        ${dualEnrollmentMarkup || ""}
-    <p><strong>${getText("Risk Level")}:</strong> ${getText(riskLevel)}</p>
-    <p><strong>${getText("Suggestion")}:</strong> ${getText(suggestion)}</p>
-    ${bufferWarning}
-    ${strongStart ? `<p><strong>${getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.")}</strong></p>` : ""}
-    <hr>
-    <p><strong>${getText("Workflow Options")}:</strong></p>
-    <ul>
-      ${planANote}<br>
-      ${planBNote}<br>
-      ${planCNote}<br>
-      ${planDNote}
-    </ul>
-  `;
-
+  const { totalCredits, weeksRemaining, weeklyAvg, riskLevel, suggestion,
+    bufferWarningKey, strongStart, planANote, planBNote, planCNote, planDNote, dualEnrollmentMarkup } = lastResultData;
+  const bufferWarning = bufferWarningKey ? "<div class='warning'>" + getText(bufferWarningKey) + "</div>" : "";
+  const result = '<p><strong>' + getText("Credits Needed") + ':</strong> ' + totalCredits + '</p>' +
+    '<p><strong>' + getText("Weeks Remaining") + ':</strong> ' + weeksRemaining + '</p>' +
+    '<p><strong>' + getText("Average Credits per Week") + ':</strong> ' + weeklyAvg + '</p>' +
+    (dualEnrollmentMarkup || '') +
+    '<p><strong>' + getText("Risk Level") + ':</strong> ' + getText(riskLevel) + '</p>' +
+    '<p><strong>' + getText("Suggestion") + ':</strong> ' + getText(suggestion) + '</p>' +
+    bufferWarning +
+    (strongStart ? '<p><strong>' + getText("Strong Start Tip: Try completing 3 credits/week for the first 6 weeks. You can slow down later.") + '</strong></p>' : '') +
+    '<hr><p><strong>' + getText("Workflow Options") + ':</strong></p><ul>' +
+    planANote + '<br>' + planBNote + '<br>' + planCNote + '<br>' + planDNote + '</ul>';
   document.getElementById("result").innerHTML = result;
 }
 
- function generatePlan(type) {
+// =====================================================
+// GENERATE PLAN (uses generated dateRanges)
+// =====================================================
+function generatePlan(type) {
   const { totalCredits, startWeek, endWeek, skipWeeks } = storedPlan;
-
-  // 1) Build week objects with skip flags
   let allWeeks = [];
   for (let w = startWeek; w <= endWeek; w++) {
-    const isSkipped = skipWeeks.includes(w);
-    allWeeks.push({ week: w, skip: isSkipped });
+    allWeeks.push({ week: w, skip: skipWeeks.includes(w) });
   }
-
-  // 2) Determine usable weeks and an initial distribution for this plan
   const usable = allWeeks.filter(w => !w.skip);
   const W = usable.length;
   const C = totalCredits;
@@ -1084,24 +817,16 @@ if (totalWeeksD > weeksRemaining) {
   function baseDistribution(planType) {
     if (planType === 'A') {
       const need = Math.ceil(C / 2);
-      if (need <= W) {
-        return [...Array(need).fill(2), ...Array(W - need).fill(0)];
-      } else {
-        const weeksOver = need - W;
-        const weeksOf3 = weeksOver * 2;           // each 3 gives +1 more than 2
-        const creditsFrom3s = weeksOf3 * 3;
-        const remaining = C - creditsFrom3s;
-        const w2 = Math.floor(remaining / 2);
-        const leftover = remaining % 2;
-        const w1 = leftover > 0 ? 1 : 0;
-        const zeros = Math.max(0, W - weeksOf3 - w2 - w1);
-        return [
-          ...Array(weeksOf3).fill(3),
-          ...Array(w2).fill(2),
-          ...Array(w1).fill(1),
-          ...Array(zeros).fill(0)
-        ];
-      }
+      if (need <= W) return [...Array(need).fill(2), ...Array(W - need).fill(0)];
+      const weeksOver = need - W;
+      const weeksOf3 = weeksOver * 2;
+      const creditsFrom3s = weeksOf3 * 3;
+      const remaining = C - creditsFrom3s;
+      const w2 = Math.floor(remaining / 2);
+      const leftover = remaining % 2;
+      const w1 = leftover > 0 ? 1 : 0;
+      const zeros = Math.max(0, W - weeksOf3 - w2 - w1);
+      return [...Array(weeksOf3).fill(3), ...Array(w2).fill(2), ...Array(w1).fill(1), ...Array(zeros).fill(0)];
     }
     if (planType === 'B') {
       const full3 = Math.floor(C / 3);
@@ -1112,15 +837,9 @@ if (totalWeeksD > weeksRemaining) {
       return arr.slice(0, W);
     }
     if (planType === 'C') {
-      if (C <= W) {
-        return [...Array(C).fill(1), ...Array(W - C).fill(0)];
-      } else if (C <= 2 * W) {
-        const extras = C - W;         // these must be 2s
-        const ones = W - extras;      // rest can be 1s
-        return [...Array(extras).fill(2), ...Array(ones).fill(1)];
-      } else {
-        return Array(W).fill(2);      // infeasible under ≤2/wk; keep honest
-      }
+      if (C <= W) return [...Array(C).fill(1), ...Array(W - C).fill(0)];
+      if (C <= 2 * W) { const extras = C - W; return [...Array(extras).fill(2), ...Array(W - extras).fill(1)]; }
+      return Array(W).fill(2);
     }
     if (planType === 'D') {
       const part1 = Array(Math.min(8, W)).fill(3);
@@ -1132,15 +851,12 @@ if (totalWeeksD > weeksRemaining) {
         after = Array(Math.min(w4, Math.max(0, W - part1.length))).fill(4);
         if (r4 > 0 && part1.length + after.length < W) after.push(r4);
       }
-      const zeros = Math.max(0, W - (part1.length + after.length));
-      return [...part1, ...after, ...Array(zeros).fill(0)];
+      return [...part1, ...after, ...Array(Math.max(0, W - part1.length - after.length)).fill(0)];
     }
     return Array(W).fill(0);
   }
 
   const initial = baseDistribution(type);
-
-  // Apply to allWeeks (keep 0 for skip rows)
   let pointer = 0;
   allWeeks = allWeeks.map(w => {
     if (w.skip) return { ...w, credits: 0 };
@@ -1149,943 +865,312 @@ if (totalWeeksD > weeksRemaining) {
     return { ...w, credits: val };
   });
 
-  // Open a new window
   const printWin = window.open("", "_blank");
   const maxPerWeek = (type === 'D') ? 4 : 3;
-   function formatDateForCell(str) {
-  // Handle parentheses notes: e.g. "Dec 22 - Dec 26 (Winter Break)"
-  const paren = str.match(/^(.*?)(\s*\((.+)\))$/);
-  if (paren) {
-    const core = paren[1].trim();     // e.g. "Dec 22 - Dec 26"
-    const note = paren[3].trim();     // e.g. "Winter Break"
-    return `<span class="date-core">${core}</span><span class="date-note">${note}</span>`;
+
+  function formatDateForCell(str) {
+    const paren = str.match(/^(.*?)(\s*\((.+)\))$/);
+    if (paren) return '<span class="date-core">' + paren[1].trim() + '</span><span class="date-note">' + paren[3].trim() + '</span>';
+    const dash = str.match(/^(.*?)-\s*(End of Semester.*|Graduation.*)$/i);
+    if (dash) return '<span class="date-core">' + dash[1].trim() + '</span><span class="date-note">' + dash[2].trim() + '</span>';
+    return '<span class="date-core">' + str + '</span>';
   }
 
-  // Handle dash notes: e.g. "Jan 19 - Jan 23 - End of Semester 1"
-  const dash = str.match(/^(.*?)-\s*(End of Semester.*|Graduation.*)$/i);
-  if (dash) {
-    const core = dash[1].trim();      // e.g. "Jan 19 - Jan 23"
-    const note = dash[2].trim();      // e.g. "End of Semester 1"
-    return `<span class="date-core">${core}</span><span class="date-note">${note}</span>`;
+  const isIOS = /iPhone|iPad|iPod/i.test(printWin.navigator.userAgent || '');
+  const isSmallViewport = printWin.matchMedia && printWin.matchMedia('(max-width: 900px)').matches;
+  const shouldSplit = isIOS || isSmallViewport;
+  const maxRowsFirst = 16;
+  const maxRowsNext = 23;
+
+  let rows = [];
+  allWeeks.forEach((w) => {
+    const rowClass = w.skip ? ' class="skip-row"' : '';
+    const controls = w.skip ? '<em>Skip</em>' : '<button class="minus">\u2013</button><button class="plus">+</button>';
+    const boxes = [1, 2, 3, 4].map(i => {
+      const id = 'wk' + w.week + '-c' + i;
+      return '<label class="chk"><input type="checkbox" id="' + id + '" />' + i + '<span class="credit-line"></span></label>';
+    }).join('');
+    rows.push('<tr' + rowClass + ' data-week="' + w.week + '" data-skip="' + (w.skip ? '1' : '0') + '">' +
+      '<td class="col-week">' + w.week + '</td>' +
+      '<td class="col-date">' + formatDateForCell(dateRanges[w.week] || '') + '</td>' +
+      '<td class="col-credits"><strong class="val">' + w.credits + '</strong></td>' +
+      '<td class="col-progress"><div class="progress-grid">' + boxes + '</div></td>' +
+      '<td class="controls col-adjust">' + controls + '</td></tr>');
+  });
+
+  const tableStart = '<table class="planner"><colgroup><col class="col-week"><col class="col-date"><col class="col-credits"><col class="col-progress"><col class="col-adjust"></colgroup><thead><tr><th class="col-week">Week</th><th class="col-date">Date Range</th><th class="col-credits">Credits</th><th class="col-progress">Progress</th><th class="col-adjust">Adjust</th></tr></thead>';
+  const tableEnd = '</table>';
+
+  let chunks = [];
+  if (shouldSplit) {
+    let i = 0;
+    chunks.push(rows.slice(i, i + maxRowsFirst)); i += maxRowsFirst;
+    while (i < rows.length) { chunks.push(rows.slice(i, i + maxRowsNext)); i += maxRowsNext; }
+  } else {
+    chunks = [rows];
   }
 
-  // Default: just return the date
-  return `<span class="date-core">${str}</span>`;
-}
+  let tablesHtml = '';
+  chunks.forEach((chunkRows, idx) => {
+    if (idx > 0) tablesHtml += '<div class="page-cut"></div>';
+    tablesHtml += '<div class="print-chunk' + (idx === 0 ? ' first' : '') + '">' + tableStart + '<tbody>' + chunkRows.join('') + '</tbody>' + tableEnd + '</div>';
+  });
 
-// Paginate rows for mobile/iOS print: 21 rows on page 1, 26 on page 2, rest on page 3+
-const isIOS = /iPhone|iPad|iPod/i.test(printWin.navigator.userAgent || '');
-const isSmallViewport = printWin.matchMedia && printWin.matchMedia('(max-width: 900px)').matches;
-const shouldSplit = isIOS || isSmallViewport;
+  const yearLabel = schoolYearData.yearLabel;
 
-// capacities you observed; tweak if you change row padding/sizing
-const maxRowsFirst = 16;
-const maxRowsNext = 23;
+  const html = '<!doctype html><html><head><meta charset="utf-8"><title>Plan ' + type + ' \u2013 ' + yearLabel + ' Credit Tracker</title>' +
+  '<style>' +
+  'body { font-family: Arial, sans-serif; padding: 16px; }' +
+  'table { border-collapse: collapse; width: 100%; margin-top: 12px; table-layout: fixed; }' +
+  'th, td { border: 1px solid #ccc; padding: 6px; text-align: center; vertical-align: middle; }' +
+  '.skip-row { background: #ffd6d6; }' +
+  '.controls { display:flex; gap:8px; align-items:center; justify-content:center; }' +
+  '.controls button { padding: 4px 8px; }' +
+  '.topbar { position: sticky; top: 0; background: #fff; border: 1px solid #ddd; padding: 8px 12px; border-radius: 8px; display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items:start; z-index: 5; column-gap: 116px; padding-right: 120px; }' +
+  '.summarywrap { border: 1px solid #d0d0d0; border-radius: 10px; padding: 6px 8px; background: #fff; justify-self: start; }' +
+  '.summarybar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }' +
+  '.summarybar .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 6px; font-size: 0.82rem; border: 1px solid #bdbdbd; border-radius: 6px; background: #fff; }' +
+  '.summarybar .badge strong { font-weight: 700; display: inline-block; min-width: 1.2em; text-align: right; }' +
+  '.summarybar .badge-lg { font-size: 0.9rem; padding: 4px 8px; border-color: #a8a8a8; }' +
+  '.badge { border: 1px solid #999; border-radius: 6px; padding: 4px 6px; font-size: 0.85em; }' +
+  '.col-progress .progress-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 8px; align-items: center; justify-items: center; }' +
+  '.chk { display: inline-flex; align-items: center; gap: 3px; font-size: 0.85rem; white-space: nowrap; }' +
+  '.chk input { width: 14px; height: 14px; }' +
+  '.credit-line { display: inline-block; border-bottom: 1px solid #000; height: 1em; width: clamp(0.4in, 12vw, 0.95in); }' +
+  'col.col-week { width: 5%; } col.col-date { width: 18%; } col.col-credits { width: 6%; } col.col-progress { width: 51%; } col.col-adjust { width: 7%; }' +
+  'td.col-week, th.col-week, td.col-credits, th.col-credits { font-size: 0.85rem; }' +
+  '.col-date .date-core { white-space: nowrap !important; display: block !important; }' +
+  '.col-date .date-note { display: block !important; white-space: normal !important; font-size: 0.85em; line-height: 1.1; margin-top: 2px; }' +
+  '#printBtn { position: fixed; top: 16px; right: 16px; background-color: white; color: black; border: 1px solid black; padding: 8px 12px; border-radius: 6px; cursor: pointer; z-index: 9; }' +
+  '#printBtn:hover { background:#555; color:#fff; }' +
+  '.print-tips { background: #fff3cd; border: 1px solid #ffe49a; color: #6b5b00; padding: 10px 14px; border-radius: 8px; font-size: 0.95rem; max-width: 420px; justify-self: start; align-self: start; margin-top: 0; margin-left: 10px; }' +
+  '.print-tips strong { font-weight: 700; } .print-tips ul { margin: 6px 0 0 1.1em; padding: 0; } .print-tips li { margin: 2px 0; }' +
+  '.topbar .tools { justify-self: start; align-self: start; display: flex; flex-direction: column; gap: 6px; margin-left: 0; margin-right: 0; }' +
+  '@media screen and (min-width: 1024px) { .topbar .tools { position: relative; left: -77px; } }' +
+  '@media screen { .page-cut { display: none !important; } table.planner { border-collapse: collapse; width: 100%; } .print-chunk { break-inside: auto; page-break-inside: auto; }' +
+  '.print-chunk + .page-cut + .print-chunk table.planner, .print-chunk ~ .print-chunk table.planner { margin-top: -1px; border-top: 0; }' +
+  '.print-chunk:first-of-type table.planner thead { display: table-header-group !important; }' +
+  '.print-chunk ~ .print-chunk table.planner thead { display: none !important; } }' +
+  '.notes { display: none !important; }' +
+  '@media print { @page { size: letter portrait; margin: 0.4in; } body { padding: 0 !important; }' +
+  '.topbar, h2 { page-break-before: avoid !important; break-before: avoid !important; page-break-after: avoid !important; break-after: avoid !important; }' +
+  '.print-chunk:first-of-type, .print-chunk:first-of-type table.planner { break-before: auto !important; page-break-before: auto !important; margin-top: 0 !important; padding-top: 0 !important; }' +
+  'table { line-height: 1.12; } tr, td, th { page-break-inside: avoid !important; break-inside: avoid !important; }' +
+  'table.planner thead { display: table-header-group !important; } table.planner tfoot { display: table-footer-group !important; }' +
+  '#printBtn { display: none; } .topbar .tools, .print-tips, .notes, th.col-adjust, td.col-adjust, .col-adjust { display: none !important; }' +
+  '.topbar { position: static !important; z-index: auto !important; background: #fff; margin-bottom: 6px; padding: 4px 8px; grid-template-columns: 1fr; row-gap: 4px; }' +
+  '.badge { padding: 2px 4px; font-size: 0.78em; } th, td { padding: 5px 4px; }' +
+  'col.col-week { width: 5%; } col.col-date { width: 22%; } col.col-credits { width: 5%; } col.col-progress { width: 68%; }' +
+  'td.col-date { overflow: visible !important; text-overflow: clip !important; }' +
+  '.col-progress .progress-grid { grid-template-columns: repeat(4, 1fr); column-gap: 6px; justify-items: start; }' +
+  '.chk { font-size: 0.82rem; gap: 2px; } .chk input { width: 12px; height: 12px; } .credit-line { width: 0.78in !important; }' +
+  'table.planner { margin-top: 4px !important; margin-bottom: 4px !important; }' +
+  'thead th { padding-top: 3px !important; padding-bottom: 3px !important; }' +
+  'td, th { padding-top: 5px !important; padding-bottom: 5px !important; }' +
+  'body { margin-bottom: 0 !important; padding-bottom: 0 !important; } table:last-of-type { margin-bottom: 0 !important; }' +
+  '.print-chunk { display: block !important; page-break-inside: avoid !important; break-inside: avoid !important; }' +
+  '.print-chunk.first { page-break-inside: auto !important; break-inside: auto !important; }' +
+  '.print-chunk + .print-chunk { break-before: page !important; page-break-before: always !important; }' +
+  '.print-chunk:first-of-type + .print-chunk { break-before: auto !important; page-break-before: auto !important; }' +
+  '.page-cut { display: block !important; height: 0.25in !important; margin: 0 !important; border: 0 !important; break-before: page !important; page-break-before: always !important; }' +
+  '@supports (-webkit-touch-callout: none) { .page-cut { height: 0.3in !important; } }' +
+  'table.planner thead { display: table-header-group !important; page-break-inside: avoid !important; break-inside: avoid !important; }' +
+  'table.planner tbody { page-break-inside: auto !important; break-inside: auto !important; } }' +
+  '</style></head><body>' +
+  '<button id="printBtn" onclick="window.print()">Print</button>' +
+  '<div class="topbar"><div class="summarywrap">' +
+  '<div class="summarybar"><span class="badge badge-lg">Target: <strong id="tgt">' + C + '</strong></span><span class="badge badge-lg">Assigned: <strong id="asgn">0</strong></span></div>' +
+  '<div class="summarybar" style="margin-top:6px;"><span class="badge badge-lg">Remaining: <strong id="rem">0</strong></span></div>' +
+  '<div class="summarybar" style="margin-top:6px;"><span class="badge">0s: <strong id="c0">0</strong></span><span class="badge">1s: <strong id="c1">0</strong></span><span class="badge">2s: <strong id="c2">0</strong></span><span class="badge">3s: <strong id="c3">0</strong></span>' +
+  (maxPerWeek === 4 ? '<span class="badge">4s: <strong id="c4">0</strong></span>' : '') +
+  '</div></div>' +
+  '<div class="tools"><button id="btnSpread1">Spread 1-credit weeks evenly</button><button id="btnFill2">Spread 2-credit weeks evenly</button><button id="btnClear">Clear all to 0</button></div>' +
+  '<div class="print-tips"><strong>Print Tips:</strong> For best results, set your printer settings to:<ul><li>Margins: <strong>Minimum</strong></li><li>Enable <strong>Background Graphics</strong></li></ul></div></div>' +
+  '<h2>Credit Tracker \u2013 Plan ' + type + ' (' + yearLabel + ')' +
+  '<span style="font-weight: normal; font-size: 0.6em;"> - (Credit completion is allowed during self-selected "0" credit weeks.)</span></h2>' +
+  tablesHtml +
+  '<p class="notes" style="margin-top:10px; font-size:0.95em; color:#555;">Notes: Skip weeks are locked at 0. Per-week limit is ' + maxPerWeek + '. The table won\'t let you exceed your total target credits (' + C + ').</p>' +
+  '</body></html>';
 
-let rows = [];
-allWeeks.forEach((w) => {
-  const rowClass = w.skip ? ' class="skip-row"' : '';
-  const controls = w.skip
-    ? '<em>Skip</em>'
-    : '<button class="minus">–</button><button class="plus">+</button>';
-
-  const boxes = [1, 2, 3, 4].map(i => {
-    const id = `wk${w.week}-c${i}`;
-    return `
-      <label class="chk">
-        <input type="checkbox" id="${id}" />
-        ${i}
-        <span class="credit-line"></span>
-      </label>
-    `;
-  }).join('');
-
-  const oneRow = `
-    <tr${rowClass} data-week="${w.week}" data-skip="${w.skip ? '1':'0'}">
-      <td class="col-week">${w.week}</td>
-      <td class="col-date">${formatDateForCell(dateRanges[w.week] || '')}</td>
-      <td class="col-credits"><strong class="val">${w.credits}</strong></td>
-      <td class="col-progress"><div class="progress-grid">${boxes}</div></td>
-      <td class="controls col-adjust">${controls}</td>
-    </tr>
-  `;
-  rows.push(oneRow);
-});
-
-// table shell (same header every chunk; header hidden on-screen for chunks > 1)
-const tableStart = `
-  <table class="planner">
-    <colgroup>
-      <col class="col-week">
-      <col class="col-date">
-      <col class="col-credits">
-      <col class="col-progress">
-      <col class="col-adjust">
-    </colgroup>
-    <thead>
-      <tr>
-        <th class="col-week">Week</th>
-        <th class="col-date">Date Range</th>
-        <th class="col-credits">Credits</th>
-        <th class="col-progress">Progress</th>
-        <th class="col-adjust">Adjust</th>
-      </tr>
-    </thead>
-`;
-
-const tableEnd = `</table>`;
-
-// Make chunks
-let chunks = [];
-if (shouldSplit) {
-  let i = 0;
-  // first page
-  chunks.push(rows.slice(i, i + maxRowsFirst)); i += maxRowsFirst;
-  // subsequent pages at maxRowsNext
-  while (i < rows.length) {
-    chunks.push(rows.slice(i, i + maxRowsNext));
-    i += maxRowsNext;
-  }
-} else {
-  // desktop / large view: one chunk
-  chunks = [rows];
-}
-
-// Build HTML with page cuts between chunks (print only)
-let tablesHtml = '';
-chunks.forEach((chunkRows, idx) => {
-  if (idx > 0) tablesHtml += `<div class="page-cut"></div>`;
-  tablesHtml += `
-    <div class="print-chunk${idx === 0 ? ' first' : ''}">
-      ${tableStart}
-      <tbody>${chunkRows.join('')}</tbody>
-      ${tableEnd}
-    </div>
-  `;
-});
-
-// Write the static HTML (NO <script> tag here)
-const html = `
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Plan ${type} – Editable Credit Tracker</title>
- <style>
-  /* --- General screen styles --- */
-  body { font-family: Arial, sans-serif; padding: 16px; }
-  table { border-collapse: collapse; width: 100%; margin-top: 12px; table-layout: fixed; }
-  th, td { border: 1px solid #ccc; padding: 6px; text-align: center; vertical-align: middle; }
-  .skip-row { background: #ffd6d6; }
-  .controls { display:flex; gap:8px; align-items:center; justify-content:center; }
-  .controls button { padding: 4px 8px; }
-
-  .topbar {
-    position: sticky; top: 0; background: #fff; border: 1px solid #ddd;
-    padding: 8px 12px; border-radius: 8px; display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px; align-items:center; z-index: 5;
-  }
-  /* Summary bar look (screen) */
-.summarywrap {
-  border: 1px solid #d9d9d9;
-  border-radius: 10px;
-  padding: 6px 8px;
-  background: #fafafa;
-}
-
-.summarybar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-/* refine badge look to match screenshot */
-.summarybar .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 6px;
-  font-size: 0.82rem;
-  border: 1px solid #bfbfbf;
-  border-radius: 6px;
-  background: #fff;
-}
-
-.summarybar .badge strong {
-  font-weight: 700;
-  display: inline-block;
-  min-width: 1.2em;  /* keeps numbers from jittering */
-  text-align: right;
-}
-
-.summarybar .badge-lg {
-  font-size: 0.9rem;
-  padding: 4px 8px;
-  border-color: #a8a8a8;
-}
-  .topbar .nums { display: flex; gap: 12px; justify-content: center; }
-  .topbar .tools {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 40px;     /* pushes it slightly away from summary box */
-  margin-right: 160px;   /* adds a safe buffer from the Print button */
-}
-  .badge { border: 1px solid #999; border-radius: 6px; padding: 4px 6px; font-size: 0.85em; }
-
-  /* Progress: 4 items inside single Progress cell */
-  .col-progress .progress-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    column-gap: 8px;
-    align-items: center;
-    justify-items: center;
-  }
-  .chk {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-  }
-  .chk input { width: 14px; height: 14px; }
-  .credit-line {
-    display: inline-block;
-    border-bottom: 1px solid #000;
-    height: 1em;
-    width: clamp(0.4in, 12vw, 0.95in);
-  }
-
-  /* Column widths (screen) */
-  col.col-week     { width: 5%; }
-  col.col-date     { width: 18%; }
-  col.col-credits  { width: 6%; }
-  col.col-progress { width: 51%; }
-  col.col-adjust   { width: 7%; }
-
-  td.col-week, th.col-week,
-  td.col-credits, th.col-credits { font-size: 0.85rem; }
-
-  /* Date cell: core date stays one line; note can sit underneath and wrap */
-  .col-date .date-core { white-space: nowrap !important; display: block !important; }
-  .col-date .date-note {
-    display: block !important;
-    white-space: normal !important;
-    font-size: 0.85em;
-    line-height: 1.1;
-    margin-top: 2px;
-  }
-
-  #printBtn {
-    position: fixed; top: 16px; right: 16px; background-color: white; color: black;
-    border: 1px solid black; padding: 8px 12px; border-radius: 6px; cursor: pointer; z-index: 9;
-  }
-  #printBtn:hover { background:#555; color:#fff; }
-
-  /* --- Print Tips bar (screen only) --- */
-  .print-tips {
-  background: #fff3cd;
-  border: 1px solid #ffe49a;
-  color: #6b5b00;
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin: 8px 0 14px 40px;  /* adds left margin to align under tools */
-  font-size: 0.95rem;
-  max-width: 320px;          /* keeps it narrow, away from print button */
-}
-  .print-tips strong { font-weight: 700; }
-  .print-tips ul {
-    margin: 6px 0 0 1.1em;
-    padding: 0;
-  }
-  .print-tips li { margin: 2px 0; }
-
-  /* --- Align Print Tips box to the right of the three buttons --- */
-.topbar {
-  display: grid;
-  grid-template-columns: 1fr auto auto; /* summary | tools | tips */
-  align-items: start;
-  column-gap: 116px; /* space between buttons and tips */
-  padding-right: 120px; /* keeps space for floating Print button */
-}
-
-/* keep summary box left */
-.summarywrap {
-  justify-self: start;
-}
-
-/* keep buttons centered vertically */
-.topbar .tools {
-  justify-self: start;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-/* move print tips beside buttons */
-.print-tips {
-  justify-self: start;  /* align left edge with button stack */
-  align-self: start;
-  max-width: 420px;
-  margin-top: 0;
-  margin-left: 10px; /* optional slight spacing for balance */
-}
-
-.print-tips {
-  justify-self: start;
-  align-self: start;
-  max-width: 420px;
-  margin-top: 0;
-  margin-left: 10px;
-}
-
-/* --- Desktop-only: nudge ONLY the 3 action buttons left --- */
-@media screen and (min-width: 1024px) {
-  .topbar .tools {
-    position: relative;
-    left: -77px; /* adjust: -8px to -40px depending on how far left you want */
-  }
-}
-
-/* Merge the two tables visually on-screen */
-/* —— Screen-only: merge the two tables and hide headers —— */
-@media screen {
-  /* ... */
-}
-
-.summarywrap { border-color: #d0d0d0; background: #fff; }
-.summarybar .badge { border-color: #bdbdbd; }
-  .notes { display: none !important; }
-
-  /* Merge the two tables visually on-screen */
-/* —— Screen-only: merge the two tables and hide headers —— */
-/* —— Screen-only: merge tables, keep first header, hide the rest —— */
-@media screen {
-  /* hide the artificial page-break spacer on screen */
-  .page-cut { display: none !important; }
-
-  /* make both tables look like a single continuous table */
-  table.planner { border-collapse: collapse; width: 100%; }
-  .print-chunk { break-inside: auto; page-break-inside: auto; }
-
-  /* remove the visual seam between tables (account for .page-cut in between) */
-  .print-chunk + .page-cut + .print-chunk table.planner,
-  .print-chunk ~ .print-chunk table.planner {
-    margin-top: -1px;   /* eat the double border (use -1px for crisp edges) */
-    border-top: 0;
-  }
-
-  /* ✅ show header on the FIRST chunk only */
-  .print-chunk:first-of-type table.planner thead {
-    display: table-header-group !important;
-  }
-
-  /* 🚫 hide headers on all subsequent chunks (2nd, 3rd, …) */
-  .print-chunk ~ .print-chunk table.planner thead {
-    display: none !important;
-  }
-}
- /* --- Print overrides --- */
-@media print {
-  @page { size: letter portrait; margin: 0.4in; }
-  body { padding: 0 !important; }
-
-  /* Keep title/summary with the first table; don't force a break */
-  .topbar,
-  h2 {
-    page-break-before: avoid !important;
-    break-before: avoid !important;
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-  }
-
-  /* Never push the first table/chunk to page 2 */
-  .print-chunk:first-of-type,
-  .print-chunk:first-of-type table.planner,
-  .print-chunk:first-of-type .planner.first-chunk {
-    break-before: auto !important;
-    page-break-before: auto !important;
-    -webkit-column-break-before: auto !important;
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  /* General table behavior for print/iOS */
-  table { line-height: 1.12; }
-  tr, td, th {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    -webkit-region-break-inside: avoid !important;
-    -webkit-column-break-inside: avoid !important;
-  }
-
-  /* Repeat header/footer each printed page */
-  table.planner thead { display: table-header-group !important; }
-  table.planner tfoot { display: table-footer-group !important; } /* optional */
-
-  /* Hide on-paper UI */
-  #printBtn { display: none; }
-  .topbar .tools,
-  .print-tips,
-  .notes,
-  th.col-adjust, td.col-adjust, .col-adjust {
-    display: none !important;
-  }
-
-  /* Layout tweaks */
-  .topbar {
-    position: static !important;
-    z-index: auto !important;
-    background: #fff;
-    margin-bottom: 6px;
-    padding: 4px 8px;
-    grid-template-columns: 1fr;
-    row-gap: 4px;
-  }
-  .badge { padding: 2px 4px; font-size: 0.78em; }
-  th, td { padding: 5px 4px; }           /* tighter */
-
-  /* Column widths for print */
-  col.col-week     { width: 5%; }
-  col.col-date     { width: 22%; }
-  col.col-credits  { width: 5%; }
-  col.col-progress { width: 68%; }
-
-  /* Date cell wrapping */
-  td.col-date { overflow: visible !important; text-overflow: clip !important; }
-  .col-date .date-core { white-space: nowrap !important; display: block !important; }
-  .col-date .date-note { white-space: normal !important; display: block !important; }
-
-  /* Progress sizing */
-  .col-progress .progress-grid {
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 6px;
-    justify-items: start;
-  }
-  .chk { font-size: 0.82rem; gap: 2px; }
-  .chk input { width: 12px; height: 12px; }
-  .credit-line { width: 0.78in !important; }
-
-  /* Tighten spacing so pages fit neatly */
-  table.planner { margin-top: 4px !important; margin-bottom: 4px !important; }
-  thead th { padding-top: 3px !important; padding-bottom: 3px !important; }
-  td, th  { padding-top: 5px !important; padding-bottom: 5px !important; }
-  body { margin-bottom: 0 !important; padding-bottom: 0 !important; }
-  table:last-of-type { margin-bottom: 0 !important; }
-
-  /* --- CHUNK / PAGE-BREAK LOGIC --- */
-
-  /* Keep each chunk intact */
-  .print-chunk {
-    display: block !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-
-  /* Let the first chunk split so it can begin on page 1 */
-.print-chunk.first {
-  page-break-inside: auto !important;
-  break-inside: auto !important;
-}
-
-  /* Force a page break between chunks (even without .page-cut) */
-  .print-chunk + .print-chunk {
-    break-before: page !important;
-    page-break-before: always !important;
-    -webkit-column-break-before: always !important;
-  }
-
-  /* Allow the second chunk to start on page 1 (don't push it to page 2) */
-.print-chunk:first-of-type + .print-chunk {
-  break-before: auto !important;
-  page-break-before: auto !important;
-  -webkit-column-break-before: auto !important;
-}
-
-  /* --- Page break between chunks: minimal gap for full-page use --- */
-.page-cut {
-  display: block !important;
-  height: 0.25in !important;       /* small nudge triggers real page break */
-  margin: 0 !important;
-  border: 0 !important;
-  break-before: page !important;
-  page-break-before: always !important;
-  -webkit-column-break-before: always !important;
-}
-
-/* iOS/WebKit nudge */
-@supports (-webkit-touch-callout: none) {
-  .page-cut { height: 0.3in !important; }
-}
-
-  /* Keep only the header special; let tbody split normally */
-table.planner thead { 
-  display: table-header-group !important; 
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-}
-
-/* Allow tbody to break across pages */
-table.planner tbody {
-  page-break-inside: auto !important;
-  break-inside: auto !important;
-}
-</style>
-</head>
-<body>
-  <button id="printBtn" onclick="window.print()">Print</button>
-
-  <div class="topbar">
-  <div class="summarywrap">
-  <div class="summarybar">
-    <span class="badge badge-lg">Target: <strong id="tgt">${C}</strong></span>
-    <span class="badge badge-lg">Assigned: <strong id="asgn">0</strong></span>
-  </div>
-
-  <div class="summarybar" style="margin-top:6px;">
-    <span class="badge badge-lg">Remaining: <strong id="rem">0</strong></span>
-  </div>
-
-  <div class="summarybar" style="margin-top:6px;">
-    <span class="badge">0s: <strong id="c0">0</strong></span>
-    <span class="badge">1s: <strong id="c1">0</strong></span>
-    <span class="badge">2s: <strong id="c2">0</strong></span>
-    <span class="badge">3s: <strong id="c3">0</strong></span>
-    ${maxPerWeek === 4 ? '<span class="badge">4s: <strong id="c4">0</strong></span>' : ''}
-  </div>
-</div>
-
-  <div class="tools">
-    <button id="btnSpread1">Spread 1-credit weeks evenly</button>
-    <button id="btnFill2">Spread 2-credit weeks evenly</button>
-    <button id="btnClear">Clear all to 0</button>
-  </div>
-
-  <div class="print-tips">
-    <strong>Print Tips:</strong> For best results, set your printer settings to:
-    <ul>
-      <li>Margins: <strong>Minimum</strong></li>
-      <li>Enable <strong>Background Graphics</strong></li>
-    </ul>
-  </div>
-</div>
-
-  <h2>Credit Tracker – Plan ${type}
-    <span style="font-weight: normal; font-size: 0.6em;"> - (Credit completion is allowed during self-selected “0” credit weeks.)</span>
-  </h2>
-
-  ${tablesHtml}
-
- <p class="notes" style="margin-top:10px; font-size:0.95em; color:#555;">
-  Notes: Skip weeks are locked at 0. Per-week limit is 3. The table won’t let you exceed your total target credits (${C}).
-</p>
-</body>
-</html>
-`;
   printWin.document.write(html);
 
-  // Inject behavior via a real <script> element (no template-string parsing issues)
-  const behavior = `
-    (function() {
-      const maxPerWeek = ${maxPerWeek};
-      const target = ${C};
-         const tables = Array.from(document.querySelectorAll('table.planner'));
+  // Inject behavior script
+  const behavior = '(function() {' +
+    'var maxPerWeek = ' + maxPerWeek + ';' +
+    'var target = ' + C + ';' +
+    'var tables = Array.from(document.querySelectorAll("table.planner"));' +
+    'function eachRow(cb) { tables.forEach(function(t) { t.querySelectorAll("tbody tr").forEach(cb); }); }' +
+    'function currentValues() { var vals = []; eachRow(function(tr) { var skip = tr.getAttribute("data-skip") === "1"; var v = parseInt(tr.querySelector(".val").textContent) || 0; vals.push({ tr: tr, skip: skip, v: v }); }); return vals; }' +
+    'function sum(arr) { return arr.reduce(function(a,b){return a+b;},0); }' +
+    'function refreshSummary() { var items = currentValues(); var nums = items.map(function(x){return x.v;}); var assigned = sum(nums); var rem = Math.max(0, target - assigned); var cnt = {0:0,1:0,2:0,3:0,4:0}; nums.forEach(function(n){ if(cnt[n]!==undefined) cnt[n]++; }); document.getElementById("asgn").textContent = assigned; document.getElementById("rem").textContent = rem; document.getElementById("c0").textContent = cnt[0]||0; document.getElementById("c1").textContent = cnt[1]||0; document.getElementById("c2").textContent = cnt[2]||0; document.getElementById("c3").textContent = cnt[3]||0; var c4El = document.getElementById("c4"); if(c4El) c4El.textContent = cnt[4]||0; }' +
+    'function trySet(tr, newVal) { var skip = tr.getAttribute("data-skip") === "1"; if(skip) return; newVal = Math.max(0, Math.min(maxPerWeek, newVal)); var items = currentValues(); var old = parseInt(tr.querySelector(".val").textContent) || 0; var assignedNow = items.reduce(function(s,i){return s+i.v;},0); var assignedMinusOld = assignedNow - old; var room = Math.max(0, target - assignedMinusOld); if(newVal > room) newVal = room; tr.querySelector(".val").textContent = newVal; refreshSummary(); }' +
+    'tables.forEach(function(table) { table.addEventListener("click", function(e) { var btn = e.target.closest("button"); if(!btn) return; var tr = e.target.closest("tr"); var valEl = tr.querySelector(".val"); var v = parseInt(valEl.textContent) || 0; if(btn.classList.contains("plus")) trySet(tr, v + 1); if(btn.classList.contains("minus")) trySet(tr, v - 1); }); });' +
+    'document.getElementById("btnClear").addEventListener("click", function() { eachRow(function(tr) { if(tr.getAttribute("data-skip") === "1") return; tr.querySelector(".val").textContent = "0"; }); refreshSummary(); });' +
+    'document.getElementById("btnFill2").addEventListener("click", function() { var rows = currentValues().filter(function(i){return !i.skip;}); var assigned = rows.reduce(function(s,i){return s+i.v;},0); var room = Math.max(0, target - assigned); if(room <= 0) return; for(var idx=0;idx<rows.length;idx++) { var it = rows[idx]; while(it.v < Math.min(2, maxPerWeek) && room > 0) { it.v += 1; room -= 1; it.tr.querySelector(".val").textContent = it.v; } if(room <= 0) break; } refreshSummary(); });' +
+    'document.getElementById("btnSpread1").addEventListener("click", function() { var rows = currentValues().filter(function(i){return !i.skip;}); var assigned = rows.reduce(function(s,i){return s+i.v;},0); var remaining = Math.max(0, target - assigned); if(remaining <= 0) return; var zeroIdxs = rows.map(function(it,idx){return {it:it,idx:idx};}).filter(function(x){return x.it.v===0;}).map(function(x){return x.idx;}); var toPlace = Math.min(remaining, zeroIdxs.length); for(var k=0;k<toPlace;k++) { var pos = Math.floor(k * zeroIdxs.length / toPlace); trySet(rows[zeroIdxs[pos]].tr, 1); } });' +
+    'refreshSummary();' +
+    // Column swap logic
+    '(function() { var tables2 = Array.from(document.querySelectorAll("table.planner"));' +
+    'function swapCellsInRow(tr) { var cells = Array.from(tr.children); if(cells.length<5) return; var progress = cells[3]; var adjust = cells[4]; tr.insertBefore(adjust, progress); }' +
+    'function swapColgroup(table) { var cg = table.querySelector("colgroup"); if(!cg) return; var cols = cg.querySelectorAll("col"); if(cols.length<5) return; cg.insertBefore(cols[4], cols[3]); }' +
+    'function swapTable(table) { var theadRow = table.tHead && table.tHead.rows[0]; if(theadRow) swapCellsInRow(theadRow); Array.from(table.tBodies).forEach(function(tbody){ Array.from(tbody.rows).forEach(function(tr){ swapCellsInRow(tr); }); }); swapColgroup(table); }' +
+    'function toggleSwapAll() { tables2.forEach(swapTable); }' +
+    'toggleSwapAll();' +
+    'function beforePrint() { toggleSwapAll(); } function afterPrint() { toggleSwapAll(); }' +
+    'if("onbeforeprint" in window) { window.addEventListener("beforeprint", beforePrint); window.addEventListener("afterprint", afterPrint); }' +
+    'var mql = window.matchMedia && window.matchMedia("print");' +
+    'if(mql && typeof mql.addEventListener === "function") { mql.addEventListener("change", function(e){ if(e.matches) beforePrint(); else afterPrint(); }); }' +
+    'else if(mql && typeof mql.addListener === "function") { mql.addListener(function(e){ if(e.matches) beforePrint(); else afterPrint(); }); }' +
+    '})();' +
+    '})();';
 
-   function eachRow(cb) {
-     tables.forEach(t => t.querySelectorAll('tbody tr').forEach(cb));
-   }
-
-   function currentValues() {
-     const vals = [];
-     eachRow(tr => {
-       const skip = tr.getAttribute('data-skip') === '1';
-       const v = parseInt(tr.querySelector('.val').textContent) || 0;
-       vals.push({ tr, skip, v });
-     });
-     return vals;
-   }
-
-   function sum(arr){ return arr.reduce((a,b)=>a+b,0); }
-
-   function refreshSummary() {
-     const items = currentValues();
-     const nums = items.map(x => x.v);
-     const assigned = sum(nums);
-     const rem = Math.max(0, target - assigned);
-     const cnt = {0:0,1:0,2:0,3:0,4:0};
-     nums.forEach(n => { if (cnt[n] !== undefined) cnt[n]++; });
-
-     document.getElementById('asgn').textContent = assigned;
-     document.getElementById('rem').textContent = rem;
-     document.getElementById('c0').textContent = cnt[0] || 0;
-     document.getElementById('c1').textContent = cnt[1] || 0;
-     document.getElementById('c2').textContent = cnt[2] || 0;
-     document.getElementById('c3').textContent = cnt[3] || 0;
-     const c4El = document.getElementById('c4');
-     if (c4El) c4El.textContent = cnt[4] || 0;
-   }
-
-   function trySet(tr, newVal) {
-     const skip = tr.getAttribute('data-skip') === '1';
-     if (skip) return;
-     newVal = Math.max(0, Math.min(maxPerWeek, newVal));
-
-     const items = currentValues();
-     const old = parseInt(tr.querySelector('.val').textContent) || 0;
-     const assignedNow = items.reduce((s,i)=>s+i.v,0);
-     const assignedMinusOld = assignedNow - old;
-     const room = Math.max(0, target - assignedMinusOld);
-     if (newVal > room) newVal = room;
-
-     tr.querySelector('.val').textContent = newVal;
-     refreshSummary();
-   }
-
-   // click +/- on any table
-   tables.forEach(table => {
-     table.addEventListener('click', (e) => {
-       const btn = e.target.closest('button');
-       if (!btn) return;
-       const tr = e.target.closest('tr');
-       const valEl = tr.querySelector('.val');
-       let v = parseInt(valEl.textContent) || 0;
-
-       if (btn.classList.contains('plus')) trySet(tr, v + 1);
-       if (btn.classList.contains('minus')) trySet(tr, v - 1);
-     });
-   });
-
-   // Clear across all tables
-   document.getElementById('btnClear').addEventListener('click', () => {
-     eachRow(tr => {
-       if (tr.getAttribute('data-skip') === '1') return;
-       tr.querySelector('.val').textContent = '0';
-     });
-     refreshSummary();
-   });
-
-      document.getElementById('btnFill2').addEventListener('click', () => {
-        const rows = currentValues().filter(i => !i.skip);
-        let assigned = rows.reduce((s,i)=>s+i.v,0);
-        let room = Math.max(0, target - assigned);
-        if (room <= 0) return;
-
-        for (const it of rows) {
-          while (it.v < Math.min(2, maxPerWeek) && room > 0) {
-            it.v += 1;
-            room -= 1;
-            it.tr.querySelector('.val').textContent = it.v;
-          }
-          if (room <= 0) break;
-        }
-        refreshSummary();
-      });
-
-      document.getElementById('btnSpread1').addEventListener('click', () => {
-        const rows = currentValues().filter(i => !i.skip);
-        let assigned = rows.reduce((s,i)=>s+i.v,0);
-        let remaining = Math.max(0, target - assigned);
-        if (remaining <= 0) return;
-
-        const zeroIdxs = rows
-          .map((it, idx) => ({it, idx}))
-          .filter(x => x.it.v === 0)
-          .map(x => x.idx);
-
-        const toPlace = Math.min(remaining, zeroIdxs.length);
-        for (let k = 0; k < toPlace; k++) {
-          const pos = Math.floor(k * zeroIdxs.length / toPlace);
-          const tr = rows[zeroIdxs[pos]].tr;
-          trySet(tr, 1);
-        }
-      });
-
-      refreshSummary();
-      
-      // --- Visually swap Progress (cell 4) and Adjust (cell 5) on screen,
-//     while preserving each column's own widths by swapping <col> too. ---
-(function addScreenOnlyColumnSwap() {
-  const tables = Array.from(document.querySelectorAll('table.planner'));
-
-  // Swap the 4th (Progress) and 5th (Adjust) cells within a row
-  function swapCellsInRow(tr) {
-    const cells = Array.from(tr.children);
-    if (cells.length < 5) return;
-    const progress = cells[3]; // 4th child
-    const adjust   = cells[4]; // 5th child
-    tr.insertBefore(adjust, progress); // ... Adjust, Progress
-  }
-
-  // Swap the 4th and 5th <col> in the colgroup so widths follow the moved columns
-  function swapColgroup(table) {
-    const colgroup = table.querySelector('colgroup');
-    if (!colgroup) return;
-    const cols = colgroup.querySelectorAll('col');
-    if (cols.length < 5) return;
-    const progressCol = cols[3]; // 4th <col>
-    const adjustCol   = cols[4]; // 5th <col>
-    // Move Adjust col before Progress col
-    colgroup.insertBefore(adjustCol, progressCol);
-  }
-
-  function swapTable(table) {
-    // swap header cells
-    const theadRow = table.tHead && table.tHead.rows[0];
-    if (theadRow) swapCellsInRow(theadRow);
-
-    // swap body cells
-    Array.from(table.tBodies).forEach(tbody => {
-      Array.from(tbody.rows).forEach(tr => swapCellsInRow(tr));
-    });
-
-    // swap column width definitions to match the new order
-    swapColgroup(table);
-  }
-
-  // Swapping twice restores original order (cells + colgroup), so we can toggle.
-  function toggleSwapAll() {
-    tables.forEach(swapTable);
-  }
-
-  // Apply swap for on-screen view now
-  toggleSwapAll();
-
-  // Restore original order for print; re-apply after print
-  function beforePrint() { toggleSwapAll(); }
-  function afterPrint()  { toggleSwapAll(); }
-
-  if ('onbeforeprint' in window) {
-    window.addEventListener('beforeprint', beforePrint);
-    window.addEventListener('afterprint',  afterPrint);
-  }
-
-  const mql = window.matchMedia && window.matchMedia('print');
-  if (mql && typeof mql.addEventListener === 'function') {
-    mql.addEventListener('change', e => { if (e.matches) beforePrint(); else afterPrint(); });
-  } else if (mql && typeof mql.addListener === 'function') {
-    mql.addListener(e => { if (e.matches) beforePrint(); else afterPrint(); }); // legacy
-  }
-})();
-
-    })();
-  `;
   const scriptEl = printWin.document.createElement('script');
   scriptEl.textContent = behavior;
   printWin.document.body.appendChild(scriptEl);
-
-  // finalize
   printWin.document.close();
 }
 
-    // Pressing "Enter" in any input field triggers calculateCredits
-    function displayCurrentDateAndWeek() {
-  const today = new Date();  // ✅ define today FIRST
+// =====================================================
+// DISPLAY CURRENT DATE AND WEEK (uses generated data)
+// =====================================================
+function displayCurrentDateAndWeek() {
+  const today = new Date();
+  const isoStarts = schoolYearData.isoStarts;
+  const yearStart = new Date(schoolYearData.startYear, 6, 1);
+  const yearEnd = new Date(schoolYearData.startYear + 1, 5, 30);
 
-  const dateRanges = [
-    "", "2025-07-01", "2025-07-07", "2025-07-14", "2025-07-21", "2025-07-28",
-    "2025-08-04", "2025-08-11", "2025-08-18", "2025-08-25", "2025-09-01",
-    "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29", "2025-10-06",
-    "2025-10-13", "2025-10-20", "2025-10-27", "2025-11-03", "2025-11-10",
-    "2025-11-17", "2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15",
-    "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19",
-    "2026-01-26", "2026-02-02", "2026-02-09", "2026-02-16", "2026-02-23",
-    "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30",
-    "2026-04-06", "2026-04-13", "2026-04-20", "2026-04-27", "2026-05-04",
-    "2026-05-11", "2026-05-18", "2026-05-25", "2026-06-01", "2026-06-08",
-    "2026-06-15", "2026-06-22", "2026-06-29"
-  ];
+  const startWeekSelect = document.getElementById("startWeek");
+  let label;
 
-  let currentWeek = "Outside of school year";
-
-  for (let i = dateRanges.length - 1; i > 0; i--) {
-  const [year, month, day] = dateRanges[i].split("-").map(Number);
-  const weekStart = new Date(year, month - 1, day); // Month is 0-indexed
-  if (today >= weekStart) {
-    currentWeek = i;
-
-    // ✅ Auto-set "What week are you starting from?"
-    const startWeekSelect = document.getElementById("startWeek");
+  if (today > yearEnd) {
+    // Past school year
+    if (startWeekSelect) startWeekSelect.value = 1;
+    label = isSpanish ? '\ud83d\udcc5 Este a\u00f1o escolar ha terminado' : '\ud83d\udcc5 This school year has ended';
+  } else if (today < yearStart) {
+    // Future school year
+    if (startWeekSelect) startWeekSelect.value = 1;
+    label = isSpanish
+      ? '\ud83d\udcc5 El a\u00f1o escolar ' + schoolYearData.yearLabel + ' a\u00fan no ha comenzado'
+      : '\ud83d\udcc5 The ' + schoolYearData.yearLabel + ' school year has not started yet';
+  } else {
+    // Within school year - find current week
+    let currentWeek = 1;
+    for (let i = isoStarts.length - 1; i > 0; i--) {
+      const parts = isoStarts[i].split("-").map(Number);
+      const weekStart = new Date(parts[0], parts[1] - 1, parts[2]);
+      if (today >= weekStart) {
+        currentWeek = i;
+        break;
+      }
+    }
     if (startWeekSelect) startWeekSelect.value = currentWeek;
-
-    break;
+    label = isSpanish
+      ? '\ud83d\udcc5 Semana actual: ' + currentWeek
+      : '\ud83d\udcc5 Current Week: ' + currentWeek;
   }
-}
 
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString(isSpanish ? "es-ES" : "en-US", options);
-
-  const label = currentWeek === "Outside of school year"
-    ? (isSpanish ? `Hoy es ${formattedDate}` : `Today is ${formattedDate}`)
-    : (isSpanish
-        ? `📅 Semana actual: ${currentWeek}`
-        : `📅 Current Week: ${currentWeek}`);
-
   const dateEl = document.getElementById("currentDate");
   const weekEl = document.getElementById("currentWeek");
-
-  if (dateEl && weekEl) {
-    dateEl.textContent = formattedDate;
-    weekEl.textContent = label;
-  }
+  if (dateEl) dateEl.textContent = formattedDate;
+  if (weekEl) weekEl.textContent = label;
 }
 
-    function setLanguage(spanish) {
+// =====================================================
+// SET LANGUAGE
+// =====================================================
+function setLanguage(spanish) {
   isSpanish = spanish;
-      
-      if (spanish) {
-  document.body.classList.add("spanish-mode");
-} else {
-  document.body.classList.remove("spanish-mode");
-}
+  if (spanish) document.body.classList.add("spanish-mode");
+  else document.body.classList.remove("spanish-mode");
 
-  // Fade out language prompt
   const prompt = document.getElementById("languagePrompt");
   prompt.style.opacity = 0;
-
-  // After fade-out delay, hide prompt and show calculator
   setTimeout(() => {
     prompt.style.display = "none";
-
     document.body.classList.remove("show-prompt");
-
     const calc = document.querySelector(".container");
     calc.style.opacity = 0;
     calc.style.display = "block";
-
-    // Fade in calculator
-    setTimeout(() => {
-      calc.style.opacity = 1;
-    }, 10);
-
-    // Update language toggle button without flipping language again
-    document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
-
-    // Refresh translations
+    setTimeout(() => { calc.style.opacity = 1; }, 10);
+    document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Espa\u00f1ol";
     applyTranslations();
-  }, 400); // Matches 0.4s transition time
+  }, 400);
 }
-    
-    function applyTranslations() {
+
+// =====================================================
+// APPLY TRANSLATIONS
+// =====================================================
+function applyTranslations() {
   Object.keys(translations).forEach(eng => {
     const elements = Array.from(document.querySelectorAll("*")).filter(el =>
       el.childNodes.length === 1 &&
       el.childNodes[0].nodeType === 3 &&
       (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
     );
-    elements.forEach(el => {
-      el.innerHTML = isSpanish ? translations[eng] : eng;
-    });
+    elements.forEach(el => { el.innerHTML = isSpanish ? translations[eng] : eng; });
   });
 
   const mainDisclaimerEl = document.getElementById("mainDisclaimer");
-  if (mainDisclaimerEl) {
-    mainDisclaimerEl.innerHTML = isSpanish
-      ? translations.mainDisclaimerFull_ES
-      : translations.mainDisclaimerFull;
-  }
+  if (mainDisclaimerEl) mainDisclaimerEl.innerHTML = isSpanish ? translations.mainDisclaimerFull_ES : translations.mainDisclaimerFull;
 
   const footerDisclaimerEl = document.getElementById("footerDisclaimer");
-  if (footerDisclaimerEl) {
-    footerDisclaimerEl.innerHTML = isSpanish
-      ? translations.footerDisclaimerFull_ES
-      : translations.footerDisclaimerFull;
-  }
-      
-      const currentDateEl = document.getElementById("currentDate");
-  if (currentDateEl) {
-    const today = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    currentDateEl.textContent = today.toLocaleDateString(isSpanish ? "es-ES" : "en-US", options);
-  }
-
-  const currentWeekEl = document.getElementById("currentWeek");
-  if (currentWeekEl) {
-    const startDate = new Date(new Date().getFullYear(), 6, 1); // July 1
-    const today = new Date();
-    const diffTime = today - startDate;
-    const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1;
-    currentWeekEl.textContent = isSpanish
-      ? `📅 Semana actual: ${diffWeeks}`
-      : `📅 Current Week: ${diffWeeks}`;
-  }
+  if (footerDisclaimerEl) footerDisclaimerEl.innerHTML = isSpanish ? translations.footerDisclaimerFull_ES : translations.footerDisclaimerFull;
 
   const skipBoxTitleEl = document.getElementById("skipBoxTitle");
-if (skipBoxTitleEl) {
-  skipBoxTitleEl.textContent = getText("Weeks You Plan to Skip (Optional):");
-}
+  if (skipBoxTitleEl) skipBoxTitleEl.textContent = getText("Weeks You Plan to Skip (Optional):");
+
+  // Update next year notice if visible
+  const notice = document.getElementById("nextYearNotice");
+  if (notice && notice.style.display !== 'none') {
+    notice.innerHTML = isSpanish
+      ? 'Est\u00e1s viendo el calculador del <strong>pr\u00f3ximo a\u00f1o escolar (' + schoolYearData.yearLabel + ')</strong>. Las fechas son proyectadas a partir del 1 de julio.'
+      : 'You are viewing the <strong>next school year (' + schoolYearData.yearLabel + ')</strong> calculator. Dates are projected from July 1.';
+  }
 
   populateWeekDropdowns();
-document.getElementById("endWeek").value = "46";
-displayCurrentDateAndWeek(); // <-- sets startWeek to the current week
-renderResult();
+  document.getElementById("endWeek").value = "46";
+  displayCurrentDateAndWeek();
+  updateYearToggle();
+  renderResult();
 }
-    
-    function toggleLanguage() {
+
+function toggleLanguage() {
   isSpanish = !isSpanish;
-  document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Español";
-
-  Object.keys(translations).forEach(eng => {
-    const elements = Array.from(document.querySelectorAll("*")).filter(el =>
-      el.childNodes.length === 1 &&
-      el.childNodes[0].nodeType === 3 &&
-      (el.textContent.trim() === eng || el.textContent.trim() === translations[eng])
-    );
-    elements.forEach(el => {
-      el.innerHTML = isSpanish ? translations[eng] : eng;
-    });
-  });
-
- // ✅ Add this at the very end of the script
-  const currentDateEl = document.getElementById("currentDate");
-  if (currentDateEl) {
-    const today = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    currentDateEl.textContent = today.toLocaleDateString(undefined, options);
-  }
-
-  const currentWeekEl = document.getElementById("currentWeek");
-  if (currentWeekEl) {
-    const startDate = new Date(new Date().getFullYear(), 6, 1); // July 1
-    const today = new Date();
-    const diffTime = today - startDate;
-    const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1;
-    currentWeekEl.textContent = `Week ${diffWeeks}`;
-  }
-
-  // ✅ Refresh dropdowns with a small delay
-  populateWeekDropdowns();
-document.getElementById("endWeek").value = "46";
-displayCurrentDateAndWeek(); // <-- sets startWeek to the current week
-renderResult();
+  document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Espa\u00f1ol";
+  if (isSpanish) document.body.classList.add("spanish-mode");
+  else document.body.classList.remove("spanish-mode");
+  applyTranslations();
 }
+
+// =====================================================
+// INITIALIZATION
+// =====================================================
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize with current school year
+  initializeYear(getCurrentSchoolYear());
+  updateYearToggle();
   populateWeekDropdowns();
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
 
-  // ✅ Add checkbox event listeners
+  // Checkbox event listeners
   document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
   document.getElementById("skipWinter").addEventListener("change", calculateCredits);
   document.getElementById("skipSpring").addEventListener("change", calculateCredits);
   for (let i = 1; i <= 4; i++) {
-  document.getElementById(`customSkip${i}`).addEventListener("change", calculateCredits);
-  document.getElementById(`customWeek${i}`).addEventListener("change", calculateCredits);
-}
+    document.getElementById('customSkip' + i).addEventListener("change", calculateCredits);
+    document.getElementById('customWeek' + i).addEventListener("change", calculateCredits);
+  }
 
-  // ✅ Add Enter key triggers
+  // Enter key triggers
   ["totalCredits", "startWeek", "endWeek"].forEach(id => {
     document.getElementById(id).addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault(); // Prevent form submission or accidental refresh
-        calculateCredits();
-      }
+      if (e.key === "Enter") { e.preventDefault(); calculateCredits(); }
     });
   });
 });
-  </script>
+</script>
 </body>
 </html>
