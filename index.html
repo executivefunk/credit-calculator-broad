@@ -155,6 +155,10 @@ select {
     <select id="endWeek"></select>
     <div class="holiday-box">
       <p id="skipBoxTitle" style="text-align:center;font-weight:bold;margin:0 0 12px;">Weeks You Plan to Skip (Optional):</p>
+      <div class="holiday-option" id="week1PartialOption" style="display:none;">
+        <input type="checkbox" id="skipWeek1Partial" checked>
+        <label for="skipWeek1Partial" id="labelWeek1Partial"></label>
+      </div>
       <div class="holiday-option">
         <input type="checkbox" id="skipThanksgiving">
         <label for="skipThanksgiving" id="labelThanksgiving">Skip Thanksgiving Week (Week 22)</label>
@@ -236,12 +240,20 @@ function generateSchoolYear(year) {
     }
     return fmtES(s) + '\u2013' + fmtES(e);
   }
+  function countWeekdays(start, end) {
+    let count = 0;
+    const d = new Date(start);
+    while (d <= end) { if (d.getDay() !== 0 && d.getDay() !== 6) count++; d.setDate(d.getDate() + 1); }
+    return count;
+  }
 
   const july1 = new Date(year, 6, 1);
   const dow = july1.getDay();
+  const june30 = new Date(year + 1, 5, 30);
+
+  // Week 1: July 1 through the first Friday on or after July 1
   const daysToFri = (5 - dow + 7) % 7;
   const week1End = new Date(year, 6, 1 + daysToFri);
-  const june30 = new Date(year + 1, 5, 30);
 
   const allWeeks = [];
   allWeeks.push({ start: new Date(year, 6, 1), end: new Date(week1End) });
@@ -268,14 +280,31 @@ function generateSchoolYear(year) {
     nextMon.setDate(nextMon.getDate() + 7);
   }
 
+  // Fix partial last week: if the last week has < 5 school days,
+  // absorb it into the previous week (extend that week's end date)
+  if (allWeeks.length > 1) {
+    const lastWeek = allWeeks[allWeeks.length - 1];
+    const schoolDays = countWeekdays(lastWeek.start, lastWeek.end);
+    if (schoolDays < 5) {
+      // Merge into previous week
+      allWeeks[allWeeks.length - 2].end = lastWeek.end;
+      allWeeks.pop();
+    }
+  }
+
   // Milestone annotations by fixed week number
   const milestones = {
     26: { en: '(Winter Break)', es: '(Vacaciones de invierno)' },
     27: { en: '(Winter Break)', es: '(Vacaciones de invierno)' },
     30: { en: '- End of Semester 1', es: '- Fin del semestre 1' },
-    46: { graduation: true },
-    52: { en: '- End of Semester 2', es: '- Fin del semestre 2' }
+    46: { graduation: true }
   };
+  // "End of Semester 2" always goes on the LAST week
+  const lastWeekNum = allWeeks.length;
+
+  // Determine if Week 1 is partial (fewer than 5 school days)
+  const week1SchoolDays = countWeekdays(allWeeks[0].start, allWeeks[0].end);
+  const week1Partial = week1SchoolDays < 5;
 
   const result = {
     dateRangesEN: [''],
@@ -283,7 +312,9 @@ function generateSchoolYear(year) {
     isoStarts: [''],
     totalWeeks: allWeeks.length,
     yearLabel: year + '\u2013' + (year + 1),
-    startYear: year
+    startYear: year,
+    week1Partial: week1Partial,
+    week1SchoolDays: week1SchoolDays
   };
 
   allWeeks.forEach((w, idx) => {
@@ -302,6 +333,11 @@ function generateSchoolYear(year) {
         labelEN += ' ' + ms.en;
         labelES += ' ' + ms.es;
       }
+    }
+    // End of Semester 2 on the last week
+    if (weekNum === lastWeekNum) {
+      labelEN += ' - End of Semester 2';
+      labelES += ' - Fin del semestre 2';
     }
 
     result.dateRangesEN.push(labelEN);
@@ -347,6 +383,9 @@ function switchYear(mode) {
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
 
+  // Update Week 1 partial checkbox for new year
+  updateWeek1Partial();
+
   // Clear results and inputs
   document.getElementById("totalCredits").value = "";
   document.getElementById("skipThanksgiving").checked = false;
@@ -368,13 +407,47 @@ function switchYear(mode) {
   if (notice) {
     if (mode === 'next') {
       notice.innerHTML = isSpanish
-        ? 'Est\u00e1s viendo la calculadora del <strong>pr\u00f3ximo a\u00f1o escolar (' + schoolYearData.yearLabel + ')</strong>. Las fechas son proyectadas a partir del 1 de julio.'
+        ? 'Est\u00e1s viendo el calculador del <strong>pr\u00f3ximo a\u00f1o escolar (' + schoolYearData.yearLabel + ')</strong>. Las fechas son proyectadas a partir del 1 de julio.'
         : 'You are viewing the <strong>next school year (' + schoolYearData.yearLabel + ')</strong> calculator. Dates are projected from July 1.';
       notice.style.display = 'block';
     } else {
       notice.style.display = 'none';
     }
   }
+}
+
+function updateWeek1Partial() {
+  const option = document.getElementById("week1PartialOption");
+  const cb = document.getElementById("skipWeek1Partial");
+  const label = document.getElementById("labelWeek1Partial");
+  if (!option || !cb || !label) return;
+
+  if (!schoolYearData.week1Partial) {
+    option.style.display = 'none';
+    cb.checked = false;
+    return;
+  }
+
+  option.style.display = 'flex';
+  cb.checked = true;
+
+  const days = schoolYearData.week1SchoolDays;
+  let labelEN, labelES;
+  if (days === 4) {
+    labelEN = "Skip Week 1 (4 school days \u2014 nearly full week)";
+    labelES = "Saltar Semana 1 (4 d\u00edas escolares \u2014 casi semana completa)";
+  } else if (days === 3) {
+    labelEN = "Skip Week 1 (only 3 school days)";
+    labelES = "Saltar Semana 1 (solo 3 d\u00edas escolares)";
+  } else if (days === 2) {
+    labelEN = "Skip Week 1 (only 2 school days \u2014 very short week)";
+    labelES = "Saltar Semana 1 (solo 2 d\u00edas escolares \u2014 semana muy corta)";
+  } else {
+    labelEN = "Skip Week 1 (only 1 school day \u2014 very short week)";
+    labelES = "Saltar Semana 1 (solo 1 d\u00eda escolar \u2014 semana muy corta)";
+  }
+
+  label.textContent = isSpanish ? labelES : labelEN;
 }
 
 function updateYearToggle() {
@@ -537,6 +610,7 @@ function showLanguagePrompt() {
     // Reset year to current
     initializeYear(getCurrentSchoolYear());
     updateYearToggle();
+    updateWeek1Partial();
     var notice = document.getElementById("nextYearNotice");
     if (notice) notice.style.display = 'none';
   }, 300);
@@ -607,7 +681,9 @@ function calculateCredits() {
     return;
   }
 
+  const skipWeek1 = document.getElementById("skipWeek1Partial")?.checked || false;
   const allSkips = [
+    ...(skipWeek1 ? [1] : []),
     ...(skipThanksgiving ? [22] : []),
     ...(skipWinter ? [26, 27] : []),
     ...(skipSpring ? [41] : []),
@@ -807,10 +883,15 @@ function renderResult() {
 function generatePlan(type) {
   const { totalCredits, startWeek, endWeek, skipWeeks } = storedPlan;
   let allWeeks = [];
+  const isWeek1Partial = schoolYearData.week1Partial;
+  const week1SkipChecked = document.getElementById("skipWeek1Partial")?.checked || false;
   for (let w = startWeek; w <= endWeek; w++) {
-    allWeeks.push({ week: w, skip: skipWeeks.includes(w) });
+    const isWeek1SoftSkip = (w === 1 && isWeek1Partial && week1SkipChecked);
+    const hardSkip = isWeek1SoftSkip ? false : skipWeeks.includes(w);
+    const softSkip = isWeek1SoftSkip;
+    allWeeks.push({ week: w, skip: hardSkip, softSkip: softSkip });
   }
-  const usable = allWeeks.filter(w => !w.skip);
+  const usable = allWeeks.filter(w => !w.skip && !w.softSkip);
   const W = usable.length;
   const C = totalCredits;
 
@@ -859,7 +940,7 @@ function generatePlan(type) {
   const initial = baseDistribution(type);
   let pointer = 0;
   allWeeks = allWeeks.map(w => {
-    if (w.skip) return { ...w, credits: 0 };
+    if (w.skip || w.softSkip) return { ...w, credits: 0 };
     const val = initial[pointer] ?? 0;
     pointer += 1;
     return { ...w, credits: val };
@@ -884,13 +965,13 @@ function generatePlan(type) {
 
   let rows = [];
   allWeeks.forEach((w) => {
-    const rowClass = w.skip ? ' class="skip-row"' : '';
+    const rowClass = (w.skip || w.softSkip) ? ' class="skip-row"' : '';
     const controls = w.skip ? '<em>Skip</em>' : '<button class="minus">\u2013</button><button class="plus">+</button>';
     const boxes = [1, 2, 3, 4].map(i => {
       const id = 'wk' + w.week + '-c' + i;
       return '<label class="chk"><input type="checkbox" id="' + id + '" />' + i + '<span class="credit-line"></span></label>';
     }).join('');
-    rows.push('<tr' + rowClass + ' data-week="' + w.week + '" data-skip="' + (w.skip ? '1' : '0') + '">' +
+    rows.push('<tr' + rowClass + ' data-week="' + w.week + '" data-skip="' + (w.skip ? '1' : '0') + '" data-soft-skip="' + (w.softSkip ? '1' : '0') + '">' +
       '<td class="col-week">' + w.week + '</td>' +
       '<td class="col-date">' + formatDateForCell(dateRanges[w.week] || '') + '</td>' +
       '<td class="col-credits"><strong class="val">' + w.credits + '</strong></td>' +
@@ -989,7 +1070,7 @@ function generatePlan(type) {
   '<h2>Credit Tracker \u2013 Plan ' + type + ' (' + yearLabel + ')' +
   '<span style="font-weight: normal; font-size: 0.6em;"> - (Credit completion is allowed during self-selected "0" credit weeks.)</span></h2>' +
   tablesHtml +
-  '<p class="notes" style="margin-top:10px; font-size:0.95em; color:#555;">Notes: Skip weeks are locked at 0. Per-week limit is ' + maxPerWeek + '. The table won\'t let you exceed your total target credits (' + C + ').</p>' +
+  '<p class="notes" style="margin-top:10px; font-size:0.95em; color:#555;">Notes: Skip weeks are locked at 0.' + (isWeek1Partial ? ' Week 1 is a partial week (highlighted in red, starts at 0 credits) \u2014 you may optionally add bonus credits using +/\u2013.' : '') + ' Per-week limit is ' + maxPerWeek + '. The table won\'t let you exceed your total target credits (' + C + ').</p>' +
   '</body></html>';
 
   printWin.document.write(html);
@@ -1042,19 +1123,23 @@ function displayCurrentDateAndWeek() {
   const startWeekSelect = document.getElementById("startWeek");
   let label;
 
+  // Default start week: Week 2 if Week 1 is partial and skip checkbox is checked, otherwise Week 1
+  const week1SkipChecked = document.getElementById("skipWeek1Partial")?.checked || false;
+  const defaultStart = (schoolYearData.week1Partial && week1SkipChecked) ? 2 : 1;
+
   if (today > yearEnd) {
     // Past school year
-    if (startWeekSelect) startWeekSelect.value = 1;
+    if (startWeekSelect) startWeekSelect.value = defaultStart;
     label = isSpanish ? '\ud83d\udcc5 Este a\u00f1o escolar ha terminado' : '\ud83d\udcc5 This school year has ended';
   } else if (today < yearStart) {
     // Future school year
-    if (startWeekSelect) startWeekSelect.value = 1;
+    if (startWeekSelect) startWeekSelect.value = defaultStart;
     label = isSpanish
       ? '\ud83d\udcc5 El a\u00f1o escolar ' + schoolYearData.yearLabel + ' a\u00fan no ha comenzado'
       : '\ud83d\udcc5 The ' + schoolYearData.yearLabel + ' school year has not started yet';
   } else {
     // Within school year - find current week
-    let currentWeek = 1;
+    let currentWeek = defaultStart;
     for (let i = isoStarts.length - 1; i > 0; i--) {
       const parts = isoStarts[i].split("-").map(Number);
       const weekStart = new Date(parts[0], parts[1] - 1, parts[2]);
@@ -1063,6 +1148,8 @@ function displayCurrentDateAndWeek() {
         break;
       }
     }
+    // If we're in Week 1 but it's partial, start from Week 2
+    if (currentWeek === 1 && schoolYearData.week1Partial) currentWeek = 2;
     if (startWeekSelect) startWeekSelect.value = currentWeek;
     label = isSpanish
       ? '\ud83d\udcc5 Semana actual: ' + currentWeek
@@ -1129,6 +1216,7 @@ function applyTranslations() {
       : 'You are viewing the <strong>next school year (' + schoolYearData.yearLabel + ')</strong> calculator. Dates are projected from July 1.';
   }
 
+  updateWeek1Partial();
   populateWeekDropdowns();
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
@@ -1151,11 +1239,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize with current school year
   initializeYear(getCurrentSchoolYear());
   updateYearToggle();
+  updateWeek1Partial();
   populateWeekDropdowns();
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
 
   // Checkbox event listeners
+  document.getElementById("skipWeek1Partial").addEventListener("change", calculateCredits);
   document.getElementById("skipThanksgiving").addEventListener("change", calculateCredits);
   document.getElementById("skipWinter").addEventListener("change", calculateCredits);
   document.getElementById("skipSpring").addEventListener("change", calculateCredits);
