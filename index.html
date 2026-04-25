@@ -435,16 +435,16 @@ function updateWeek1Partial() {
   let labelEN, labelES;
   if (days === 4) {
     labelEN = "Skip Week 1 (4 school days \u2014 nearly full week)";
-    labelES = "Saltar Semana 1 (4 d\u00edas escolares \u2014 casi semana completa)";
+    labelES = "Saltar Semana 1 (4 d\u00edas escolares, casi semana completa)";
   } else if (days === 3) {
     labelEN = "Skip Week 1 (only 3 school days)";
     labelES = "Saltar Semana 1 (solo 3 d\u00edas escolares)";
   } else if (days === 2) {
     labelEN = "Skip Week 1 (only 2 school days \u2014 very short week)";
-    labelES = "Saltar Semana 1 (solo 2 d\u00edas escolares \u2014 semana muy corta)";
+    labelES = "Saltar Semana 1 (solo 2 d\u00edas escolares, semana corta)";
   } else {
     labelEN = "Skip Week 1 (only 1 school day \u2014 very short week)";
-    labelES = "Saltar Semana 1 (solo 1 d\u00eda escolar \u2014 semana muy corta)";
+    labelES = "Saltar Semana 1 (solo 1 d\u00eda escolar, semana corta)";
   }
 
   label.textContent = isSpanish ? labelES : labelEN;
