@@ -66,6 +66,20 @@ select {
   border-radius: 6px; margin-bottom: 15px; font-size: 0.95em; text-align: center;
 }
 
+/* Dual Enrollment Section */
+.de-box { background-color: #fff4e0; border: 1px solid #f0d8a8; border-radius: 8px; padding: 10px 15px 15px; margin-top: 15px; }
+.de-toggle { display: flex; align-items: center; margin-bottom: 0; font-size: 16px; }
+.de-toggle input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+.de-toggle label { white-space: nowrap; position: relative; top: -1px; font-weight: bold; display: inline; margin: 0; }
+.de-inner { display: none; margin-top: 12px; }
+.de-inner.visible { display: block; }
+.de-class-box { background: #fff; border: 1px solid #e0d0b0; border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; }
+.de-class-box h4 { margin: 0 0 8px; font-size: 0.95em; }
+.de-class-box label { display: block; margin-top: 8px; font-size: 0.9em; }
+.de-class-box select, .de-class-box input[type="number"] { width: 100%; padding: 6px; margin-top: 4px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 0.95em; }
+#deClass2Box { display: none; }
+#deClass2Box.visible { display: block; }
+
 /* Responsive Tweaks */
 @media (max-width: 768px) {
   html, body { font-size: 15px !important; }
@@ -151,10 +165,47 @@ select {
     <input type="number" id="totalCredits" min="1" max="100" required>
     <label for="startWeek">What week are you starting from?</label>
     <select id="startWeek"></select>
-    <label for="endWeek">Which week do you want to finish by?</label>
+    <label for="endWeek" id="labelEndWeek">Which week do you want to finish by?</label>
     <select id="endWeek"></select>
-    <div class="holiday-box">
-      <p id="skipBoxTitle" style="text-align:center;font-weight:bold;margin:0 0 12px;">Weeks You Plan to Skip (Optional):</p>
+    <div id="crossYearBox" style="background:#e8f0fe;border:1px solid #b0c4de;border-radius:8px;padding:10px 12px;margin-top:12px;">
+      <div style="display:flex;align-items:center;">
+        <input type="checkbox" id="crossYearToggle" style="transform:scale(1.2);margin-right:10px;">
+        <label for="crossYearToggle" id="labelCrossYear" style="font-size:0.95em;font-weight:bold;display:inline;margin:0;">Extend my plan into the next school year</label>
+      </div>
+      <div id="crossYearInner" style="display:none;margin-top:10px;">
+        <label for="endWeekNext" id="labelEndWeekNext" style="font-size:0.9em;">Finish by week (next school year)</label>
+        <select id="endWeekNext" style="width:100%;padding:8px;margin-top:5px;border-radius:6px;border:1px solid #ccc;box-sizing:border-box;"></select>
+        <p id="crossYearNote" style="font-size:0.82em;color:#555;margin-top:6px;"></p>
+        <div id="currentYearSkipSlot" style="margin-top:12px;"></div>
+        <div id="nextYearSkipBox" class="holiday-box" style="margin-top:12px;background:#dbe6f6;border-color:#b0c4de;">
+          <p id="nextYearSkipTitle" style="text-align:center;font-weight:bold;margin:0 0 12px;">Weeks You Plan to Skip — Next Year (Optional):</p>
+          <div class="holiday-option" id="nextYearWeek1PartialOption" style="display:none;">
+            <input type="checkbox" id="nextYearSkipWeek1Partial" checked>
+            <label for="nextYearSkipWeek1Partial" id="labelNextYearWeek1Partial"></label>
+          </div>
+          <div class="holiday-option">
+            <input type="checkbox" id="nextYearSkipThanksgiving">
+            <label for="nextYearSkipThanksgiving" id="labelNextYearThanksgiving">Skip Thanksgiving Week (Week 22)</label>
+          </div>
+          <div class="holiday-option">
+            <input type="checkbox" id="nextYearSkipWinter">
+            <label for="nextYearSkipWinter" id="labelNextYearWinter">Skip Winter Break (Weeks 26–27)</label>
+          </div>
+          <div class="holiday-option">
+            <input type="checkbox" id="nextYearSkipSpring">
+            <label for="nextYearSkipSpring" id="labelNextYearSpring">Skip Spring Week (Week 41)</label>
+          </div>
+          <hr style="margin: 10px 0;">
+          <div class="holiday-option"><input type="checkbox" id="nextYearCustomSkip1"><select id="nextYearCustomWeek1"></select></div>
+          <div class="holiday-option"><input type="checkbox" id="nextYearCustomSkip2"><select id="nextYearCustomWeek2"></select></div>
+          <div class="holiday-option"><input type="checkbox" id="nextYearCustomSkip3"><select id="nextYearCustomWeek3"></select></div>
+          <div class="holiday-option"><input type="checkbox" id="nextYearCustomSkip4"><select id="nextYearCustomWeek4"></select></div>
+        </div>
+      </div>
+    </div>
+    <div id="currentYearSkipOriginalSlot"></div>
+    <div class="holiday-box" id="currentYearSkipBox">
+      <p id="skipBoxTitle" style="text-align:center;font-weight:bold;margin:0 0 12px;">Weeks You Plan to Skip - Current Year (Optional):</p>
       <div class="holiday-option" id="week1PartialOption" style="display:none;">
         <input type="checkbox" id="skipWeek1Partial" checked>
         <label for="skipWeek1Partial" id="labelWeek1Partial"></label>
@@ -177,6 +228,52 @@ select {
       <div class="holiday-option"><input type="checkbox" id="customSkip3"><select id="customWeek3"></select></div>
       <div class="holiday-option"><input type="checkbox" id="customSkip4"><select id="customWeek4"></select></div>
     </div>
+    <div class="de-box">
+      <div class="de-toggle">
+        <input type="checkbox" id="deToggle">
+        <label for="deToggle" id="labelDeToggle">I have a dual-enrollment class</label>
+      </div>
+      <div class="de-inner" id="deInner">
+        <div class="de-class-box" id="deClass1Box">
+          <h4 id="deClass1Title">Dual Enrollment Class 1</h4>
+          <label for="de1Start" id="labelDe1Start">Start week</label>
+          <select id="de1Start"></select>
+          <label for="de1End" id="labelDe1End">End week</label>
+          <select id="de1End"></select>
+          <div class="de-crossyear" style="margin-top:8px;">
+            <input type="checkbox" id="de1CrossYear" style="transform:scale(1.1);margin-right:6px;">
+            <label for="de1CrossYear" id="labelDe1CrossYear" style="display:inline;font-size:0.85em;">This class continues into the next school year</label>
+          </div>
+          <div id="de1NextYearEnd" style="display:none;">
+            <label for="de1EndNext" id="labelDe1EndNext" style="font-size:0.85em;">End week (next school year)</label>
+            <select id="de1EndNext"></select>
+          </div>
+          <label for="de1Credits" id="labelDe1Credits">How many high school credits will you earn from this class?</label>
+          <input type="number" id="de1Credits" min="1" max="50">
+        </div>
+        <button type="button" id="addDE2Btn" onclick="showDeClass2()" style="width:100%;padding:8px 12px;margin-top:8px;margin-bottom:8px;border:1px dashed #c8a96e;background:#fff8ec;border-radius:6px;cursor:pointer;font-size:0.9em;color:#8b6914;font-weight:bold;">+ Add a second dual-enrollment class</button>
+        <div class="de-class-box" id="deClass2Box">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h4 id="deClass2Title" style="margin:0 0 8px;">Dual Enrollment Class 2</h4>
+            <button type="button" id="removeDE2Btn" onclick="hideDeClass2()" style="background:none;border:none;color:#c62828;font-size:0.85em;cursor:pointer;padding:2px 6px;font-weight:bold;">✕ Remove</button>
+          </div>
+          <label for="de2Start" id="labelDe2Start">Start week</label>
+          <select id="de2Start"></select>
+          <label for="de2End" id="labelDe2End">End week</label>
+          <select id="de2End"></select>
+          <div class="de-crossyear" style="margin-top:8px;">
+            <input type="checkbox" id="de2CrossYear" style="transform:scale(1.1);margin-right:6px;">
+            <label for="de2CrossYear" id="labelDe2CrossYear" style="display:inline;font-size:0.85em;">This class continues into the next school year</label>
+          </div>
+          <div id="de2NextYearEnd" style="display:none;">
+            <label for="de2EndNext" id="labelDe2EndNext" style="font-size:0.85em;">End week (next school year)</label>
+            <select id="de2EndNext"></select>
+          </div>
+          <label for="de2Credits" id="labelDe2Credits">How many high school credits will you earn from this class?</label>
+          <input type="number" id="de2Credits" min="1" max="50">
+        </div>
+      </div>
+    </div>
     <button onclick="calculateCredits()" id="calculateBtn" style="margin-top: 20px; width: 100%; padding: 10px;">Calculate</button>
   </div>
   <div class="print-page-2">
@@ -198,22 +295,6 @@ try {
 } catch (e) {
   alert("Script error: " + e.message);
 }
-
-// === Feature flags ===
-const FEATURES = { dualEnrollment: false };
-(() => {
-  const url = new URL(location.href);
-  const q = url.searchParams.get('dual');
-  if (q === 'on') FEATURES.dualEnrollment = true;
-  if (q === 'off') FEATURES.dualEnrollment = false;
-  const saved = localStorage.getItem('feature.dualEnrollment');
-  if (saved !== null) FEATURES.dualEnrollment = saved === 'true';
-  window.setDual = (enabled) => {
-    FEATURES.dualEnrollment = !!enabled;
-    localStorage.setItem('feature.dualEnrollment', String(enabled));
-    if (typeof calculateCredits === 'function') { try { calculateCredits(); } catch {} }
-  };
-})();
 
 // =====================================================
 // DATE GENERATION ENGINE
@@ -397,6 +478,11 @@ function switchYear(mode) {
     if (cb) cb.checked = false;
     if (sel) sel.selectedIndex = 0;
   }
+  resetDualEnrollment();
+  populateDeDropdowns();
+  resetCrossYear();
+  populateCrossYearDropdown();
+  populateNextYearCustomSkipDropdowns();
   document.getElementById("result").innerHTML = "";
   document.getElementById("planButtons").style.display = "none";
   lastResultData = null;
@@ -435,16 +521,16 @@ function updateWeek1Partial() {
   let labelEN, labelES;
   if (days === 4) {
     labelEN = "Skip Week 1 (4 school days \u2014 nearly full week)";
-    labelES = "Saltar Semana 1 (4 d\u00edas escolares, semana corta)";
+    labelES = "Saltar Semana 1 (4 d\u00edas escolares \u2014 casi semana completa)";
   } else if (days === 3) {
     labelEN = "Skip Week 1 (only 3 school days)";
     labelES = "Saltar Semana 1 (solo 3 d\u00edas escolares)";
   } else if (days === 2) {
     labelEN = "Skip Week 1 (only 2 school days \u2014 very short week)";
-    labelES = "Saltar Semana 1 (solo 2 d\u00edas escolares, semana corta)";
+    labelES = "Saltar Semana 1 (solo 2 d\u00edas escolares \u2014 semana muy corta)";
   } else {
     labelEN = "Skip Week 1 (only 1 school day \u2014 very short week)";
-    labelES = "Saltar Semana 1 (solo 1 d\u00eda escolar, semana corta)";
+    labelES = "Saltar Semana 1 (solo 1 d\u00eda escolar \u2014 semana muy corta)";
   }
 
   label.textContent = isSpanish ? labelES : labelEN;
@@ -549,9 +635,9 @@ function getText(key) {
       "You can afford 0 week(s) at 1 credit",
       "Puedes tener 0 semana(s) de 1 cr\u00e9dito"
     ],
-    "Weeks You Plan to Skip (Optional):": [
-      "Weeks You Plan to Skip (Optional):",
-      "Semanas que Planeas Omitir (Opcional):"
+    "Weeks You Plan to Skip - Current Year (Optional):": [
+      "Weeks You Plan to Skip - Current Year (Optional):",
+      "Semanas que Planeas Omitir - Año Actual (Opcional):"
     ]
   };
   return isSpanish ? map[key]?.[1] ?? key : map[key]?.[0] ?? key;
@@ -575,6 +661,20 @@ const translations = {
   "mainDisclaimerFull_ES": "Esta calculadora est\u00e1 dise\u00f1ada para estudiantes que planean graduarse este a\u00f1o escolar.<br><br>Si planeas graduarte el pr\u00f3ximo a\u00f1o o despu\u00e9s, igual puedes usarla para establecer una meta de cr\u00e9ditos para el a\u00f1o o semestre escolar.<br><br>Habla con tu maestro para decidir cu\u00e1ntos cr\u00e9ditos deber\u00edas completar y usa ese n\u00famero en la calculadora.",
   "footerDisclaimerFull": "<strong>Disclaimer:</strong> This calculator is a helpful planning tool, but it's important to double-check your credit totals and the number of weeks you have. If you're not sure, talk with your teacher or school counselor to go over your plan.",
   "footerDisclaimerFull_ES": "<strong>Aviso:</strong> Esta calculadora es una herramienta \u00fatil para planificar, pero es importante verificar tus cr\u00e9ditos totales y cu\u00e1ntas semanas tienes.<br>Si no est\u00e1s seguro, habla con tu maestro o consejero escolar para revisar tu plan.",
+  "I have a dual-enrollment class": "Tengo una clase de doble inscripci\u00f3n",
+  "Dual Enrollment Class 1": "Clase de Doble Inscripci\u00f3n 1",
+  "Dual Enrollment Class 2": "Clase de Doble Inscripci\u00f3n 2",
+  "Start week": "Semana de inicio",
+  "End week": "Semana final",
+  "How many high school credits will you earn from this class?": "\u00bfCu\u00e1ntos cr\u00e9ditos de preparatoria ganar\u00e1s con esta clase?",
+  "This class continues into the next school year": "Esta clase contin\u00faa en el siguiente a\u00f1o escolar",
+  "End week (next school year)": "Semana final (siguiente a\u00f1o escolar)",
+  "+ Add a second dual-enrollment class": "+ Agregar una segunda clase de doble inscripci\u00f3n",
+  "\u2715 Remove": "\u2715 Eliminar",
+  "Extend my plan into the next school year": "Extender mi plan al siguiente a\u00f1o escolar",
+  "Finish by week (next school year)": "Terminar en la semana (siguiente a\u00f1o escolar)",
+  "Weeks You Plan to Skip \u2014 Next Year (Optional):": "Semanas que planeas saltar \u2014 Pr\u00f3ximo a\u00f1o (Opcional):",
+  "Which week do you want to finish by?": "\u00bfEn qu\u00e9 semana quieres terminar?",
 };
 
 // =====================================================
@@ -603,6 +703,8 @@ function showLanguagePrompt() {
       if (cb) cb.checked = false;
       if (sel) sel.selectedIndex = 0;
     }
+    resetDualEnrollment();
+    resetCrossYear();
     document.getElementById("result").innerHTML = "";
     document.getElementById("planButtons").style.display = "none";
     lastResultData = null;
@@ -611,6 +713,9 @@ function showLanguagePrompt() {
     initializeYear(getCurrentSchoolYear());
     updateYearToggle();
     updateWeek1Partial();
+    populateDeDropdowns();
+    populateCrossYearDropdown();
+    populateNextYearCustomSkipDropdowns();
     var notice = document.getElementById("nextYearNotice");
     if (notice) notice.style.display = 'none';
   }, 300);
@@ -623,14 +728,15 @@ function populateWeekDropdowns() {
   const startSelect = document.getElementById("startWeek");
   const endSelect = document.getElementById("endWeek");
   if (!startSelect || !endSelect) return;
+  const yl = schoolYearData.yearLabel;
   startSelect.innerHTML = "";
   endSelect.innerHTML = "";
   for (let i = 0; i < weeks.length; i++) {
     const opt1 = document.createElement("option");
     opt1.value = i + 1;
     opt1.innerHTML = isSpanish
-      ? 'Semana ' + (i + 1) + ': ' + weeks[i][1]
-      : 'Week ' + (i + 1) + ': ' + weeks[i][0];
+      ? yl + ' – Semana ' + (i + 1) + ': ' + weeks[i][1]
+      : yl + ' – Week ' + (i + 1) + ': ' + weeks[i][0];
     const opt2 = opt1.cloneNode(true);
     startSelect.appendChild(opt1);
     endSelect.appendChild(opt2);
@@ -644,23 +750,412 @@ function populateWeekDropdowns() {
       const opt = document.createElement("option");
       opt.value = i + 1;
       opt.textContent = isSpanish
-        ? 'Semana ' + (i + 1) + ': ' + weeks[i][1]
-        : 'Week ' + (i + 1) + ': ' + weeks[i][0];
+        ? yl + ' – Semana ' + (i + 1) + ': ' + weeks[i][1]
+        : yl + ' – Week ' + (i + 1) + ': ' + weeks[i][0];
       sel.appendChild(opt);
     }
   }
 }
 
 // =====================================================
-// CALCULATE CREDITS (unchanged logic)
+// CROSS-YEAR PLANNING
+// =====================================================
+function getCrossYearData() {
+  const toggle = document.getElementById("crossYearToggle");
+  if (!toggle || !toggle.checked) return { active: false };
+  const endWeekNext = parseInt(document.getElementById("endWeekNext")?.value);
+  if (!endWeekNext || endWeekNext < 1) return { active: false };
+  const nextYear = (activeStartYear || getCurrentSchoolYear()) + 1;
+  const nextYearData = generateSchoolYear(nextYear);
+  return { active: true, endWeekNext: endWeekNext, nextYearData: nextYearData };
+}
+
+function updateCrossYearUI() {
+  const toggle = document.getElementById("crossYearToggle");
+  const inner = document.getElementById("crossYearInner");
+  const endWeekSel = document.getElementById("endWeek");
+  const endWeekLabel = document.getElementById("labelEndWeek");
+  const noteEl = document.getElementById("crossYearNote");
+  if (!toggle || !inner) return;
+  if (toggle.checked) {
+    inner.style.display = "block";
+    // When cross-year is on, lock end week to last week of current year
+    if (endWeekSel) endWeekSel.value = String(schoolYearData.totalWeeks);
+    if (endWeekSel) endWeekSel.disabled = true;
+    const nextYearLabel = (activeStartYear + 1) + '–' + (activeStartYear + 2);
+    if (noteEl) noteEl.textContent = isSpanish
+      ? 'Tu plan se extenderá desde el año actual hasta ' + nextYearLabel + '.'
+      : 'Your plan will extend from the current year into ' + nextYearLabel + '.';
+    updateNextYearWeek1Partial();
+    populateNextYearCustomSkipDropdowns();
+    updateNextYearSkipLabels();
+    // Move current-year skip box into cross-year section (above next-year box)
+    const currentSkipBox = document.getElementById("currentYearSkipBox");
+    const slot = document.getElementById("currentYearSkipSlot");
+    if (currentSkipBox && slot) slot.appendChild(currentSkipBox);
+  } else {
+    inner.style.display = "none";
+    if (endWeekSel) endWeekSel.disabled = false;
+    // Move current-year skip box back to its original position
+    const currentSkipBox = document.getElementById("currentYearSkipBox");
+    const originalSlot = document.getElementById("currentYearSkipOriginalSlot");
+    if (currentSkipBox && originalSlot) originalSlot.after(currentSkipBox);
+  }
+}
+
+function populateCrossYearDropdown() {
+  const sel = document.getElementById("endWeekNext");
+  if (!sel) return;
+  sel.innerHTML = "";
+  const nextYear = (activeStartYear || getCurrentSchoolYear()) + 1;
+  const nextData = generateSchoolYear(nextYear);
+  const nextWeeks = nextData.weeks;
+  for (let i = 0; i < nextWeeks.length; i++) {
+    const opt = document.createElement("option");
+    opt.value = i + 1;
+    opt.textContent = isSpanish
+      ? nextData.yearLabel + ' – Semana ' + (i + 1) + ': ' + nextWeeks[i][1]
+      : nextData.yearLabel + ' – Week ' + (i + 1) + ': ' + nextWeeks[i][0];
+    sel.appendChild(opt);
+  }
+}
+
+function resetCrossYear() {
+  const toggle = document.getElementById("crossYearToggle");
+  if (toggle) toggle.checked = false;
+  const inner = document.getElementById("crossYearInner");
+  if (inner) inner.style.display = "none";
+  const endWeekSel = document.getElementById("endWeek");
+  if (endWeekSel) endWeekSel.disabled = false;
+  const selNext = document.getElementById("endWeekNext");
+  if (selNext) selNext.selectedIndex = 0;
+  // Reset next-year skip checkboxes
+  ["nextYearSkipWeek1Partial", "nextYearSkipThanksgiving", "nextYearSkipWinter", "nextYearSkipSpring"].forEach(function(id) {
+    const cb = document.getElementById(id);
+    if (cb) cb.checked = false;
+  });
+  for (let i = 1; i <= 4; i++) {
+    const cb = document.getElementById("nextYearCustomSkip" + i);
+    const sel = document.getElementById("nextYearCustomWeek" + i);
+    if (cb) cb.checked = false;
+    if (sel) sel.selectedIndex = 0;
+  }
+  const w1opt = document.getElementById("nextYearWeek1PartialOption");
+  if (w1opt) w1opt.style.display = "none";
+}
+
+function updateNextYearWeek1Partial() {
+  const option = document.getElementById("nextYearWeek1PartialOption");
+  const cb = document.getElementById("nextYearSkipWeek1Partial");
+  const label = document.getElementById("labelNextYearWeek1Partial");
+  if (!option || !cb || !label) return;
+
+  const nextYear = (activeStartYear || getCurrentSchoolYear()) + 1;
+  const nextData = generateSchoolYear(nextYear);
+
+  if (!nextData.week1Partial) {
+    option.style.display = "none";
+    cb.checked = false;
+    return;
+  }
+
+  option.style.display = "flex";
+  cb.checked = true;
+
+  const days = nextData.week1SchoolDays;
+  let labelEN, labelES;
+  if (days === 4) {
+    labelEN = "Skip Week 1 (4 school days — nearly full week)";
+    labelES = "Saltar Semana 1 (4 días escolares — casi semana completa)";
+  } else if (days === 3) {
+    labelEN = "Skip Week 1 (only 3 school days)";
+    labelES = "Saltar Semana 1 (solo 3 días escolares)";
+  } else if (days === 2) {
+    labelEN = "Skip Week 1 (only 2 school days — very short week)";
+    labelES = "Saltar Semana 1 (solo 2 días escolares — semana muy corta)";
+  } else {
+    labelEN = "Skip Week 1 (only 1 school day — very short week)";
+    labelES = "Saltar Semana 1 (solo 1 día escolar — semana muy corta)";
+  }
+
+  label.textContent = isSpanish ? labelES : labelEN;
+}
+
+function populateNextYearCustomSkipDropdowns() {
+  const nextYear = (activeStartYear || getCurrentSchoolYear()) + 1;
+  const nextData = generateSchoolYear(nextYear);
+  const nextWeeks = nextData.weeks;
+  const nyl = nextData.yearLabel;
+  for (let i = 1; i <= 4; i++) {
+    const sel = document.getElementById("nextYearCustomWeek" + i);
+    if (!sel) continue;
+    sel.innerHTML = "";
+    for (let w = 0; w < nextWeeks.length; w++) {
+      const opt = document.createElement("option");
+      opt.value = w + 1;
+      opt.textContent = isSpanish
+        ? nyl + " – Semana " + (w + 1) + ": " + nextWeeks[w][1]
+        : nyl + " – Week " + (w + 1) + ": " + nextWeeks[w][0];
+      sel.appendChild(opt);
+    }
+  }
+}
+
+function updateNextYearSkipLabels() {
+  const lblT = document.getElementById("labelNextYearThanksgiving");
+  const lblW = document.getElementById("labelNextYearWinter");
+  const lblS = document.getElementById("labelNextYearSpring");
+  const lblTitle = document.getElementById("nextYearSkipTitle");
+  if (lblT) lblT.textContent = isSpanish ? "Saltar semana - Acción de Gracias (Semana 22)" : "Skip Thanksgiving Week (Week 22)";
+  if (lblW) lblW.textContent = isSpanish ? "Saltar vacaciones - Invierno (Semanas 26–27)" : "Skip Winter Break (Weeks 26–27)";
+  if (lblS) lblS.textContent = isSpanish ? "Saltar semana - Primavera (Semana 41)" : "Skip Spring Week (Week 41)";
+  if (lblTitle) lblTitle.textContent = isSpanish ? "Semanas que planeas saltar — Próximo año (Opcional):" : "Weeks You Plan to Skip — Next Year (Optional):";
+}
+
+// Build an extended date/week map spanning two school years
+function buildExtendedMap(crossYearData) {
+  const totalCurrent = schoolYearData.totalWeeks;
+  // extDateRanges: index 1..totalCurrent = current year, totalCurrent+1..totalCurrent+nextTotal = next year
+  const extDateRanges = [...dateRanges]; // index 0 is empty, 1..totalCurrent
+  const extWeeks = [...weeks]; // 0-indexed: 0..totalCurrent-1
+  let extIsoStarts = [...schoolYearData.isoStarts];
+  const nextData = crossYearData.nextYearData;
+  for (let i = 1; i <= nextData.totalWeeks; i++) {
+    extDateRanges.push(nextData.dateRangesEN[i]);
+    extWeeks.push(nextData.weeks[i - 1]);
+    extIsoStarts.push(nextData.isoStarts[i]);
+  }
+  return { extDateRanges, extWeeks, extIsoStarts, totalCurrent, totalNext: nextData.totalWeeks, nextYearLabel: nextData.yearLabel };
+}
+
+// =====================================================
+// DUAL ENROLLMENT LOGIC
+// =====================================================
+function getDualEnrollmentData() {
+  const toggle = document.getElementById("deToggle");
+  const result = {
+    de1: { active: false, startWeek: 0, endWeek: 0, credits: 0, crossYear: false, endWeekNext: 0 },
+    de2: { active: false, startWeek: 0, endWeek: 0, credits: 0, crossYear: false, endWeekNext: 0 }
+  };
+  if (!toggle || !toggle.checked) return result;
+
+  const s1 = parseInt(document.getElementById("de1Start")?.value);
+  const e1 = parseInt(document.getElementById("de1End")?.value);
+  const c1 = parseInt(document.getElementById("de1Credits")?.value);
+  const cross1 = document.getElementById("de1CrossYear")?.checked || false;
+  const eNext1 = parseInt(document.getElementById("de1EndNext")?.value) || 0;
+  if (s1 && c1 && c1 > 0) {
+    if (cross1) {
+      // Cross-year: start week in current year, class runs to end of current year + into next year
+      result.de1 = { active: true, startWeek: s1, endWeek: schoolYearData.totalWeeks, credits: c1, crossYear: true, endWeekNext: eNext1 };
+    } else if (e1 && e1 >= s1) {
+      result.de1 = { active: true, startWeek: s1, endWeek: e1, credits: c1, crossYear: false, endWeekNext: 0 };
+    }
+  }
+
+  const s2 = parseInt(document.getElementById("de2Start")?.value);
+  const e2 = parseInt(document.getElementById("de2End")?.value);
+  const c2 = parseInt(document.getElementById("de2Credits")?.value);
+  const cross2 = document.getElementById("de2CrossYear")?.checked || false;
+  const eNext2 = parseInt(document.getElementById("de2EndNext")?.value) || 0;
+  if (result.de1.active && s2 && c2 && c2 > 0) {
+    if (cross2) {
+      result.de2 = { active: true, startWeek: s2, endWeek: schoolYearData.totalWeeks, credits: c2, crossYear: true, endWeekNext: eNext2 };
+    } else if (e2 && e2 >= s2) {
+      result.de2 = { active: true, startWeek: s2, endWeek: e2, credits: c2, crossYear: false, endWeekNext: 0 };
+    }
+  }
+
+  return result;
+}
+
+function updateDeUI() {
+  const toggle = document.getElementById("deToggle");
+  const inner = document.getElementById("deInner");
+  const class2 = document.getElementById("deClass2Box");
+  if (!toggle || !inner) return;
+
+  if (toggle.checked) {
+    inner.classList.add("visible");
+  } else {
+    inner.classList.remove("visible");
+  }
+
+  // Cross-year toggles: show/hide end-week dropdown, show/hide current-year end
+  [1, 2].forEach(function(n) {
+    const crossCb = document.getElementById("de" + n + "CrossYear");
+    const nextEndDiv = document.getElementById("de" + n + "NextYearEnd");
+    const currentEnd = document.getElementById("de" + n + "End");
+    const currentEndLabel = document.getElementById("labelDe" + n + "End");
+    if (crossCb && nextEndDiv) {
+      if (crossCb.checked) {
+        nextEndDiv.style.display = "block";
+        if (currentEnd) currentEnd.style.display = "none";
+        if (currentEndLabel) currentEndLabel.style.display = "none";
+      } else {
+        nextEndDiv.style.display = "none";
+        if (currentEnd) currentEnd.style.display = "";
+        if (currentEndLabel) currentEndLabel.style.display = "";
+      }
+    }
+  });
+
+  // Show/hide the "Add a second" button based on whether Class 2 is already visible
+  const addBtn = document.getElementById("addDE2Btn");
+  if (addBtn) {
+    addBtn.style.display = (toggle.checked && !class2.classList.contains("visible")) ? "block" : "none";
+  }
+}
+
+function showDeClass2() {
+  const class2 = document.getElementById("deClass2Box");
+  const addBtn = document.getElementById("addDE2Btn");
+  if (class2) class2.classList.add("visible");
+  if (addBtn) addBtn.style.display = "none";
+}
+
+function hideDeClass2() {
+  const class2 = document.getElementById("deClass2Box");
+  const addBtn = document.getElementById("addDE2Btn");
+  if (class2) class2.classList.remove("visible");
+  if (addBtn) addBtn.style.display = "block";
+  // Reset Class 2 fields
+  const c2 = document.getElementById("de2Credits");
+  if (c2) c2.value = "";
+  ["de2Start", "de2End", "de2EndNext"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+  var crossCb = document.getElementById("de2CrossYear");
+  if (crossCb) crossCb.checked = false;
+  var nextEndDiv = document.getElementById("de2NextYearEnd");
+  if (nextEndDiv) nextEndDiv.style.display = "none";
+  var endSel = document.getElementById("de2End");
+  var endLabel = document.getElementById("labelDe2End");
+  if (endSel) endSel.style.display = "";
+  if (endLabel) endLabel.style.display = "";
+  calculateCredits();
+}
+
+function populateDeDropdowns() {
+  const finishWeek = parseInt(document.getElementById("endWeek")?.value) || weeks.length;
+  const crossYearToggle = document.getElementById("crossYearToggle");
+  const isCrossYearActive = crossYearToggle && crossYearToggle.checked;
+  const yl = schoolYearData.yearLabel;
+
+  // For end-week dropdowns: cap at the student's finish week
+  // Start-week dropdowns show all weeks (student may start DE early)
+  ["de1Start", "de2Start"].forEach(function(id) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const prev = sel.value;
+    sel.innerHTML = "";
+    const maxWeek = isCrossYearActive ? weeks.length : finishWeek;
+    for (let i = 0; i < maxWeek; i++) {
+      const opt = document.createElement("option");
+      opt.value = i + 1;
+      opt.textContent = isSpanish
+        ? yl + ' – Semana ' + (i + 1) + ': ' + weeks[i][1]
+        : yl + ' – Week ' + (i + 1) + ': ' + weeks[i][0];
+      sel.appendChild(opt);
+    }
+    if (prev && parseInt(prev) <= maxWeek) sel.value = prev;
+  });
+
+  ["de1End", "de2End"].forEach(function(id) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const prev = sel.value;
+    sel.innerHTML = "";
+    // If cross-year is active, current-year DE end can go up to last week
+    // Otherwise, cap at the student's finish week
+    const maxWeek = isCrossYearActive ? weeks.length : finishWeek;
+    for (let i = 0; i < maxWeek; i++) {
+      const opt = document.createElement("option");
+      opt.value = i + 1;
+      opt.textContent = isSpanish
+        ? yl + ' – Semana ' + (i + 1) + ': ' + weeks[i][1]
+        : yl + ' – Week ' + (i + 1) + ': ' + weeks[i][0];
+      sel.appendChild(opt);
+    }
+    if (prev && parseInt(prev) <= maxWeek) sel.value = prev;
+  });
+
+  // Populate next-year end week dropdowns (capped at cross-year finish week)
+  const nextYear = (activeStartYear || getCurrentSchoolYear()) + 1;
+  const nextYearData = generateSchoolYear(nextYear);
+  const nextWeeks = nextYearData.weeks;
+  const finishWeekNext = parseInt(document.getElementById("endWeekNext")?.value) || nextWeeks.length;
+  ["de1EndNext", "de2EndNext"].forEach(function(id) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const prev = sel.value;
+    sel.innerHTML = "";
+    const maxWeek = finishWeekNext;
+    for (let i = 0; i < maxWeek; i++) {
+      const opt = document.createElement("option");
+      opt.value = i + 1;
+      opt.textContent = isSpanish
+        ? nextYearData.yearLabel + ' – Semana ' + (i + 1) + ': ' + nextWeeks[i][1]
+        : nextYearData.yearLabel + ' – Week ' + (i + 1) + ': ' + nextWeeks[i][0];
+      sel.appendChild(opt);
+    }
+    if (prev && parseInt(prev) <= maxWeek) sel.value = prev;
+  });
+}
+
+function resetDualEnrollment() {
+  const toggle = document.getElementById("deToggle");
+  if (toggle) toggle.checked = false;
+  const inner = document.getElementById("deInner");
+  if (inner) inner.classList.remove("visible");
+  const class2 = document.getElementById("deClass2Box");
+  if (class2) class2.classList.remove("visible");
+  const addBtn = document.getElementById("addDE2Btn");
+  if (addBtn) addBtn.style.display = "none";
+  ["de1Credits", "de2Credits"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+  ["de1Start", "de1End", "de2Start", "de2End", "de1EndNext", "de2EndNext"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+  ["de1CrossYear", "de2CrossYear"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.checked = false;
+  });
+  ["de1NextYearEnd", "de2NextYearEnd"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+  // Restore current-year end dropdowns
+  [1, 2].forEach(function(n) {
+    var endSel = document.getElementById("de" + n + "End");
+    var endLabel = document.getElementById("labelDe" + n + "End");
+    if (endSel) endSel.style.display = "";
+    if (endLabel) endLabel.style.display = "";
+  });
+}
+
+// =====================================================
+// CALCULATE CREDITS
 // =====================================================
 function calculateCredits() {
   const totalCredits = parseInt(document.getElementById("totalCredits").value);
   const startWeek = parseInt(document.getElementById("startWeek").value);
-  const endWeek = parseInt(document.getElementById("endWeek").value);
+  let endWeek = parseInt(document.getElementById("endWeek").value);
   const skipThanksgiving = document.getElementById("skipThanksgiving").checked;
   const skipWinter = document.getElementById("skipWinter").checked;
   const skipSpring = document.getElementById("skipSpring").checked;
+
+  // Cross-year: extend endWeek into next year
+  const crossYearData = getCrossYearData();
+  let extMap = null;
+  if (crossYearData.active) {
+    extMap = buildExtendedMap(crossYearData);
+    endWeek = extMap.totalCurrent + crossYearData.endWeekNext;
+  }
 
   const customSkips = [];
   const selectedWeeks = new Set();
@@ -689,6 +1184,30 @@ function calculateCredits() {
     ...(skipSpring ? [41] : []),
     ...customSkips
   ];
+  // For cross-year: read next-year skip checkboxes
+  if (crossYearData.active && extMap) {
+    const tc = extMap.totalCurrent;
+    // Next year's Week 1 partial skip
+    const nextYearSkipW1 = document.getElementById("nextYearSkipWeek1Partial")?.checked || false;
+    if (nextYearSkipW1) allSkips.push(tc + 1);
+    // Next year's holiday skips
+    if (document.getElementById("nextYearSkipThanksgiving")?.checked) allSkips.push(tc + 22);
+    if (document.getElementById("nextYearSkipWinter")?.checked) { allSkips.push(tc + 26); allSkips.push(tc + 27); }
+    if (document.getElementById("nextYearSkipSpring")?.checked) allSkips.push(tc + 41);
+    // Next year's custom skips
+    const nextYearSelectedWeeks = new Set();
+    for (let i = 1; i <= 4; i++) {
+      const cb = document.getElementById("nextYearCustomSkip" + i);
+      const sel = document.getElementById("nextYearCustomWeek" + i);
+      if (cb?.checked && sel?.value) {
+        const val = parseInt(sel.value);
+        if (!isNaN(val) && !nextYearSelectedWeeks.has(val)) {
+          nextYearSelectedWeeks.add(val);
+          allSkips.push(tc + val);
+        }
+      }
+    }
+  }
   const uniqueSkips = [...new Set(allSkips)].filter(week => week >= startWeek && week <= endWeek);
   let weeksRemaining = endWeek - startWeek + 1 - uniqueSkips.length;
 
@@ -697,7 +1216,14 @@ function calculateCredits() {
     return;
   }
 
-  const weeklyAvg = (totalCredits / weeksRemaining).toFixed(2);
+  // Dual Enrollment credit subtraction (early, before pace math)
+  const deData = getDualEnrollmentData();
+  let deSubtracted = 0;
+  if (deData.de1.active) deSubtracted += deData.de1.credits;
+  if (deData.de2.active) deSubtracted += deData.de2.credits;
+  const adjustedCredits = Math.max(0, totalCredits - deSubtracted);
+
+  const weeklyAvg = (adjustedCredits / weeksRemaining).toFixed(2);
   const weeklyAvgNum = parseFloat(weeklyAvg);
   let suggestion = "";
   let riskLevel = "\u2705 Low Risk";
@@ -724,12 +1250,12 @@ function calculateCredits() {
   else if (endWeek > 46) bufferWarningKey = "bufferWarningAfter46";
   let bufferWarning = bufferWarningKey ? "<div class='warning'>" + getText(bufferWarningKey) + "</div>" : "";
 
-  const fullWeeksAt3 = Math.floor(totalCredits / 3);
-  const remainder = totalCredits % 3;
+  const fullWeeksAt3 = Math.floor(adjustedCredits / 3);
+  const remainder = adjustedCredits % 3;
   const planBWeeks = remainder === 0 ? fullWeeksAt3 : fullWeeksAt3 + 1;
 
   const creditsAfter3PerWeek = 3 * 8;
-  const remainingCredits = Math.max(totalCredits - creditsAfter3PerWeek, 0);
+  const remainingCredits = Math.max(adjustedCredits - creditsAfter3PerWeek, 0);
   const fullWeeksAt4 = Math.floor(remainingCredits / 4);
   const remainderD = remainingCredits % 4;
   const totalWeeksD = 8 + fullWeeksAt4 + (remainderD > 0 ? 1 : 0);
@@ -745,7 +1271,7 @@ function calculateCredits() {
   }
   planDNote += "</li>";
 
-  const planAWeeks = Math.ceil(totalCredits / 2);
+  const planAWeeks = Math.ceil(adjustedCredits / 2);
   let weeksOf3 = 0;
   let planANote = "<li><strong>" + getText("Plan A") + ":</strong> " +
     getText("credits_per_week_for_weeks").replace("{x}", "2").replace("{y}", planAWeeks);
@@ -757,7 +1283,7 @@ function calculateCredits() {
     planANote += ' <span style="color: red;">' + getText("exceeds_weeks_by").replace("{z}", weeksOver) + '</span>';
     if (weeksOf3 < planBWeeks) {
       const creditsFrom3s = weeksOf3 * 3;
-      const creditsRemaining2 = totalCredits - creditsFrom3s;
+      const creditsRemaining2 = adjustedCredits - creditsFrom3s;
       const weeksOf2 = Math.floor(creditsRemaining2 / 2);
       const leftover = creditsRemaining2 % 2;
       const weeksOf1 = leftover > 0 ? 1 : 0;
@@ -788,16 +1314,16 @@ function calculateCredits() {
   planBNote += "</li>";
 
   let oneCreditWeeks = 0;
-  if (totalCredits <= weeksRemaining) oneCreditWeeks = totalCredits;
-  else if (totalCredits <= 2 * weeksRemaining) oneCreditWeeks = (2 * weeksRemaining) - totalCredits;
+  if (adjustedCredits <= weeksRemaining) oneCreditWeeks = adjustedCredits;
+  else if (adjustedCredits <= 2 * weeksRemaining) oneCreditWeeks = (2 * weeksRemaining) - adjustedCredits;
   else oneCreditWeeks = 0;
 
   let planCText = "";
-  if (totalCredits <= weeksRemaining) {
+  if (adjustedCredits <= weeksRemaining) {
     planCText = isSpanish
       ? 'Puedes tener ' + oneCreditWeeks + ' semana(s) de 1 cr\u00e9dito'
       : 'You can afford ' + oneCreditWeeks + ' week(s) at 1 credit';
-  } else if (totalCredits <= 2 * weeksRemaining) {
+  } else if (adjustedCredits <= 2 * weeksRemaining) {
     planCText = isSpanish
       ? 'Puedes tener hasta ' + oneCreditWeeks + ' semana(s) de 1 cr\u00e9dito si el resto promedia 2 o m\u00e1s'
       : 'You can afford up to ' + oneCreditWeeks + ' week(s) at 1 credit if the rest average 2+';
@@ -808,19 +1334,31 @@ function calculateCredits() {
   }
   let planCNote = "<li><strong>" + getText("Plan C") + ":</strong> " + planCText + "</li>";
 
-  // Dual Enrollment (feature-gated)
+  // Dual Enrollment result markup
   let dualEnrollmentMarkup = "";
-  if (FEATURES.dualEnrollment) {
-    const dualAvg = totalCredits / weeksRemaining;
-    let dualMsg = "";
-    if (dualAvg <= 1.5) dualMsg = isSpanish ? "\u2705 Seguro \u2013 Carga manejable y con buen margen" : "\u2705 Safe \u2013 Strong buffer and manageable load";
-    else if (dualAvg <= 2.0) dualMsg = isSpanish ? "\u2705 Mayormente seguro \u2013 Razonable, pero monitorear consistencia" : "\u2705 Mostly Safe \u2013 Reasonable, monitor consistency";
-    else if (dualAvg <= 2.5) dualMsg = isSpanish ? "\u26a0\ufe0f Precauci\u00f3n \u2013 Solo si el estudiante demuestra alta constancia." : "\u26a0\ufe0f Caution \u2013 Only consider if student is highly consistent";
-    else dualMsg = isSpanish ? "\ud83d\udeab No recomendable \u2013 Ritmo semanal alto; DE podr\u00eda causar retrasos" : "\ud83d\udeab Not Advisable \u2013 Weekly pace too high; DE likely to cause setbacks";
-    dualEnrollmentMarkup = "<p><strong>Dual Enrollment:</strong> " + dualMsg + "</p>";
+  if (deData.de1.active) {
+    const de1Range = deData.de1.crossYear
+      ? (isSpanish ? 'Semanas ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek + ', contin\u00faa al siguiente a\u00f1o hasta Semana ' + deData.de1.endWeekNext
+        : 'Weeks ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek + ', continues into next year through Week ' + deData.de1.endWeekNext)
+      : (isSpanish ? 'Semanas ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek : 'Weeks ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek);
+    dualEnrollmentMarkup += '<p style="background:#ffe0b2;padding:6px 10px;border-radius:6px;border:1px solid #ffcc80;"><strong>' +
+      (isSpanish ? 'Doble Inscripci\u00f3n Clase 1:' : 'Dual Enrollment Class 1:') + '</strong> ' +
+      (isSpanish ? deData.de1.credits + ' cr\u00e9ditos ser\u00e1n restados de tu total (' + de1Range + ')'
+        : deData.de1.credits + ' credits will be subtracted from your total (' + de1Range + ')') + '</p>';
+  }
+  if (deData.de2.active) {
+    const de2Range = deData.de2.crossYear
+      ? (isSpanish ? 'Semanas ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek + ', contin\u00faa al siguiente a\u00f1o hasta Semana ' + deData.de2.endWeekNext
+        : 'Weeks ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek + ', continues into next year through Week ' + deData.de2.endWeekNext)
+      : (isSpanish ? 'Semanas ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek : 'Weeks ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek);
+    dualEnrollmentMarkup += '<p style="background:#f8bbd0;padding:6px 10px;border-radius:6px;border:1px solid #f48fb1;"><strong>' +
+      (isSpanish ? 'Doble Inscripci\u00f3n Clase 2:' : 'Dual Enrollment Class 2:') + '</strong> ' +
+      (isSpanish ? deData.de2.credits + ' cr\u00e9ditos ser\u00e1n restados de tu total (' + de2Range + ')'
+        : deData.de2.credits + ' credits will be subtracted from your total (' + de2Range + ')') + '</p>';
   }
 
-  const result = '<p><strong>' + getText("Credits Needed") + ':</strong> ' + totalCredits + '</p>' +
+  const result = '<p><strong>' + getText("Credits Needed") + ':</strong> ' + totalCredits +
+    (deSubtracted > 0 ? ' <span style="color:#c56000;">(' + (isSpanish ? 'menos' : 'minus') + ' ' + deSubtracted + ' DE = <strong>' + adjustedCredits + '</strong> ' + (isSpanish ? 'para ritmo semanal' : 'for weekly pace') + ')</span>' : '') + '</p>' +
     '<p><strong>' + getText("Weeks Remaining") + ':</strong> ' + weeksRemaining + '</p>' +
     '<p><strong>' + getText("Average Credits per Week") + ':</strong> ' + weeklyAvg + '</p>' +
     dualEnrollmentMarkup +
@@ -841,7 +1379,7 @@ function calculateCredits() {
 
   // Disable buttons as needed
   const planCButton = document.querySelector('button[onclick="generatePlan(\'C\')"]');
-  if (totalCredits > 2 * weeksRemaining) { planCButton.disabled = true; planCButton.title = "Disabled: Plan C needs 1\u20132 credits/week, which can't reach your total in time."; }
+  if (adjustedCredits > 2 * weeksRemaining) { planCButton.disabled = true; planCButton.title = "Disabled: Plan C needs 1\u20132 credits/week, which can't reach your total in time."; }
   else { planCButton.disabled = false; planCButton.title = ""; }
 
   const planBButton = document.querySelector('button[onclick="generatePlan(\'B\')"]');
@@ -853,7 +1391,7 @@ function calculateCredits() {
   else { planDButton.disabled = false; planDButton.title = ""; }
 
   document.getElementById("planButtons").style.display = "flex";
-  storedPlan = { totalCredits, startWeek, endWeek, oneCreditWeeks, skipWeeks: uniqueSkips };
+  storedPlan = { totalCredits, adjustedCredits, startWeek, endWeek, oneCreditWeeks, skipWeeks: uniqueSkips, deData, crossYearData, extMap };
 }
 
 // =====================================================
@@ -881,19 +1419,38 @@ function renderResult() {
 // GENERATE PLAN (uses generated dateRanges)
 // =====================================================
 function generatePlan(type) {
-  const { totalCredits, startWeek, endWeek, skipWeeks } = storedPlan;
+  const { totalCredits, adjustedCredits, startWeek, endWeek, skipWeeks, deData, crossYearData, extMap } = storedPlan;
+  const isCrossYear = crossYearData && crossYearData.active;
+  const totalCurrent = schoolYearData.totalWeeks;
+  // Build lookup for date ranges across both years
+  const planDateRanges = isCrossYear ? extMap.extDateRanges : dateRanges;
+
   let allWeeks = [];
   const isWeek1Partial = schoolYearData.week1Partial;
   const week1SkipChecked = document.getElementById("skipWeek1Partial")?.checked || false;
   for (let w = startWeek; w <= endWeek; w++) {
+    const isCurrentYear = w <= totalCurrent;
+    const actualWeek = isCurrentYear ? w : w - totalCurrent;
     const isWeek1SoftSkip = (w === 1 && isWeek1Partial && week1SkipChecked);
     const hardSkip = isWeek1SoftSkip ? false : skipWeeks.includes(w);
     const softSkip = isWeek1SoftSkip;
-    allWeeks.push({ week: w, skip: hardSkip, softSkip: softSkip });
+    // DE class membership: for cross-year DE, endWeek is totalCurrent in current year
+    // DE highlight also applies in next year if crossYear flag is set
+    let inDE1 = false;
+    if (deData.de1.active) {
+      if (isCurrentYear) { inDE1 = w >= deData.de1.startWeek && w <= deData.de1.endWeek; }
+      else if (deData.de1.crossYear) { inDE1 = actualWeek <= deData.de1.endWeekNext; }
+    }
+    let inDE2 = false;
+    if (deData.de2.active) {
+      if (isCurrentYear) { inDE2 = w >= deData.de2.startWeek && w <= deData.de2.endWeek; }
+      else if (deData.de2.crossYear) { inDE2 = actualWeek <= deData.de2.endWeekNext; }
+    }
+    allWeeks.push({ week: w, actualWeek: actualWeek, isCurrentYear: isCurrentYear, skip: hardSkip, softSkip: softSkip, inDE1: inDE1, inDE2: inDE2 });
   }
   const usable = allWeeks.filter(w => !w.skip && !w.softSkip);
   const W = usable.length;
-  const C = totalCredits;
+  const C = adjustedCredits;
 
   function baseDistribution(planType) {
     if (planType === 'A') {
@@ -963,17 +1520,33 @@ function generatePlan(type) {
   const maxRowsFirst = 16;
   const maxRowsNext = 23;
 
+  // Year divider row for cross-year plans
+  const nextYearLabel = isCrossYear ? extMap.nextYearLabel : '';
+  let insertedDivider = false;
+
   let rows = [];
   allWeeks.forEach((w) => {
+    // Insert year divider before first next-year week
+    if (isCrossYear && !w.isCurrentYear && !insertedDivider) {
+      rows.push('<tr class="year-divider"><td colspan="5" style="background:#b0c4de;color:#1a3a5c;font-weight:bold;text-align:center;padding:8px;font-size:1em;">' + nextYearLabel + '</td></tr>');
+      insertedDivider = true;
+    }
     const rowClass = (w.skip || w.softSkip) ? ' class="skip-row"' : '';
+    // DE highlight goes on the date cell only
+    let dateCellClass = 'col-date';
+    if (w.inDE1 && w.inDE2) dateCellClass += ' de-both';
+    else if (w.inDE1) dateCellClass += ' de1-cell';
+    else if (w.inDE2) dateCellClass += ' de2-cell';
     const controls = w.skip ? '<em>Skip</em>' : '<button class="minus">\u2013</button><button class="plus">+</button>';
     const boxes = [1, 2, 3, 4].map(i => {
       const id = 'wk' + w.week + '-c' + i;
       return '<label class="chk"><input type="checkbox" id="' + id + '" />' + i + '<span class="credit-line"></span></label>';
     }).join('');
-    rows.push('<tr' + rowClass + ' data-week="' + w.week + '" data-skip="' + (w.skip ? '1' : '0') + '" data-soft-skip="' + (w.softSkip ? '1' : '0') + '">' +
-      '<td class="col-week">' + w.week + '</td>' +
-      '<td class="col-date">' + formatDateForCell(dateRanges[w.week] || '') + '</td>' +
+    // Display: for cross-year, show actual week number (not the extended number)
+    const displayWeek = w.actualWeek;
+    rows.push('<tr' + rowClass + ' data-week="' + w.week + '" data-skip="' + (w.skip ? '1' : '0') + '" data-soft-skip="' + (w.softSkip ? '1' : '0') + '" data-de1="' + (w.inDE1 ? '1' : '0') + '" data-de2="' + (w.inDE2 ? '1' : '0') + '">' +
+      '<td class="col-week">' + displayWeek + '</td>' +
+      '<td class="' + dateCellClass + '">' + formatDateForCell(planDateRanges[w.week] || '') + '</td>' +
       '<td class="col-credits"><strong class="val">' + w.credits + '</strong></td>' +
       '<td class="col-progress"><div class="progress-grid">' + boxes + '</div></td>' +
       '<td class="controls col-adjust">' + controls + '</td></tr>');
@@ -1005,6 +1578,14 @@ function generatePlan(type) {
   'table { border-collapse: collapse; width: 100%; margin-top: 12px; table-layout: fixed; }' +
   'th, td { border: 1px solid #ccc; padding: 6px; text-align: center; vertical-align: middle; }' +
   '.skip-row { background: #ffd6d6; }' +
+  'td.de1-cell { background: #ffe0b2; }' +
+  'td.de2-cell { background: #f8bbd0; }' +
+  'td.de-both { background: linear-gradient(to right, #ffe0b2 50%, #f8bbd0 50%); }' +
+  '.de-note { padding: 4px 8px; border-radius: 6px; margin-top: 4px; font-size: 0.85rem; }' +
+  '.de-note-1 { background: #ffe0b2; border: 1px solid #ffcc80; }' +
+  '.de-note-2 { background: #f8bbd0; border: 1px solid #f48fb1; }' +
+  '.de-toggle-wrap { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; margin-top: 4px; }' +
+  '.de-toggle-wrap input { margin: 0; }' +
   '.controls { display:flex; gap:8px; align-items:center; justify-content:center; }' +
   '.controls button { padding: 4px 8px; }' +
   '.topbar { position: sticky; top: 0; background: #fff; border: 1px solid #ddd; padding: 8px 12px; border-radius: 8px; display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items:start; z-index: 5; column-gap: 116px; padding-right: 120px; }' +
@@ -1064,10 +1645,15 @@ function generatePlan(type) {
   '<div class="summarybar" style="margin-top:6px;"><span class="badge badge-lg">Remaining: <strong id="rem">0</strong></span></div>' +
   '<div class="summarybar" style="margin-top:6px;"><span class="badge">0s: <strong id="c0">0</strong></span><span class="badge">1s: <strong id="c1">0</strong></span><span class="badge">2s: <strong id="c2">0</strong></span><span class="badge">3s: <strong id="c3">0</strong></span>' +
   (maxPerWeek === 4 ? '<span class="badge">4s: <strong id="c4">0</strong></span>' : '') +
-  '</div></div>' +
+  '</div>' +
+  (deData.de1.active ? '<div class="de-note de-note-1" id="deNote1">You will be earning ' + deData.de1.credits + ' high school credits from Dual Enrollment Class 1 (Weeks ' + deData.de1.startWeek + '–' + deData.de1.endWeek + (deData.de1.crossYear ? ', continues into next year through Week ' + deData.de1.endWeekNext : '') + ')</div>' +
+    '<div class="de-toggle-wrap"><input type="checkbox" id="deToggle1" checked><label for="deToggle1">Show DE Class 1</label></div>' : '') +
+  (deData.de2.active ? '<div class="de-note de-note-2" id="deNote2">You will be earning ' + deData.de2.credits + ' high school credits from Dual Enrollment Class 2 (Weeks ' + deData.de2.startWeek + '–' + deData.de2.endWeek + (deData.de2.crossYear ? ', continues into next year through Week ' + deData.de2.endWeekNext : '') + ')</div>' +
+    '<div class="de-toggle-wrap"><input type="checkbox" id="deToggle2" checked><label for="deToggle2">Show DE Class 2</label></div>' : '') +
+  '</div>' +
   '<div class="tools"><button id="btnSpread1">Spread 1-credit weeks evenly</button><button id="btnFill2">Spread 2-credit weeks evenly</button><button id="btnClear">Clear all to 0</button></div>' +
   '<div class="print-tips"><strong>Print Tips:</strong> For best results, set your printer settings to:<ul><li>Margins: <strong>Minimum</strong></li><li>Enable <strong>Background Graphics</strong></li></ul></div></div>' +
-  '<h2>Credit Tracker \u2013 Plan ' + type + ' (' + yearLabel + ')' +
+  '<h2>Credit Tracker \u2013 Plan ' + type + ' (' + yearLabel + (isCrossYear ? ' + ' + nextYearLabel : '') + ')' +
   '<span style="font-weight: normal; font-size: 0.6em;"> - (Credit completion is allowed during self-selected "0" credit weeks.)</span></h2>' +
   tablesHtml +
   '<p class="notes" style="margin-top:10px; font-size:0.95em; color:#555;">Notes: Skip weeks are locked at 0.' + (isWeek1Partial ? ' Week 1 is a partial week (highlighted in red, starts at 0 credits) \u2014 you may optionally add bonus credits using +/\u2013.' : '') + ' Per-week limit is ' + maxPerWeek + '. The table won\'t let you exceed your total target credits (' + C + ').</p>' +
@@ -1080,8 +1666,8 @@ function generatePlan(type) {
     'var maxPerWeek = ' + maxPerWeek + ';' +
     'var target = ' + C + ';' +
     'var tables = Array.from(document.querySelectorAll("table.planner"));' +
-    'function eachRow(cb) { tables.forEach(function(t) { t.querySelectorAll("tbody tr").forEach(cb); }); }' +
-    'function currentValues() { var vals = []; eachRow(function(tr) { var skip = tr.getAttribute("data-skip") === "1"; var v = parseInt(tr.querySelector(".val").textContent) || 0; vals.push({ tr: tr, skip: skip, v: v }); }); return vals; }' +
+    'function eachRow(cb) { tables.forEach(function(t) { t.querySelectorAll("tbody tr").forEach(function(tr) { if(tr.classList.contains("year-divider")) return; cb(tr); }); }); }' +
+    'function currentValues() { var vals = []; eachRow(function(tr) { var valEl = tr.querySelector(".val"); if(!valEl) return; var skip = tr.getAttribute("data-skip") === "1"; var v = parseInt(valEl.textContent) || 0; vals.push({ tr: tr, skip: skip, v: v }); }); return vals; }' +
     'function sum(arr) { return arr.reduce(function(a,b){return a+b;},0); }' +
     'function refreshSummary() { var items = currentValues(); var nums = items.map(function(x){return x.v;}); var assigned = sum(nums); var rem = Math.max(0, target - assigned); var cnt = {0:0,1:0,2:0,3:0,4:0}; nums.forEach(function(n){ if(cnt[n]!==undefined) cnt[n]++; }); document.getElementById("asgn").textContent = assigned; document.getElementById("rem").textContent = rem; document.getElementById("c0").textContent = cnt[0]||0; document.getElementById("c1").textContent = cnt[1]||0; document.getElementById("c2").textContent = cnt[2]||0; document.getElementById("c3").textContent = cnt[3]||0; var c4El = document.getElementById("c4"); if(c4El) c4El.textContent = cnt[4]||0; }' +
     'function trySet(tr, newVal) { var skip = tr.getAttribute("data-skip") === "1"; if(skip) return; newVal = Math.max(0, Math.min(maxPerWeek, newVal)); var items = currentValues(); var old = parseInt(tr.querySelector(".val").textContent) || 0; var assignedNow = items.reduce(function(s,i){return s+i.v;},0); var assignedMinusOld = assignedNow - old; var room = Math.max(0, target - assignedMinusOld); if(newVal > room) newVal = room; tr.querySelector(".val").textContent = newVal; refreshSummary(); }' +
@@ -1089,6 +1675,69 @@ function generatePlan(type) {
     'document.getElementById("btnClear").addEventListener("click", function() { eachRow(function(tr) { if(tr.getAttribute("data-skip") === "1") return; tr.querySelector(".val").textContent = "0"; }); refreshSummary(); });' +
     'document.getElementById("btnFill2").addEventListener("click", function() { var rows = currentValues().filter(function(i){return !i.skip;}); var assigned = rows.reduce(function(s,i){return s+i.v;},0); var room = Math.max(0, target - assigned); if(room <= 0) return; for(var idx=0;idx<rows.length;idx++) { var it = rows[idx]; while(it.v < Math.min(2, maxPerWeek) && room > 0) { it.v += 1; room -= 1; it.tr.querySelector(".val").textContent = it.v; } if(room <= 0) break; } refreshSummary(); });' +
     'document.getElementById("btnSpread1").addEventListener("click", function() { var rows = currentValues().filter(function(i){return !i.skip;}); var assigned = rows.reduce(function(s,i){return s+i.v;},0); var remaining = Math.max(0, target - assigned); if(remaining <= 0) return; var zeroIdxs = rows.map(function(it,idx){return {it:it,idx:idx};}).filter(function(x){return x.it.v===0;}).map(function(x){return x.idx;}); var toPlace = Math.min(remaining, zeroIdxs.length); for(var k=0;k<toPlace;k++) { var pos = Math.floor(k * zeroIdxs.length / toPlace); trySet(rows[zeroIdxs[pos]].tr, 1); } });' +
+    'var baseTarget = target;' +
+    'var de1Credits = ' + (deData.de1.active ? deData.de1.credits : 0) + ';' +
+    'var de2Credits = ' + (deData.de2.active ? deData.de2.credits : 0) + ';' +
+    'var fullTarget = baseTarget + de1Credits + de2Credits;' +
+    'var planType = "' + type + '";' +
+    'function redistCredits(newTarget) {' +
+    '  var rows = currentValues();' +
+    '  var usable = rows.filter(function(r){ return !r.skip; });' +
+    '  var W = usable.length;' +
+    '  var C = newTarget;' +
+    '  var dist = [];' +
+    '  if (planType === "A") {' +
+    '    var need = Math.ceil(C / 2);' +
+    '    if (need <= W) { for(var i=0;i<need;i++) dist.push(2); for(var i=0;i<W-need;i++) dist.push(0); }' +
+    '    else { var wo = need - W; var w3 = wo * 2; var cf = w3 * 3; var rm = C - cf; var w2 = Math.floor(rm/2); var lo = rm%2; var w1 = lo>0?1:0; var z = Math.max(0,W-w3-w2-w1); for(var i=0;i<w3;i++) dist.push(3); for(var i=0;i<w2;i++) dist.push(2); for(var i=0;i<w1;i++) dist.push(1); for(var i=0;i<z;i++) dist.push(0); }' +
+    '  } else if (planType === "B") {' +
+    '    var f3 = Math.floor(C/3); var rm = C%3; for(var i=0;i<f3;i++) dist.push(3); if(rm>0) dist.push(rm); while(dist.length<W) dist.push(0); dist = dist.slice(0,W);' +
+    '  } else if (planType === "C") {' +
+    '    if (C <= W) { for(var i=0;i<C;i++) dist.push(1); for(var i=0;i<W-C;i++) dist.push(0); }' +
+    '    else if (C <= 2*W) { var ex = C - W; for(var i=0;i<ex;i++) dist.push(2); for(var i=0;i<W-ex;i++) dist.push(1); }' +
+    '    else { for(var i=0;i<W;i++) dist.push(2); }' +
+    '  } else if (planType === "D") {' +
+    '    var p1 = Math.min(8,W); for(var i=0;i<p1;i++) dist.push(3);' +
+    '    var rc = C - 3*p1; if(rc>0){ var w4=Math.floor(rc/4); var r4=rc%4; var af=[]; for(var i=0;i<Math.min(w4,Math.max(0,W-p1));i++) af.push(4); if(r4>0&&p1+af.length<W) af.push(r4); for(var i=0;i<af.length;i++) dist.push(af[i]); }' +
+    '    while(dist.length<W) dist.push(0);' +
+    '  }' +
+    '  var ptr = 0;' +
+    '  rows.forEach(function(r) {' +
+    '    if (r.skip) { r.tr.querySelector(".val").textContent = "0"; return; }' +
+    '    r.tr.querySelector(".val").textContent = (dist[ptr] || 0);' +
+    '    ptr++;' +
+    '  });' +
+    '}' +
+    'function updateDeToggles() {' +
+    '  var t1 = document.getElementById("deToggle1");' +
+    '  var t2 = document.getElementById("deToggle2");' +
+    '  var n1 = document.getElementById("deNote1");' +
+    '  var n2 = document.getElementById("deNote2");' +
+    '  var de1On = t1 ? t1.checked : false;' +
+    '  var de2On = t2 ? t2.checked : false;' +
+    '  if (n1) n1.style.display = de1On ? "block" : "none";' +
+    '  if (n2) n2.style.display = de2On ? "block" : "none";' +
+    '  target = fullTarget - (de1On ? de1Credits : 0) - (de2On ? de2Credits : 0);' +
+    '  document.getElementById("tgt").textContent = target;' +
+    '  redistCredits(target);' +
+    '  eachRow(function(tr) {' +
+    '    var d1 = tr.getAttribute("data-de1") === "1";' +
+    '    var d2 = tr.getAttribute("data-de2") === "1";' +
+    '    var dateCell = tr.querySelector("td.col-date");' +
+    '    if (!dateCell) return;' +
+    '    dateCell.classList.remove("de1-cell", "de2-cell", "de-both");' +
+    '    var showDE1 = d1 && de1On;' +
+    '    var showDE2 = d2 && de2On;' +
+    '    if (showDE1 && showDE2) dateCell.classList.add("de-both");' +
+    '    else if (showDE1) dateCell.classList.add("de1-cell");' +
+    '    else if (showDE2) dateCell.classList.add("de2-cell");' +
+    '  });' +
+    '  refreshSummary();' +
+    '}' +
+    'var dt1 = document.getElementById("deToggle1");' +
+    'var dt2 = document.getElementById("deToggle2");' +
+    'if (dt1) dt1.addEventListener("change", updateDeToggles);' +
+    'if (dt2) dt2.addEventListener("change", updateDeToggles);' +
     'refreshSummary();' +
     // Column swap logic
     '(function() { var tables2 = Array.from(document.querySelectorAll("table.planner"));' +
@@ -1205,8 +1854,13 @@ function applyTranslations() {
   const footerDisclaimerEl = document.getElementById("footerDisclaimer");
   if (footerDisclaimerEl) footerDisclaimerEl.innerHTML = isSpanish ? translations.footerDisclaimerFull_ES : translations.footerDisclaimerFull;
 
+  const addDE2Btn = document.getElementById("addDE2Btn");
+  if (addDE2Btn) addDE2Btn.textContent = isSpanish ? "+ Agregar una segunda clase de doble inscripción" : "+ Add a second dual-enrollment class";
+  const removeDE2Btn = document.getElementById("removeDE2Btn");
+  if (removeDE2Btn) removeDE2Btn.textContent = isSpanish ? "✕ Eliminar" : "✕ Remove";
+
   const skipBoxTitleEl = document.getElementById("skipBoxTitle");
-  if (skipBoxTitleEl) skipBoxTitleEl.textContent = getText("Weeks You Plan to Skip (Optional):");
+  if (skipBoxTitleEl) skipBoxTitleEl.textContent = getText("Weeks You Plan to Skip - Current Year (Optional):");
 
   // Update next year notice if visible
   const notice = document.getElementById("nextYearNotice");
@@ -1218,6 +1872,11 @@ function applyTranslations() {
 
   updateWeek1Partial();
   populateWeekDropdowns();
+  populateDeDropdowns();
+  populateCrossYearDropdown();
+  updateNextYearSkipLabels();
+  updateNextYearWeek1Partial();
+  populateNextYearCustomSkipDropdowns();
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
   updateYearToggle();
@@ -1241,8 +1900,24 @@ document.addEventListener("DOMContentLoaded", () => {
   updateYearToggle();
   updateWeek1Partial();
   populateWeekDropdowns();
+  populateDeDropdowns();
+  populateCrossYearDropdown();
+  populateNextYearCustomSkipDropdowns();
   document.getElementById("endWeek").value = "46";
   displayCurrentDateAndWeek();
+
+  // Cross-year planning event listeners
+  document.getElementById("crossYearToggle").addEventListener("change", function() { updateCrossYearUI(); populateDeDropdowns(); });
+  document.getElementById("endWeekNext").addEventListener("change", function() { populateDeDropdowns(); calculateCredits(); });
+  document.getElementById("endWeek").addEventListener("change", function() { populateDeDropdowns(); });
+  // Next-year skip checkboxes
+  ["nextYearSkipWeek1Partial", "nextYearSkipThanksgiving", "nextYearSkipWinter", "nextYearSkipSpring"].forEach(function(id) {
+    document.getElementById(id).addEventListener("change", calculateCredits);
+  });
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById("nextYearCustomSkip" + i).addEventListener("change", calculateCredits);
+    document.getElementById("nextYearCustomWeek" + i).addEventListener("change", calculateCredits);
+  }
 
   // Checkbox event listeners
   document.getElementById("skipWeek1Partial").addEventListener("change", calculateCredits);
@@ -1253,6 +1928,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('customSkip' + i).addEventListener("change", calculateCredits);
     document.getElementById('customWeek' + i).addEventListener("change", calculateCredits);
   }
+
+  // Dual Enrollment event listeners
+  document.getElementById("deToggle").addEventListener("change", function() { updateDeUI(); });
+  ["de1Start", "de1End", "de1Credits", "de2Start", "de2End", "de2Credits", "de1EndNext", "de2EndNext"].forEach(function(id) {
+    document.getElementById(id).addEventListener("change", function() { updateDeUI(); });
+    document.getElementById(id).addEventListener("input", function() { updateDeUI(); });
+  });
+  ["de1CrossYear", "de2CrossYear"].forEach(function(id) {
+    document.getElementById(id).addEventListener("change", function() { updateDeUI(); });
+  });
 
   // Enter key triggers
   ["totalCredits", "startWeek", "endWeek"].forEach(id => {
