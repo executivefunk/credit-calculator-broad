@@ -576,7 +576,7 @@ function getSession() {
 }
 
 function createSession() {
-  const session = { expiry: Date.now() + 60 * 60 * 1000 };
+  const session = { expiry: Date.now() + 20 * 20 * 1000 };
   sessionStorage.setItem('wcc_session', JSON.stringify(session));
   return session;
 }
