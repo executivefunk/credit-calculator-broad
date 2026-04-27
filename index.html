@@ -98,15 +98,18 @@ select {
   body.spanish-mode .holiday-option label { font-size: 0.75em; line-height: 1.1em; }
   .year-btn { font-size: 0.9em !important; padding: 8px 12px !important; }
 }
-#printButton {
-  position: fixed; top: 16px; right: 16px; background-color: white; color: black;
+.top-actions {
+  position: fixed; top: 16px; right: 16px; display: flex; gap: 8px; z-index: 999;
+}
+.top-actions button {
+  background-color: white; color: black;
   border: 1px solid black; padding: 10px 16px; font-size: 1.1em; border-radius: 6px;
-  cursor: pointer; z-index: 999; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s;
 }
-#printButton:hover { background-color: #555; color: white; }
+.top-actions button:hover { background-color: #555; color: white; }
 @media print {
-  #printButton { display: none; }
+  .top-actions { display: none; }
   body { background: white !important; margin: 0; padding: 0; }
   .container { max-width: 100% !important; box-shadow: none !important; border-radius: 0 !important; padding: 20px !important; }
   .print-page-1 { page-break-after: always; }
@@ -114,9 +117,231 @@ select {
   table, tr, td, th { page-break-inside: avoid !important; break-inside: avoid !important; }
   .force-page-break { page-break-before: always !important; }
 }
+
+/* =====================================================
+   WORKSHOP ACCESS SYSTEM STYLES
+   ===================================================== */
+#workshopGate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.gate-box {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+.gate-box h1 {
+  font-size: 1.6em;
+  margin: 0 0 16px;
+  color: #333;
+}
+.gate-box p {
+  font-size: 1em;
+  color: #555;
+  margin: 0 0 20px;
+}
+.gate-box input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.3em;
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+.gate-box input[type="text"]:focus {
+  border-color: #4a90d9;
+  outline: none;
+}
+.gate-box button {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+  background: #4a90d9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.gate-box button:hover { background: #3a7bc8; }
+.gate-error {
+  color: #c62828;
+  font-size: 0.95em;
+  margin-top: 12px;
+  min-height: 1.2em;
+}
+
+/* Session Timer */
+#sessionTimer {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-family: monospace;
+  z-index: 1000;
+  display: none;
+}
+#sessionTimer.warn-yellow { background: rgba(180,140,0,0.9); }
+#sessionTimer.warn-red { background: rgba(180,20,20,0.92); }
+
+/* Session Expired Overlay */
+#sessionExpiredOverlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(200,200,200,0.92);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+.expired-box {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  text-align: center;
+  max-width: 440px;
+  width: 90%;
+}
+.expired-box h2 { color: #c62828; margin: 0 0 12px; }
+.expired-box p { color: #555; font-size: 1em; line-height: 1.5; }
+
+/* Teacher Panel Modal */
+#teacherModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
+.teacher-box {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+.teacher-box h3 { margin: 0 0 16px; font-size: 1.2em; }
+.teacher-box input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1em;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.teacher-box input[type="password"]:focus { border-color: #4a90d9; outline: none; }
+.teacher-pin-error {
+  color: #c62828;
+  font-size: 0.9em;
+  margin-top: 8px;
+  min-height: 1.2em;
+}
+.teacher-code-display {
+  font-size: 2.5em;
+  font-family: monospace;
+  letter-spacing: 6px;
+  font-weight: bold;
+  color: #1a56a0;
+  margin: 16px 0;
+  user-select: all;
+}
+.teacher-refresh-timer {
+  font-size: 0.95em;
+  color: #555;
+  margin-bottom: 16px;
+}
+.teacher-box button {
+  padding: 8px 20px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: white;
+  margin: 4px;
+}
+.teacher-box button:hover { background: #f0f0f0; }
+.teacher-box button.copy-btn { background: #4a90d9; color: white; border-color: #4a90d9; }
+.teacher-box button.copy-btn:hover { background: #3a7bc8; }
+
+@media print {
+  #sessionTimer { display: none !important; }
+  #workshopGate { display: none !important; }
+  #teacherModal { display: none !important; }
+  #sessionExpiredOverlay { display: none !important; }
+}
 </style>
 </head>
 <body>
+
+<!-- Workshop Gate Screen -->
+<div id="workshopGate">
+  <div class="gate-box">
+    <h1>Weekly Credit Calculator</h1>
+    <p>Enter the workshop code your teacher gave you to get started.</p>
+    <input type="text" id="gateCodeInput" maxlength="6" autocomplete="off" placeholder="XXXXXX">
+    <button onclick="submitGateCode()">Submit</button>
+    <div class="gate-error" id="gateError"></div>
+  </div>
+</div>
+
+<!-- Session Timer -->
+<div id="sessionTimer">60:00</div>
+
+<!-- Session Expired Overlay -->
+<div id="sessionExpiredOverlay">
+  <div class="expired-box">
+    <h2>Workshop Session Ended</h2>
+    <p>Your 60-minute workshop session has expired. To continue using the calculator, please attend another workshop or meet with your school counselor.</p>
+  </div>
+</div>
+
+<!-- Teacher Panel Modal -->
+<div id="teacherModal">
+  <div class="teacher-box">
+    <div id="teacherPinView">
+      <h3>Teacher Access</h3>
+      <input type="password" id="teacherPinInput" maxlength="20" placeholder="Enter PIN">
+      <div class="teacher-pin-error" id="teacherPinError"></div>
+      <div style="margin-top:12px;">
+        <button onclick="submitTeacherPin()">Submit</button>
+        <button onclick="closeTeacherModal()">Cancel</button>
+      </div>
+    </div>
+    <div id="teacherCodeView" style="display:none;">
+      <h3>Current Workshop Code</h3>
+      <div class="teacher-code-display" id="teacherCodeDisplay"></div>
+      <div class="teacher-refresh-timer" id="teacherRefreshTimer"></div>
+      <div>
+        <button class="copy-btn" onclick="copyWorkshopCode()">Copy Code</button>
+        <button onclick="closeTeacherModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="languagePrompt" style="display: none; justify-content: center; padding-top: 20px;">
   <div class="prompt-container">
     <div>
@@ -133,7 +358,10 @@ select {
   </div>
 </div>
 
-<button onclick="window.print()" id="printButton" title="Print this page">Print</button>
+<div class="top-actions">
+  <button onclick="emailPage()" id="emailButton" title="Email this page">Email</button>
+  <button onclick="window.print()" id="printButton" title="Print this page">Print</button>
+</div>
 
 <div class="container">
   <div style="text-align: center; margin-bottom: 10px;">
@@ -295,6 +523,214 @@ try {
 } catch (e) {
   alert("Script error: " + e.message);
 }
+
+// =====================================================
+// WORKSHOP ACCESS SYSTEM
+// =====================================================
+// SETUP INSTRUCTIONS:
+// 1. Choose a PIN (any word, number, or phrase)
+// 2. Open the browser console (F12 → Console)
+// 3. Run: wccHash('yourpin')
+// 4. Copy the result and paste it as the value of WCC_SEED below
+// 5. The default PIN "0670" produces the seed "YJAN5E"
+//
+// The current workshop code is derived from this seed + the current
+// hour slot. It changes every hour. Teachers access the code by
+// clicking the page title (h2) exactly 7 times, then entering the PIN.
+// =====================================================
+
+const WCC_SEED = 'YJAN5E'; // wccHash('0670') — REPLACE with your own hash
+
+function wccHash(str) {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    const c = str.charCodeAt(i);
+    hash = ((hash << 5) + hash) + c;
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(36).toUpperCase();
+}
+
+function getWorkshopCode(hourOffset) {
+  const hourSlot = Math.floor(Date.now() / 3600000) + (hourOffset || 0);
+  return wccHash(WCC_SEED + hourSlot).substring(0, 6);
+}
+
+function validateWorkshopCode(input) {
+  const code = input.trim().toUpperCase();
+  return code === getWorkshopCode(0) || code === getWorkshopCode(-1);
+}
+
+// --- Session management ---
+let sessionTimerInterval = null;
+
+function getSession() {
+  try {
+    const raw = sessionStorage.getItem('wcc_session');
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (s.expiry && Date.now() < s.expiry) return s;
+    sessionStorage.removeItem('wcc_session');
+    return null;
+  } catch(e) { return null; }
+}
+
+function createSession() {
+  const session = { expiry: Date.now() + 60 * 60 * 1000 };
+  sessionStorage.setItem('wcc_session', JSON.stringify(session));
+  return session;
+}
+
+function submitGateCode() {
+  const input = document.getElementById('gateCodeInput');
+  const error = document.getElementById('gateError');
+  if (validateWorkshopCode(input.value)) {
+    error.textContent = '';
+    const session = createSession();
+    showCalculator(session);
+  } else {
+    error.textContent = 'Invalid code. Please check with your teacher and try again.';
+    input.value = '';
+    input.focus();
+  }
+}
+
+function showCalculator(session) {
+  document.getElementById('workshopGate').style.display = 'none';
+  // Show the language prompt (the calculator's normal entry point)
+  document.getElementById('languagePrompt').style.display = 'flex';
+  document.querySelector('.top-actions').style.display = 'flex';
+  startSessionTimer(session.expiry);
+}
+
+function startSessionTimer(expiry) {
+  const timerEl = document.getElementById('sessionTimer');
+  timerEl.style.display = 'block';
+
+  function update() {
+    const remaining = Math.max(0, expiry - Date.now());
+    const totalSec = Math.floor(remaining / 1000);
+    const min = Math.floor(totalSec / 60);
+    const sec = totalSec % 60;
+    timerEl.textContent = String(min).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+
+    timerEl.classList.remove('warn-yellow', 'warn-red');
+    if (totalSec <= 120) timerEl.classList.add('warn-red');
+    else if (totalSec <= 600) timerEl.classList.add('warn-yellow');
+
+    if (remaining <= 0) {
+      clearInterval(sessionTimerInterval);
+      expireSession();
+    }
+  }
+
+  update();
+  sessionTimerInterval = setInterval(update, 1000);
+}
+
+function expireSession() {
+  sessionStorage.removeItem('wcc_session');
+  document.getElementById('sessionTimer').style.display = 'none';
+  const overlay = document.getElementById('sessionExpiredOverlay');
+  overlay.style.display = 'flex';
+  // Disable all interactions beneath the overlay
+  document.querySelector('.container').style.pointerEvents = 'none';
+  document.querySelector('.container').style.opacity = '0.4';
+  document.querySelector('.top-actions').style.pointerEvents = 'none';
+  document.querySelector('.top-actions').style.opacity = '0.4';
+  const langPrompt = document.getElementById('languagePrompt');
+  if (langPrompt) { langPrompt.style.pointerEvents = 'none'; langPrompt.style.opacity = '0.4'; }
+}
+
+// --- Teacher Panel ---
+let teacherTitleClicks = 0;
+let teacherClickTimer = null;
+let teacherRefreshInterval = null;
+
+function handleTitleClick() {
+  teacherTitleClicks++;
+  clearTimeout(teacherClickTimer);
+  teacherClickTimer = setTimeout(function() { teacherTitleClicks = 0; }, 3000);
+  if (teacherTitleClicks >= 7) {
+    teacherTitleClicks = 0;
+    openTeacherModal();
+  }
+}
+
+function openTeacherModal() {
+  const modal = document.getElementById('teacherModal');
+  modal.style.display = 'flex';
+  // Reset to PIN view
+  document.getElementById('teacherPinView').style.display = 'block';
+  document.getElementById('teacherCodeView').style.display = 'none';
+  document.getElementById('teacherPinInput').value = '';
+  document.getElementById('teacherPinError').textContent = '';
+  document.getElementById('teacherPinInput').focus();
+}
+
+function closeTeacherModal() {
+  document.getElementById('teacherModal').style.display = 'none';
+  if (teacherRefreshInterval) { clearInterval(teacherRefreshInterval); teacherRefreshInterval = null; }
+}
+
+function submitTeacherPin() {
+  const pin = document.getElementById('teacherPinInput').value;
+  if (wccHash(pin) === WCC_SEED) {
+    document.getElementById('teacherPinView').style.display = 'none';
+    document.getElementById('teacherCodeView').style.display = 'block';
+    updateTeacherCodeDisplay();
+    teacherRefreshInterval = setInterval(updateTeacherCodeDisplay, 1000);
+  } else {
+    document.getElementById('teacherPinError').textContent = 'Incorrect PIN. Please try again.';
+    document.getElementById('teacherPinInput').value = '';
+    document.getElementById('teacherPinInput').focus();
+  }
+}
+
+function updateTeacherCodeDisplay() {
+  const code = getWorkshopCode(0);
+  document.getElementById('teacherCodeDisplay').textContent = code;
+  // Time until next hour slot
+  const now = Date.now();
+  const currentSlotEnd = (Math.floor(now / 3600000) + 1) * 3600000;
+  const remaining = Math.max(0, currentSlotEnd - now);
+  const min = Math.floor(remaining / 60000);
+  const sec = Math.floor((remaining % 60000) / 1000);
+  document.getElementById('teacherRefreshTimer').textContent =
+    'Code refreshes in ' + min + 'm ' + String(sec).padStart(2, '0') + 's';
+}
+
+function copyWorkshopCode() {
+  const code = document.getElementById('teacherCodeDisplay').textContent;
+  navigator.clipboard.writeText(code).then(function() {
+    const btn = document.querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+  }).catch(function() {
+    // Fallback: select the text
+    const el = document.getElementById('teacherCodeDisplay');
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  });
+}
+
+// --- Gate Enter key support ---
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    const gate = document.getElementById('workshopGate');
+    if (gate && gate.style.display !== 'none' && document.activeElement === document.getElementById('gateCodeInput')) {
+      submitGateCode();
+    }
+    const modal = document.getElementById('teacherModal');
+    if (modal && modal.style.display !== 'none' && document.activeElement === document.getElementById('teacherPinInput')) {
+      submitTeacherPin();
+    }
+  }
+});
 
 // =====================================================
 // DATE GENERATION ENGINE
@@ -1702,8 +2138,9 @@ function generatePlan(type) {
   'td.col-week, th.col-week, td.col-credits, th.col-credits { font-size: 0.85rem; }' +
   '.col-date .date-core { white-space: nowrap !important; display: block !important; }' +
   '.col-date .date-note { display: block !important; white-space: normal !important; font-size: 0.85em; line-height: 1.1; margin-top: 2px; }' +
-  '#printBtn { position: fixed; top: 16px; right: 16px; background-color: white; color: black; border: 1px solid black; padding: 8px 12px; border-radius: 6px; cursor: pointer; z-index: 9; }' +
-  '#printBtn:hover { background:#555; color:#fff; }' +
+  '.popup-actions { position: fixed; top: 16px; right: 16px; display: flex; gap: 8px; z-index: 9; }' +
+  '.popup-actions button { background-color: white; color: black; border: 1px solid black; padding: 8px 12px; border-radius: 6px; cursor: pointer; }' +
+  '.popup-actions button:hover { background:#555; color:#fff; }' +
   '.print-tips { background: #fff3cd; border: 1px solid #ffe49a; color: #6b5b00; padding: 10px 14px; border-radius: 8px; font-size: 0.95rem; max-width: 420px; justify-self: start; align-self: start; margin-top: 0; margin-left: 10px; }' +
   '.print-tips strong { font-weight: 700; } .print-tips ul { margin: 6px 0 0 1.1em; padding: 0; } .print-tips li { margin: 2px 0; }' +
   '.topbar .tools { justify-self: start; align-self: start; display: flex; flex-direction: column; gap: 6px; margin-left: 0; margin-right: 0; }' +
@@ -1718,7 +2155,7 @@ function generatePlan(type) {
   '.print-chunk:first-of-type, .print-chunk:first-of-type table.planner { break-before: auto !important; page-break-before: auto !important; margin-top: 0 !important; padding-top: 0 !important; }' +
   'table { line-height: 1.12; } tr, td, th { page-break-inside: avoid !important; break-inside: avoid !important; }' +
   'table.planner thead { display: table-header-group !important; } table.planner tfoot { display: table-footer-group !important; }' +
-  '#printBtn { display: none; } .topbar .tools, .print-tips, .notes, th.col-adjust, td.col-adjust, .col-adjust { display: none !important; }' +
+  '.popup-actions { display: none !important; } .topbar .tools, .print-tips, .notes, th.col-adjust, td.col-adjust, .col-adjust { display: none !important; }' +
   '.topbar { position: static !important; z-index: auto !important; background: #fff; margin-bottom: 6px; padding: 4px 8px; grid-template-columns: 1fr; row-gap: 4px; }' +
   '.badge { padding: 2px 4px; font-size: 0.78em; } th, td { padding: 5px 4px; }' +
   'col.col-week { width: 5%; } col.col-date { width: 22%; } col.col-credits { width: 5%; } col.col-progress { width: 68%; }' +
@@ -1738,7 +2175,7 @@ function generatePlan(type) {
   'table.planner thead { display: table-header-group !important; page-break-inside: avoid !important; break-inside: avoid !important; }' +
   'table.planner tbody { page-break-inside: auto !important; break-inside: auto !important; } }' +
   '</style></head><body>' +
-  '<button id="printBtn" onclick="window.print()">Print</button>' +
+  '<div class="popup-actions"><button id="emailBtn" onclick="emailPlan()">Email</button><button id="printBtn" onclick="window.print()">Print</button></div>' +
   '<div class="topbar"><div class="summarywrap">' +
   '<div class="summarybar"><span class="badge badge-lg">Target: <strong id="tgt">' + C + '</strong></span><span class="badge badge-lg">Assigned: <strong id="asgn">0</strong></span></div>' +
   '<div class="summarybar" style="margin-top:6px;"><span class="badge badge-lg">Remaining: <strong id="rem">0</strong></span></div>' +
@@ -1858,6 +2295,18 @@ function generatePlan(type) {
   const scriptEl = printWin.document.createElement('script');
   scriptEl.textContent = behavior;
   printWin.document.body.appendChild(scriptEl);
+
+  // Inject email function
+  const emailScript = printWin.document.createElement('script');
+  emailScript.textContent = 'function emailPlan() {' +
+    'var d = new Date();' +
+    'var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];' +
+    'var today = months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();' +
+    'var subject = encodeURIComponent("Credit Tracker - Plan ' + type + ' (' + yearLabel + (isCrossYear ? ' + ' + nextYearLabel : '') + ')");' +
+    'var body = encodeURIComponent("Hi teacher, this is my most current weekly credit plan made on " + today + ". Please print this for me and keep a copy in my student folder. Thank you!");' +
+    'window.location.href = "mailto:?subject=" + subject + "&body=" + body;' +
+    '}';
+  printWin.document.body.appendChild(emailScript);
   printWin.document.close();
 }
 
@@ -1984,6 +2433,26 @@ function applyTranslations() {
   renderResult();
 }
 
+function formatEmailDate() {
+  const d = new Date();
+  const months = isSpanish
+    ? ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+    : ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+
+function emailPage() {
+  const yearLabel = schoolYearData.yearLabel;
+  const today = formatEmailDate();
+  const subject = encodeURIComponent(isSpanish
+    ? 'Plan de Créditos Semanales - ' + yearLabel
+    : 'Weekly Credit Plan - ' + yearLabel);
+  const body = encodeURIComponent(isSpanish
+    ? 'Hola maestro/a, este es mi plan de créditos semanales más reciente, hecho el ' + today + '. Por favor imprímalo y guarde una copia en mi carpeta de estudiante. ¡Gracias!'
+    : 'Hi teacher, this is my most current weekly credit plan made on ' + today + '. Please print this for me and keep a copy in my student folder. Thank you!');
+  window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+}
+
 function toggleLanguage() {
   isSpanish = !isSpanish;
   document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Espa\u00f1ol";
@@ -1996,6 +2465,28 @@ function toggleLanguage() {
 // INITIALIZATION
 // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
+  // --- Workshop gate: hide calculator elements until access granted ---
+  document.getElementById('languagePrompt').style.display = 'none';
+  document.querySelector('.container').style.display = 'none';
+  document.querySelector('.top-actions').style.display = 'none';
+
+  // Wire teacher panel trigger: 7 clicks on any h2 title in the calculator
+  document.querySelectorAll('h2').forEach(function(h2) {
+    h2.addEventListener('click', handleTitleClick);
+  });
+  // Also wire the gate h1 title
+  var gateH1 = document.querySelector('#workshopGate h1');
+  if (gateH1) gateH1.addEventListener('click', handleTitleClick);
+
+  // Check for existing valid session
+  var existingSession = getSession();
+  if (existingSession) {
+    document.getElementById('workshopGate').style.display = 'none';
+    document.getElementById('languagePrompt').style.display = 'flex';
+    document.querySelector('.top-actions').style.display = 'flex';
+    startSessionTimer(existingSession.expiry);
+  }
+
   // Initialize with current school year
   initializeYear(getCurrentSchoolYear());
   updateYearToggle();
