@@ -314,7 +314,7 @@ select {
 <div id="sessionExpiredOverlay">
   <div class="expired-box">
     <h2>Workshop Session Ended</h2>
-    <p>Your 60-minute workshop session has expired. To continue using the calculator, please attend another workshop or meet with your school counselor.</p>
+    <p>Your 30-minute workshop session has expired. To continue using the calculator, please attend another workshop or meet with your school counselor.</p>
   </div>
 </div>
 
@@ -576,7 +576,7 @@ function getSession() {
 }
 
 function createSession() {
-  const session = { expiry: Date.now() + 60 * 60 * 1000 };
+  const session = { expiry: Date.now() + 30 * 60 * 1000 };
   sessionStorage.setItem('wcc_session', JSON.stringify(session));
   return session;
 }
