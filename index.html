@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Weekly Credit Calculator</title>
   <link rel="manifest" href="manifest.json">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
   <style>
 /* Base Layout */
 html, body {
@@ -108,6 +109,11 @@ select {
   transition: background-color 0.3s, color 0.3s;
 }
 .top-actions button:hover { background-color: #555; color: white; }
+.top-actions button:disabled { opacity: 0.6; cursor: wait; }
+.top-actions button.btn-pdf { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+.top-actions button.btn-pdf:hover { background: #1b5e20; }
+.top-actions button.btn-share { background: #1565c0; color: #fff; border-color: #1565c0; }
+.top-actions button.btn-share:hover { background: #0d47a1; }
 @media print {
   .top-actions { display: none; }
   body { background: white !important; margin: 0; padding: 0; }
@@ -359,7 +365,8 @@ select {
 </div>
 
 <div class="top-actions">
-  <button onclick="emailPage()" id="emailButton" title="Email this page">Email</button>
+  <button class="btn-share" onclick="shareMainPage()" id="shareButton" title="Share as PDF">Share</button>
+  <button class="btn-pdf" onclick="saveMainPDF()" id="pdfButton" title="Save as PDF">Save PDF</button>
   <button onclick="window.print()" id="printButton" title="Print this page">Print</button>
 </div>
 
@@ -551,9 +558,9 @@ function wccHash(str) {
   return Math.abs(hash).toString(36).toUpperCase();
 }
 
-function getWorkshopCode(hourOffset) {
-  const hourSlot = Math.floor(Date.now() / 3600000) + (hourOffset || 0);
-  return wccHash(WCC_SEED + hourSlot).substring(0, 6);
+function getWorkshopCode(slotOffset) {
+  const slot = Math.floor(Date.now() / 900000) + (slotOffset || 0); // 900000ms = 15 minutes
+  return wccHash(WCC_SEED + slot).substring(0, 6);
 }
 
 function validateWorkshopCode(input) {
@@ -598,8 +605,8 @@ function submitGateCode() {
 function showCalculator(session) {
   document.getElementById('workshopGate').style.display = 'none';
   // Show the language prompt (the calculator's normal entry point)
+  // Top-actions stay hidden until a language is selected (shown in setLanguage)
   document.getElementById('languagePrompt').style.display = 'flex';
-  document.querySelector('.top-actions').style.display = 'flex';
   startSessionTimer(session.expiry);
 }
 
@@ -690,9 +697,9 @@ function submitTeacherPin() {
 function updateTeacherCodeDisplay() {
   const code = getWorkshopCode(0);
   document.getElementById('teacherCodeDisplay').textContent = code;
-  // Time until next hour slot
+  // Time until next 15-minute slot
   const now = Date.now();
-  const currentSlotEnd = (Math.floor(now / 3600000) + 1) * 3600000;
+  const currentSlotEnd = (Math.floor(now / 900000) + 1) * 900000;
   const remaining = Math.max(0, currentSlotEnd - now);
   const min = Math.floor(remaining / 60000);
   const sec = Math.floor((remaining % 60000) / 1000);
@@ -1119,6 +1126,7 @@ const translations = {
 function showLanguagePrompt() {
   const calc = document.querySelector(".container");
   calc.style.opacity = 0;
+  document.querySelector('.top-actions').style.display = 'none';
   setTimeout(() => {
     calc.style.display = "none";
     document.body.classList.add("show-prompt");
@@ -2106,7 +2114,10 @@ function generatePlan(type) {
 
   const yearLabel = schoolYearData.yearLabel;
 
+  const pdfFilename = 'Credit_Tracker_Plan_' + type + '_' + yearLabel.replace(/\u2013/g, '-') + '.pdf';
+
   const html = '<!doctype html><html><head><meta charset="utf-8"><title>Plan ' + type + ' \u2013 ' + yearLabel + ' Credit Tracker</title>' +
+  '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"><\/script>' +
   '<style>' +
   'body { font-family: Arial, sans-serif; padding: 16px; }' +
   'table { border-collapse: collapse; width: 100%; margin-top: 12px; table-layout: fixed; }' +
@@ -2141,6 +2152,11 @@ function generatePlan(type) {
   '.popup-actions { position: fixed; top: 16px; right: 16px; display: flex; gap: 8px; z-index: 9; }' +
   '.popup-actions button { background-color: white; color: black; border: 1px solid black; padding: 8px 12px; border-radius: 6px; cursor: pointer; }' +
   '.popup-actions button:hover { background:#555; color:#fff; }' +
+  '.popup-actions button:disabled { opacity:0.6; cursor:wait; }' +
+  '.popup-actions button.btn-pdf { background:#2e7d32; color:#fff; border-color:#2e7d32; }' +
+  '.popup-actions button.btn-pdf:hover { background:#1b5e20; }' +
+  '.popup-actions button.btn-share { background:#1565c0; color:#fff; border-color:#1565c0; }' +
+  '.popup-actions button.btn-share:hover { background:#0d47a1; }' +
   '.print-tips { background: #fff3cd; border: 1px solid #ffe49a; color: #6b5b00; padding: 10px 14px; border-radius: 8px; font-size: 0.95rem; max-width: 420px; justify-self: start; align-self: start; margin-top: 0; margin-left: 10px; }' +
   '.print-tips strong { font-weight: 700; } .print-tips ul { margin: 6px 0 0 1.1em; padding: 0; } .print-tips li { margin: 2px 0; }' +
   '.topbar .tools { justify-self: start; align-self: start; display: flex; flex-direction: column; gap: 6px; margin-left: 0; margin-right: 0; }' +
@@ -2175,7 +2191,7 @@ function generatePlan(type) {
   'table.planner thead { display: table-header-group !important; page-break-inside: avoid !important; break-inside: avoid !important; }' +
   'table.planner tbody { page-break-inside: auto !important; break-inside: auto !important; } }' +
   '</style></head><body>' +
-  '<div class="popup-actions"><button id="emailBtn" onclick="emailPlan()">Email</button><button id="printBtn" onclick="window.print()">Print</button></div>' +
+  '<div class="popup-actions"><button class="btn-share" id="shareBtn" onclick="sharePlan()">Share</button><button class="btn-pdf" id="pdfBtn" onclick="savePDF()">Save PDF</button><button id="printBtn" onclick="window.print()">Print</button></div>' +
   '<div class="topbar"><div class="summarywrap">' +
   '<div class="summarybar"><span class="badge badge-lg">Target: <strong id="tgt">' + C + '</strong></span><span class="badge badge-lg">Assigned: <strong id="asgn">0</strong></span></div>' +
   '<div class="summarybar" style="margin-top:6px;"><span class="badge badge-lg">Remaining: <strong id="rem">0</strong></span></div>' +
@@ -2307,6 +2323,96 @@ function generatePlan(type) {
     'window.location.href = "mailto:?subject=" + subject + "&body=" + body;' +
     '}';
   printWin.document.body.appendChild(emailScript);
+
+  // Inject PDF save and Share functions
+  const pdfScript = printWin.document.createElement('script');
+  pdfScript.textContent =
+    'var pdfFilename = ' + JSON.stringify(pdfFilename) + ';' +
+
+    'function getPdfOpts() {' +
+    '  return {' +
+    '    margin: [0.3, 0.2, 0.3, 0.2],' +
+    '    filename: pdfFilename,' +
+    '    image: { type: "jpeg", quality: 0.95 },' +
+    '    html2canvas: { scale: 2, useCORS: true, logging: false },' +
+    '    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },' +
+    '    pagebreak: { mode: ["css", "legacy"] }' +
+    '  };' +
+    '}' +
+
+    'function prepForExport() {' +
+    '  var actions = document.querySelector(".popup-actions");' +
+    '  var tools = document.querySelector(".topbar .tools");' +
+    '  var tips = document.querySelector(".print-tips");' +
+    '  var adjustCols = document.querySelectorAll(".col-adjust");' +
+    '  if (actions) actions.style.display = "none";' +
+    '  if (tools) tools.style.display = "none";' +
+    '  if (tips) tips.style.display = "none";' +
+    '  adjustCols.forEach(function(el) { el.style.display = "none"; });' +
+    '  return { actions: actions, tools: tools, tips: tips, adjustCols: adjustCols };' +
+    '}' +
+
+    'function restoreAfterExport(els) {' +
+    '  if (els.actions) els.actions.style.display = "flex";' +
+    '  if (els.tools) els.tools.style.display = "";' +
+    '  if (els.tips) els.tips.style.display = "";' +
+    '  els.adjustCols.forEach(function(el) { el.style.display = ""; });' +
+    '}' +
+
+    'function savePDF() {' +
+    '  var btn = document.getElementById("pdfBtn");' +
+    '  var orig = btn.textContent;' +
+    '  btn.textContent = "Generating...";' +
+    '  btn.disabled = true;' +
+    '  var els = prepForExport();' +
+    '  html2pdf().set(getPdfOpts()).from(document.body).save().then(function() {' +
+    '    restoreAfterExport(els);' +
+    '    btn.textContent = orig;' +
+    '    btn.disabled = false;' +
+    '  }).catch(function(err) {' +
+    '    restoreAfterExport(els);' +
+    '    btn.textContent = orig;' +
+    '    btn.disabled = false;' +
+    '    alert("PDF generation failed: " + err.message);' +
+    '  });' +
+    '}' +
+
+    'function sharePlan() {' +
+    '  var btn = document.getElementById("shareBtn");' +
+    '  var orig = btn.textContent;' +
+    '  btn.textContent = "Preparing...";' +
+    '  btn.disabled = true;' +
+    '  var els = prepForExport();' +
+    '  html2pdf().set(getPdfOpts()).from(document.body).outputPdf("blob").then(function(blob) {' +
+    '    restoreAfterExport(els);' +
+    '    btn.textContent = orig;' +
+    '    btn.disabled = false;' +
+    '    var file = new File([blob], pdfFilename, { type: "application/pdf" });' +
+    '    if (navigator.canShare && navigator.canShare({ files: [file] })) {' +
+    '      var d = new Date();' +
+    '      var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];' +
+    '      var today = months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();' +
+    '      navigator.share({' +
+    '        title: "Credit Tracker - Plan ' + type + '",' +
+    '        text: "Hi teacher, this is my most current weekly credit plan made on " + today + ". Please print this for me and keep a copy in my student folder. Thank you!",' +
+    '        files: [file]' +
+    '      }).catch(function() {});' +
+    '    } else {' +
+    '      var url = URL.createObjectURL(blob);' +
+    '      var a = document.createElement("a");' +
+    '      a.href = url; a.download = pdfFilename;' +
+    '      document.body.appendChild(a); a.click();' +
+    '      document.body.removeChild(a);' +
+    '      URL.revokeObjectURL(url);' +
+    '    }' +
+    '  }).catch(function(err) {' +
+    '    restoreAfterExport(els);' +
+    '    btn.textContent = orig;' +
+    '    btn.disabled = false;' +
+    '    alert("Share failed: " + err.message);' +
+    '  });' +
+    '}';
+  printWin.document.body.appendChild(pdfScript);
   printWin.document.close();
 }
 
@@ -2380,6 +2486,7 @@ function setLanguage(spanish) {
     calc.style.opacity = 0;
     calc.style.display = "block";
     setTimeout(() => { calc.style.opacity = 1; }, 10);
+    document.querySelector('.top-actions').style.display = 'flex';
     document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Espa\u00f1ol";
     applyTranslations();
   }, 400);
@@ -2453,6 +2560,94 @@ function emailPage() {
   window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
 }
 
+function getMainPdfOpts() {
+  const yearLabel = schoolYearData ? schoolYearData.yearLabel : '';
+  return {
+    margin: [0.3, 0.2, 0.3, 0.2],
+    filename: 'Weekly_Credit_Plan_' + yearLabel.replace(/–/g, '-') + '.pdf',
+    image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: { scale: 2, useCORS: true, logging: false },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    pagebreak: { mode: ['css', 'legacy'] }
+  };
+}
+
+function prepMainForExport() {
+  const topActions = document.querySelector('.top-actions');
+  const langBtn = document.getElementById('langToggleBtn');
+  const yearToggle = document.getElementById('yearToggle');
+  const timer = document.getElementById('sessionTimer');
+  if (topActions) topActions.style.display = 'none';
+  if (langBtn) langBtn.style.display = 'none';
+  if (yearToggle) yearToggle.style.display = 'none';
+  if (timer) timer.style.display = 'none';
+  return { topActions, langBtn, yearToggle, timer };
+}
+
+function restoreMainAfterExport(els) {
+  if (els.topActions) els.topActions.style.display = 'flex';
+  if (els.langBtn) els.langBtn.style.display = '';
+  if (els.yearToggle) els.yearToggle.style.display = '';
+  if (els.timer) els.timer.style.display = '';
+}
+
+function saveMainPDF() {
+  const btn = document.getElementById('pdfButton');
+  const orig = btn.textContent;
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  const els = prepMainForExport();
+  const container = document.querySelector('.container');
+  html2pdf().set(getMainPdfOpts()).from(container).save().then(function() {
+    restoreMainAfterExport(els);
+    btn.textContent = orig;
+    btn.disabled = false;
+  }).catch(function(err) {
+    restoreMainAfterExport(els);
+    btn.textContent = orig;
+    btn.disabled = false;
+    alert('PDF generation failed: ' + err.message);
+  });
+}
+
+function shareMainPage() {
+  const btn = document.getElementById('shareButton');
+  const orig = btn.textContent;
+  btn.textContent = 'Preparing...';
+  btn.disabled = true;
+  const els = prepMainForExport();
+  const container = document.querySelector('.container');
+  const opts = getMainPdfOpts();
+  html2pdf().set(opts).from(container).outputPdf('blob').then(function(blob) {
+    restoreMainAfterExport(els);
+    btn.textContent = orig;
+    btn.disabled = false;
+    var file = new File([blob], opts.filename, { type: 'application/pdf' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      var today = formatEmailDate();
+      navigator.share({
+        title: isSpanish ? 'Plan de Créditos Semanales' : 'Weekly Credit Plan',
+        text: isSpanish
+          ? 'Hola maestro/a, este es mi plan de créditos semanales más reciente, hecho el ' + today + '. Por favor imprímalo y guarde una copia en mi carpeta de estudiante. ¡Gracias!'
+          : 'Hi teacher, this is my most current weekly credit plan made on ' + today + '. Please print this for me and keep a copy in my student folder. Thank you!',
+        files: [file]
+      }).catch(function() {});
+    } else {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = opts.filename;
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  }).catch(function(err) {
+    restoreMainAfterExport(els);
+    btn.textContent = orig;
+    btn.disabled = false;
+    alert('Share failed: ' + err.message);
+  });
+}
+
 function toggleLanguage() {
   isSpanish = !isSpanish;
   document.getElementById("langToggleBtn").innerHTML = isSpanish ? "English" : "Espa\u00f1ol";
@@ -2483,7 +2678,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (existingSession) {
     document.getElementById('workshopGate').style.display = 'none';
     document.getElementById('languagePrompt').style.display = 'flex';
-    document.querySelector('.top-actions').style.display = 'flex';
+    // Top-actions stay hidden until language is selected (shown in setLanguage)
     startSessionTimer(existingSession.expiry);
   }
 
