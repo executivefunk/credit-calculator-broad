@@ -471,17 +471,37 @@ select {
       <div class="de-inner" id="deInner">
         <div class="de-class-box" id="deClass1Box">
           <h4 id="deClass1Title">Dual Enrollment Class 1</h4>
-          <label for="de1Start" id="labelDe1Start">Start week</label>
-          <select id="de1Start"></select>
-          <label for="de1End" id="labelDe1End">End week</label>
-          <select id="de1End"></select>
-          <div class="de-crossyear" style="margin-top:8px;">
-            <input type="checkbox" id="de1CrossYear" style="transform:scale(1.1);margin-right:6px;">
-            <label for="de1CrossYear" id="labelDe1CrossYear" style="display:inline;font-size:0.85em;">This class continues into the next school year</label>
+          <label for="de1Name" id="labelDe1Name" style="font-size:0.85em;margin-top:8px;">Class name (optional)</label>
+          <input type="text" id="de1Name" placeholder="e.g. Grizzly Challenge Academy" style="font-size:0.9em;padding:6px 8px;">
+          <div class="de-timing" style="margin-top:10px;">
+            <label style="font-size:0.85em;font-weight:bold;margin-bottom:4px;" id="labelDe1Timing">When does this class take place?</label>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+              <label style="display:inline-flex;align-items:center;font-size:0.85em;cursor:pointer;margin:0;">
+                <input type="radio" name="de1Timing" value="currentYear" checked style="margin-right:6px;transform:scale(1.1);"> <span id="labelDe1TimingCurrent">This school year only</span>
+              </label>
+              <label style="display:inline-flex;align-items:center;font-size:0.85em;cursor:pointer;margin:0;">
+                <input type="radio" name="de1Timing" value="crossYear" style="margin-right:6px;transform:scale(1.1);"> <span id="labelDe1TimingCross">Starts this year, continues into next year</span>
+              </label>
+              <label style="display:inline-flex;align-items:center;font-size:0.85em;cursor:pointer;margin:0;">
+                <input type="radio" name="de1Timing" value="nextYear" style="margin-right:6px;transform:scale(1.1);"> <span id="labelDe1TimingNext">Takes place next school year</span>
+              </label>
+            </div>
+          </div>
+          <div id="de1CurrentYearFields">
+            <label for="de1Start" id="labelDe1Start">Start week</label>
+            <select id="de1Start"></select>
+            <label for="de1End" id="labelDe1End">End week</label>
+            <select id="de1End"></select>
           </div>
           <div id="de1NextYearEnd" style="display:none;">
             <label for="de1EndNext" id="labelDe1EndNext" style="font-size:0.85em;">End week (next school year)</label>
             <select id="de1EndNext"></select>
+          </div>
+          <div id="de1NextYearFields" style="display:none;">
+            <label for="de1StartNext" id="labelDe1StartNext" style="font-size:0.85em;">Start week (next school year)</label>
+            <select id="de1StartNext"></select>
+            <label for="de1EndNextFull" id="labelDe1EndNextFull" style="font-size:0.85em;">End week (next school year)</label>
+            <select id="de1EndNextFull"></select>
           </div>
           <label for="de1Credits" id="labelDe1Credits">How many high school credits will you earn from this class?</label>
           <input type="text" inputmode="numeric" pattern="[0-9]*" id="de1Credits">
@@ -492,17 +512,37 @@ select {
             <h4 id="deClass2Title" style="margin:0 0 8px;">Dual Enrollment Class 2</h4>
             <button type="button" id="removeDE2Btn" onclick="hideDeClass2()" style="background:none;border:none;color:#c62828;font-size:0.85em;cursor:pointer;padding:2px 6px;font-weight:bold;">✕ Remove</button>
           </div>
-          <label for="de2Start" id="labelDe2Start">Start week</label>
-          <select id="de2Start"></select>
-          <label for="de2End" id="labelDe2End">End week</label>
-          <select id="de2End"></select>
-          <div class="de-crossyear" style="margin-top:8px;">
-            <input type="checkbox" id="de2CrossYear" style="transform:scale(1.1);margin-right:6px;">
-            <label for="de2CrossYear" id="labelDe2CrossYear" style="display:inline;font-size:0.85em;">This class continues into the next school year</label>
+          <label for="de2Name" id="labelDe2Name" style="font-size:0.85em;margin-top:8px;">Class name (optional)</label>
+          <input type="text" id="de2Name" placeholder="e.g. Grizzly Challenge Academy" style="font-size:0.9em;padding:6px 8px;">
+          <div class="de-timing" style="margin-top:10px;">
+            <label style="font-size:0.85em;font-weight:bold;margin-bottom:4px;" id="labelDe2Timing">When does this class take place?</label>
+            <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+              <label style="display:inline-flex;align-items:center;font-size:0.85em;cursor:pointer;margin:0;">
+                <input type="radio" name="de2Timing" value="currentYear" checked style="margin-right:6px;transform:scale(1.1);"> <span id="labelDe2TimingCurrent">This school year only</span>
+              </label>
+              <label style="display:inline-flex;align-items:center;font-size:0.85em;cursor:pointer;margin:0;">
+                <input type="radio" name="de2Timing" value="crossYear" style="margin-right:6px;transform:scale(1.1);"> <span id="labelDe2TimingCross">Starts this year, continues into next year</span>
+              </label>
+              <label style="display:inline-flex;align-items:center;font-size:0.85em;cursor:pointer;margin:0;">
+                <input type="radio" name="de2Timing" value="nextYear" style="margin-right:6px;transform:scale(1.1);"> <span id="labelDe2TimingNext">Takes place next school year</span>
+              </label>
+            </div>
+          </div>
+          <div id="de2CurrentYearFields">
+            <label for="de2Start" id="labelDe2Start">Start week</label>
+            <select id="de2Start"></select>
+            <label for="de2End" id="labelDe2End">End week</label>
+            <select id="de2End"></select>
           </div>
           <div id="de2NextYearEnd" style="display:none;">
             <label for="de2EndNext" id="labelDe2EndNext" style="font-size:0.85em;">End week (next school year)</label>
             <select id="de2EndNext"></select>
+          </div>
+          <div id="de2NextYearFields" style="display:none;">
+            <label for="de2StartNext" id="labelDe2StartNext" style="font-size:0.85em;">Start week (next school year)</label>
+            <select id="de2StartNext"></select>
+            <label for="de2EndNextFull" id="labelDe2EndNextFull" style="font-size:0.85em;">End week (next school year)</label>
+            <select id="de2EndNextFull"></select>
           </div>
           <label for="de2Credits" id="labelDe2Credits">How many high school credits will you earn from this class?</label>
           <input type="text" inputmode="numeric" pattern="[0-9]*" id="de2Credits">
@@ -1111,6 +1151,12 @@ const translations = {
   "End week": "Semana final",
   "How many high school credits will you earn from this class?": "\u00bfCu\u00e1ntos cr\u00e9ditos de preparatoria ganar\u00e1s con esta clase?",
   "This class continues into the next school year": "Esta clase contin\u00faa en el siguiente a\u00f1o escolar",
+  "Class name (optional)": "Nombre de la clase (opcional)",
+  "When does this class take place?": "\u00bfCu\u00e1ndo toma lugar esta clase?",
+  "This school year only": "Solo este a\u00f1o escolar",
+  "Starts this year, continues into next year": "Empieza este a\u00f1o, contin\u00faa el siguiente",
+  "Takes place next school year": "Toma lugar el siguiente a\u00f1o escolar",
+  "Start week (next school year)": "Semana de inicio (siguiente a\u00f1o escolar)",
   "End week (next school year)": "Semana final (siguiente a\u00f1o escolar)",
   "+ Add a second dual-enrollment class": "+ Agregar una segunda clase de doble inscripci\u00f3n",
   "\u2715 Remove": "\u2715 Eliminar",
@@ -1375,38 +1421,69 @@ function buildExtendedMap(crossYearData) {
 // =====================================================
 // DUAL ENROLLMENT LOGIC
 // =====================================================
+function getDeTimingValue(n) {
+  const radios = document.querySelectorAll('input[name="de' + n + 'Timing"]');
+  for (let i = 0; i < radios.length; i++) {
+    if (radios[i].checked) return radios[i].value;
+  }
+  return 'currentYear';
+}
+
 function getDualEnrollmentData() {
   const toggle = document.getElementById("deToggle");
   const result = {
-    de1: { active: false, startWeek: 0, endWeek: 0, credits: 0, crossYear: false, endWeekNext: 0 },
-    de2: { active: false, startWeek: 0, endWeek: 0, credits: 0, crossYear: false, endWeekNext: 0 }
+    de1: { active: false, startWeek: 0, endWeek: 0, credits: 0, crossYear: false, nextYearOnly: false, endWeekNext: 0, startWeekNext: 0, className: '' },
+    de2: { active: false, startWeek: 0, endWeek: 0, credits: 0, crossYear: false, nextYearOnly: false, endWeekNext: 0, startWeekNext: 0, className: '' }
   };
   if (!toggle || !toggle.checked) return result;
 
-  const s1 = parseInt(document.getElementById("de1Start")?.value);
-  const e1 = parseInt(document.getElementById("de1End")?.value);
+  const timing1 = getDeTimingValue(1);
+  const name1 = (document.getElementById("de1Name")?.value || '').trim();
   const c1 = parseInt(document.getElementById("de1Credits")?.value);
-  const cross1 = document.getElementById("de1CrossYear")?.checked || false;
-  const eNext1 = parseInt(document.getElementById("de1EndNext")?.value) || 0;
-  if (s1 && c1 && c1 > 0) {
-    if (cross1) {
-      // Cross-year: start week in current year, class runs to end of current year + into next year
-      result.de1 = { active: true, startWeek: s1, endWeek: schoolYearData.totalWeeks, credits: c1, crossYear: true, endWeekNext: eNext1 };
-    } else if (e1 && e1 >= s1) {
-      result.de1 = { active: true, startWeek: s1, endWeek: e1, credits: c1, crossYear: false, endWeekNext: 0 };
+  if (c1 && c1 > 0) {
+    if (timing1 === 'nextYear') {
+      const sNext1 = parseInt(document.getElementById("de1StartNext")?.value) || 0;
+      const eNext1 = parseInt(document.getElementById("de1EndNextFull")?.value) || 0;
+      if (sNext1 && eNext1 && eNext1 >= sNext1) {
+        result.de1 = { active: true, startWeek: 0, endWeek: 0, credits: c1, crossYear: false, nextYearOnly: true, startWeekNext: sNext1, endWeekNext: eNext1, className: name1 };
+      }
+    } else if (timing1 === 'crossYear') {
+      const s1 = parseInt(document.getElementById("de1Start")?.value);
+      const eNext1 = parseInt(document.getElementById("de1EndNext")?.value) || 0;
+      if (s1) {
+        result.de1 = { active: true, startWeek: s1, endWeek: schoolYearData.totalWeeks, credits: c1, crossYear: true, nextYearOnly: false, endWeekNext: eNext1, startWeekNext: 0, className: name1 };
+      }
+    } else {
+      const s1 = parseInt(document.getElementById("de1Start")?.value);
+      const e1 = parseInt(document.getElementById("de1End")?.value);
+      if (s1 && e1 && e1 >= s1) {
+        result.de1 = { active: true, startWeek: s1, endWeek: e1, credits: c1, crossYear: false, nextYearOnly: false, endWeekNext: 0, startWeekNext: 0, className: name1 };
+      }
     }
   }
 
-  const s2 = parseInt(document.getElementById("de2Start")?.value);
-  const e2 = parseInt(document.getElementById("de2End")?.value);
+  const timing2 = getDeTimingValue(2);
+  const name2 = (document.getElementById("de2Name")?.value || '').trim();
   const c2 = parseInt(document.getElementById("de2Credits")?.value);
-  const cross2 = document.getElementById("de2CrossYear")?.checked || false;
-  const eNext2 = parseInt(document.getElementById("de2EndNext")?.value) || 0;
-  if (result.de1.active && s2 && c2 && c2 > 0) {
-    if (cross2) {
-      result.de2 = { active: true, startWeek: s2, endWeek: schoolYearData.totalWeeks, credits: c2, crossYear: true, endWeekNext: eNext2 };
-    } else if (e2 && e2 >= s2) {
-      result.de2 = { active: true, startWeek: s2, endWeek: e2, credits: c2, crossYear: false, endWeekNext: 0 };
+  if (result.de1.active && c2 && c2 > 0) {
+    if (timing2 === 'nextYear') {
+      const sNext2 = parseInt(document.getElementById("de2StartNext")?.value) || 0;
+      const eNext2 = parseInt(document.getElementById("de2EndNextFull")?.value) || 0;
+      if (sNext2 && eNext2 && eNext2 >= sNext2) {
+        result.de2 = { active: true, startWeek: 0, endWeek: 0, credits: c2, crossYear: false, nextYearOnly: true, startWeekNext: sNext2, endWeekNext: eNext2, className: name2 };
+      }
+    } else if (timing2 === 'crossYear') {
+      const s2 = parseInt(document.getElementById("de2Start")?.value);
+      const eNext2 = parseInt(document.getElementById("de2EndNext")?.value) || 0;
+      if (s2) {
+        result.de2 = { active: true, startWeek: s2, endWeek: schoolYearData.totalWeeks, credits: c2, crossYear: true, nextYearOnly: false, endWeekNext: eNext2, startWeekNext: 0, className: name2 };
+      }
+    } else {
+      const s2 = parseInt(document.getElementById("de2Start")?.value);
+      const e2 = parseInt(document.getElementById("de2End")?.value);
+      if (s2 && e2 && e2 >= s2) {
+        result.de2 = { active: true, startWeek: s2, endWeek: e2, credits: c2, crossYear: false, nextYearOnly: false, endWeekNext: 0, startWeekNext: 0, className: name2 };
+      }
     }
   }
 
@@ -1425,22 +1502,36 @@ function updateDeUI() {
     inner.classList.remove("visible");
   }
 
-  // Cross-year toggles: show/hide end-week dropdown, show/hide current-year end
+  // Radio-based timing: show/hide appropriate dropdowns
   [1, 2].forEach(function(n) {
-    const crossCb = document.getElementById("de" + n + "CrossYear");
+    const timing = getDeTimingValue(n);
+    const currentFields = document.getElementById("de" + n + "CurrentYearFields");
     const nextEndDiv = document.getElementById("de" + n + "NextYearEnd");
-    const currentEnd = document.getElementById("de" + n + "End");
-    const currentEndLabel = document.getElementById("labelDe" + n + "End");
-    if (crossCb && nextEndDiv) {
-      if (crossCb.checked) {
-        nextEndDiv.style.display = "block";
-        if (currentEnd) currentEnd.style.display = "none";
-        if (currentEndLabel) currentEndLabel.style.display = "none";
-      } else {
-        nextEndDiv.style.display = "none";
-        if (currentEnd) currentEnd.style.display = "";
-        if (currentEndLabel) currentEndLabel.style.display = "";
-      }
+    const nextYearFields = document.getElementById("de" + n + "NextYearFields");
+    if (timing === 'currentYear') {
+      if (currentFields) currentFields.style.display = "block";
+      if (nextEndDiv) nextEndDiv.style.display = "none";
+      if (nextYearFields) nextYearFields.style.display = "none";
+    } else if (timing === 'crossYear') {
+      if (currentFields) { currentFields.style.display = "block"; }
+      // Hide current-year end, show next-year end
+      var currentEnd = document.getElementById("de" + n + "End");
+      var currentEndLabel = document.getElementById("labelDe" + n + "End");
+      if (currentEnd) currentEnd.style.display = "none";
+      if (currentEndLabel) currentEndLabel.style.display = "none";
+      if (nextEndDiv) nextEndDiv.style.display = "block";
+      if (nextYearFields) nextYearFields.style.display = "none";
+    } else if (timing === 'nextYear') {
+      if (currentFields) currentFields.style.display = "none";
+      if (nextEndDiv) nextEndDiv.style.display = "none";
+      if (nextYearFields) nextYearFields.style.display = "block";
+    }
+    // Restore current-year end visibility when switching back to currentYear
+    if (timing === 'currentYear') {
+      var currentEnd = document.getElementById("de" + n + "End");
+      var currentEndLabel = document.getElementById("labelDe" + n + "End");
+      if (currentEnd) currentEnd.style.display = "";
+      if (currentEndLabel) currentEndLabel.style.display = "";
     }
   });
 
@@ -1466,14 +1557,22 @@ function hideDeClass2() {
   // Reset Class 2 fields
   const c2 = document.getElementById("de2Credits");
   if (c2) c2.value = "";
-  ["de2Start", "de2End", "de2EndNext"].forEach(function(id) {
+  var nameInput = document.getElementById("de2Name");
+  if (nameInput) nameInput.value = "";
+  ["de2Start", "de2End", "de2EndNext", "de2StartNext", "de2EndNextFull"].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.selectedIndex = 0;
   });
-  var crossCb = document.getElementById("de2CrossYear");
-  if (crossCb) crossCb.checked = false;
+  // Reset radio to currentYear
+  var radios = document.querySelectorAll('input[name="de2Timing"]');
+  radios.forEach(function(r) { r.checked = (r.value === 'currentYear'); });
+  // Show current-year fields, hide next-year fields
+  var currentFields = document.getElementById("de2CurrentYearFields");
+  if (currentFields) currentFields.style.display = "block";
   var nextEndDiv = document.getElementById("de2NextYearEnd");
   if (nextEndDiv) nextEndDiv.style.display = "none";
+  var nextYearFields = document.getElementById("de2NextYearFields");
+  if (nextYearFields) nextYearFields.style.display = "none";
   var endSel = document.getElementById("de2End");
   var endLabel = document.getElementById("labelDe2End");
   if (endSel) endSel.style.display = "";
@@ -1546,6 +1645,40 @@ function populateDeDropdowns() {
     }
     if (prev && parseInt(prev) <= maxWeek) sel.value = prev;
   });
+
+  // Populate next-year-only start and end dropdowns (for "Takes place next school year" option)
+  // These show all next-year weeks (not capped at cross-year finish, since class is independent)
+  ["de1StartNext", "de2StartNext"].forEach(function(id) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const prev = sel.value;
+    sel.innerHTML = "";
+    for (let i = 0; i < nextWeeks.length; i++) {
+      const opt = document.createElement("option");
+      opt.value = i + 1;
+      opt.textContent = isSpanish
+        ? nextYearData.yearLabel + ' – Semana ' + (i + 1) + ': ' + nextWeeks[i][1]
+        : nextYearData.yearLabel + ' – Week ' + (i + 1) + ': ' + nextWeeks[i][0];
+      sel.appendChild(opt);
+    }
+    if (prev && parseInt(prev) <= nextWeeks.length) sel.value = prev;
+  });
+
+  ["de1EndNextFull", "de2EndNextFull"].forEach(function(id) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const prev = sel.value;
+    sel.innerHTML = "";
+    for (let i = 0; i < nextWeeks.length; i++) {
+      const opt = document.createElement("option");
+      opt.value = i + 1;
+      opt.textContent = isSpanish
+        ? nextYearData.yearLabel + ' – Semana ' + (i + 1) + ': ' + nextWeeks[i][1]
+        : nextYearData.yearLabel + ' – Week ' + (i + 1) + ': ' + nextWeeks[i][0];
+      sel.appendChild(opt);
+    }
+    if (prev && parseInt(prev) <= nextWeeks.length) sel.value = prev;
+  });
 }
 
 function resetDualEnrollment() {
@@ -1561,20 +1694,27 @@ function resetDualEnrollment() {
     var el = document.getElementById(id);
     if (el) el.value = "";
   });
-  ["de1Start", "de1End", "de2Start", "de2End", "de1EndNext", "de2EndNext"].forEach(function(id) {
+  ["de1Name", "de2Name"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+  ["de1Start", "de1End", "de2Start", "de2End", "de1EndNext", "de2EndNext", "de1StartNext", "de1EndNextFull", "de2StartNext", "de2EndNextFull"].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.selectedIndex = 0;
   });
-  ["de1CrossYear", "de2CrossYear"].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.checked = false;
+  // Reset radios to currentYear
+  [1, 2].forEach(function(n) {
+    var radios = document.querySelectorAll('input[name="de' + n + 'Timing"]');
+    radios.forEach(function(r) { r.checked = (r.value === 'currentYear'); });
   });
-  ["de1NextYearEnd", "de2NextYearEnd"].forEach(function(id) {
+  ["de1NextYearEnd", "de2NextYearEnd", "de1NextYearFields", "de2NextYearFields"].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
-  // Restore current-year end dropdowns
+  // Restore current-year fields
   [1, 2].forEach(function(n) {
+    var currentFields = document.getElementById("de" + n + "CurrentYearFields");
+    if (currentFields) currentFields.style.display = "block";
     var endSel = document.getElementById("de" + n + "End");
     var endLabel = document.getElementById("labelDe" + n + "End");
     if (endSel) endSel.style.display = "";
@@ -1779,26 +1919,35 @@ function calculateCredits() {
   let planCNote = "<li><strong>" + getText("Plan C") + ":</strong> " + planCText + "</li>";
 
   // Dual Enrollment result markup
+  function deRangeText(de) {
+    if (de.nextYearOnly) {
+      return isSpanish
+        ? 'Siguiente a\u00f1o escolar, Semanas ' + de.startWeekNext + '\u2013' + de.endWeekNext
+        : 'Next school year, Weeks ' + de.startWeekNext + '\u2013' + de.endWeekNext;
+    } else if (de.crossYear) {
+      return isSpanish
+        ? 'Semanas ' + de.startWeek + '\u2013' + de.endWeek + ', contin\u00faa al siguiente a\u00f1o hasta Semana ' + de.endWeekNext
+        : 'Weeks ' + de.startWeek + '\u2013' + de.endWeek + ', continues into next year through Week ' + de.endWeekNext;
+    } else {
+      return (isSpanish ? 'Semanas ' : 'Weeks ') + de.startWeek + '\u2013' + de.endWeek;
+    }
+  }
+  function deLabel(de, num) {
+    const defaultName = isSpanish ? ('Doble Inscripci\u00f3n Clase ' + num) : ('Dual Enrollment Class ' + num);
+    return de.className || defaultName;
+  }
   let dualEnrollmentMarkup = "";
   if (deData.de1.active) {
-    const de1Range = deData.de1.crossYear
-      ? (isSpanish ? 'Semanas ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek + ', contin\u00faa al siguiente a\u00f1o hasta Semana ' + deData.de1.endWeekNext
-        : 'Weeks ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek + ', continues into next year through Week ' + deData.de1.endWeekNext)
-      : (isSpanish ? 'Semanas ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek : 'Weeks ' + deData.de1.startWeek + '\u2013' + deData.de1.endWeek);
     dualEnrollmentMarkup += '<p style="background:#ffe0b2;padding:6px 10px;border-radius:6px;border:1px solid #ffcc80;"><strong>' +
-      (isSpanish ? 'Doble Inscripci\u00f3n Clase 1:' : 'Dual Enrollment Class 1:') + '</strong> ' +
-      (isSpanish ? deData.de1.credits + ' cr\u00e9ditos ser\u00e1n restados de tu total (' + de1Range + ')'
-        : deData.de1.credits + ' credits will be subtracted from your total (' + de1Range + ')') + '</p>';
+      deLabel(deData.de1, 1) + ':</strong> ' +
+      (isSpanish ? deData.de1.credits + ' cr\u00e9ditos ser\u00e1n restados de tu total (' + deRangeText(deData.de1) + ')'
+        : deData.de1.credits + ' credits will be subtracted from your total (' + deRangeText(deData.de1) + ')') + '</p>';
   }
   if (deData.de2.active) {
-    const de2Range = deData.de2.crossYear
-      ? (isSpanish ? 'Semanas ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek + ', contin\u00faa al siguiente a\u00f1o hasta Semana ' + deData.de2.endWeekNext
-        : 'Weeks ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek + ', continues into next year through Week ' + deData.de2.endWeekNext)
-      : (isSpanish ? 'Semanas ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek : 'Weeks ' + deData.de2.startWeek + '\u2013' + deData.de2.endWeek);
     dualEnrollmentMarkup += '<p style="background:#c8e6c9;padding:6px 10px;border-radius:6px;border:1px solid #a5d6a7;"><strong>' +
-      (isSpanish ? 'Doble Inscripci\u00f3n Clase 2:' : 'Dual Enrollment Class 2:') + '</strong> ' +
-      (isSpanish ? deData.de2.credits + ' cr\u00e9ditos ser\u00e1n restados de tu total (' + de2Range + ')'
-        : deData.de2.credits + ' credits will be subtracted from your total (' + de2Range + ')') + '</p>';
+      deLabel(deData.de2, 2) + ':</strong> ' +
+      (isSpanish ? deData.de2.credits + ' cr\u00e9ditos ser\u00e1n restados de tu total (' + deRangeText(deData.de2) + ')'
+        : deData.de2.credits + ' credits will be subtracted from your total (' + deRangeText(deData.de2) + ')') + '</p>';
   }
 
   const result = '<p><strong>' + getText("Credits Needed") + ':</strong> ' + totalCredits +
@@ -1839,12 +1988,16 @@ function calculateCredits() {
       const softSkip = isW1Soft;
       let inDE1 = false;
       if (deData.de1.active) {
-        if (isCurrentYr) { inDE1 = w >= deData.de1.startWeek && w <= deData.de1.endWeek; }
+        if (deData.de1.nextYearOnly) {
+          if (!isCurrentYr) { inDE1 = actualWeek >= deData.de1.startWeekNext && actualWeek <= deData.de1.endWeekNext; }
+        } else if (isCurrentYr) { inDE1 = w >= deData.de1.startWeek && w <= deData.de1.endWeek; }
         else if (deData.de1.crossYear) { inDE1 = actualWeek <= deData.de1.endWeekNext; }
       }
       let inDE2 = false;
       if (deData.de2.active) {
-        if (isCurrentYr) { inDE2 = w >= deData.de2.startWeek && w <= deData.de2.endWeek; }
+        if (deData.de2.nextYearOnly) {
+          if (!isCurrentYr) { inDE2 = actualWeek >= deData.de2.startWeekNext && actualWeek <= deData.de2.endWeekNext; }
+        } else if (isCurrentYr) { inDE2 = w >= deData.de2.startWeek && w <= deData.de2.endWeek; }
         else if (deData.de2.crossYear) { inDE2 = actualWeek <= deData.de2.endWeekNext; }
       }
       weekList.push({ week: w, skip: hardSkip, softSkip: softSkip, inDE1: inDE1, inDE2: inDE2 });
@@ -1976,16 +2129,19 @@ function generatePlan(type) {
     const isWeek1SoftSkip = (w === 1 && isWeek1Partial && week1SkipChecked);
     const hardSkip = isWeek1SoftSkip ? false : skipWeeks.includes(w);
     const softSkip = isWeek1SoftSkip;
-    // DE class membership: for cross-year DE, endWeek is totalCurrent in current year
-    // DE highlight also applies in next year if crossYear flag is set
+    // DE class membership
     let inDE1 = false;
     if (deData.de1.active) {
-      if (isCurrentYear) { inDE1 = w >= deData.de1.startWeek && w <= deData.de1.endWeek; }
+      if (deData.de1.nextYearOnly) {
+        if (!isCurrentYear) { inDE1 = actualWeek >= deData.de1.startWeekNext && actualWeek <= deData.de1.endWeekNext; }
+      } else if (isCurrentYear) { inDE1 = w >= deData.de1.startWeek && w <= deData.de1.endWeek; }
       else if (deData.de1.crossYear) { inDE1 = actualWeek <= deData.de1.endWeekNext; }
     }
     let inDE2 = false;
     if (deData.de2.active) {
-      if (isCurrentYear) { inDE2 = w >= deData.de2.startWeek && w <= deData.de2.endWeek; }
+      if (deData.de2.nextYearOnly) {
+        if (!isCurrentYear) { inDE2 = actualWeek >= deData.de2.startWeekNext && actualWeek <= deData.de2.endWeekNext; }
+      } else if (isCurrentYear) { inDE2 = w >= deData.de2.startWeek && w <= deData.de2.endWeek; }
       else if (deData.de2.crossYear) { inDE2 = actualWeek <= deData.de2.endWeekNext; }
     }
     allWeeks.push({ week: w, actualWeek: actualWeek, isCurrentYear: isCurrentYear, skip: hardSkip, softSkip: softSkip, inDE1: inDE1, inDE2: inDE2 });
@@ -2198,10 +2354,25 @@ function generatePlan(type) {
   '<div class="summarybar" style="margin-top:6px;"><span class="badge">0s: <strong id="c0">0</strong></span><span class="badge">1s: <strong id="c1">0</strong></span><span class="badge">2s: <strong id="c2">0</strong></span><span class="badge">3s: <strong id="c3">0</strong></span>' +
   (maxPerWeek === 4 ? '<span class="badge">4s: <strong id="c4">0</strong></span>' : '') +
   '</div>' +
-  (deData.de1.active ? '<div class="de-note de-note-1" id="deNote1">You will be earning ' + deData.de1.credits + ' high school credits from Dual Enrollment Class 1 (Weeks ' + deData.de1.startWeek + '–' + deData.de1.endWeek + (deData.de1.crossYear ? ', continues into next year through Week ' + deData.de1.endWeekNext : '') + ')</div>' +
-    '<div class="de-toggle-wrap"><input type="checkbox" id="deToggle1" checked><label for="deToggle1">Show DE Class 1</label></div>' : '') +
-  (deData.de2.active ? '<div class="de-note de-note-2" id="deNote2">You will be earning ' + deData.de2.credits + ' high school credits from Dual Enrollment Class 2 (Weeks ' + deData.de2.startWeek + '–' + deData.de2.endWeek + (deData.de2.crossYear ? ', continues into next year through Week ' + deData.de2.endWeekNext : '') + ')</div>' +
-    '<div class="de-toggle-wrap"><input type="checkbox" id="deToggle2" checked><label for="deToggle2">Show DE Class 2</label></div>' : '') +
+  (function() {
+    function popupDeRange(de) {
+      if (de.nextYearOnly) return 'Next school year, Weeks ' + de.startWeekNext + '–' + de.endWeekNext;
+      var r = 'Weeks ' + de.startWeek + '–' + de.endWeek;
+      if (de.crossYear) r += ', continues into next year through Week ' + de.endWeekNext;
+      return r;
+    }
+    function popupDeLabel(de, num) { return de.className || ('Dual Enrollment Class ' + num); }
+    var out = '';
+    if (deData.de1.active) {
+      out += '<div class="de-note de-note-1" id="deNote1">You will be earning ' + deData.de1.credits + ' high school credits from ' + popupDeLabel(deData.de1, 1) + ' (' + popupDeRange(deData.de1) + ')</div>' +
+        '<div class="de-toggle-wrap"><input type="checkbox" id="deToggle1" checked><label for="deToggle1">Show ' + (deData.de1.className || 'DE Class 1') + '</label></div>';
+    }
+    if (deData.de2.active) {
+      out += '<div class="de-note de-note-2" id="deNote2">You will be earning ' + deData.de2.credits + ' high school credits from ' + popupDeLabel(deData.de2, 2) + ' (' + popupDeRange(deData.de2) + ')</div>' +
+        '<div class="de-toggle-wrap"><input type="checkbox" id="deToggle2" checked><label for="deToggle2">Show ' + (deData.de2.className || 'DE Class 2') + '</label></div>';
+    }
+    return out;
+  })() +
   '</div>' +
   '<div class="tools"><button id="btnSpread1">Spread 1-credit weeks evenly</button><button id="btnFill2">Spread 2-credit weeks evenly</button><button id="btnClear">Clear all to 0</button></div>' +
   '<div class="print-tips"><strong>Print Tips:</strong> For best results, set your printer settings to:<ul><li>Margins: <strong>Minimum</strong></li><li>Enable <strong>Background Graphics</strong></li></ul></div></div>' +
@@ -2516,6 +2687,24 @@ function applyTranslations() {
   const removeDE2Btn = document.getElementById("removeDE2Btn");
   if (removeDE2Btn) removeDE2Btn.textContent = isSpanish ? "✕ Eliminar" : "✕ Remove";
 
+  // DE timing radio labels and name labels
+  [1, 2].forEach(function(n) {
+    var lbl = document.getElementById("labelDe" + n + "Name");
+    if (lbl) lbl.textContent = isSpanish ? "Nombre de la clase (opcional)" : "Class name (optional)";
+    var tlbl = document.getElementById("labelDe" + n + "Timing");
+    if (tlbl) tlbl.textContent = isSpanish ? "¿Cuándo toma lugar esta clase?" : "When does this class take place?";
+    var cur = document.getElementById("labelDe" + n + "TimingCurrent");
+    if (cur) cur.textContent = isSpanish ? "Solo este año escolar" : "This school year only";
+    var cross = document.getElementById("labelDe" + n + "TimingCross");
+    if (cross) cross.textContent = isSpanish ? "Empieza este año, continúa el siguiente" : "Starts this year, continues into next year";
+    var next = document.getElementById("labelDe" + n + "TimingNext");
+    if (next) next.textContent = isSpanish ? "Toma lugar el siguiente año escolar" : "Takes place next school year";
+    var sn = document.getElementById("labelDe" + n + "StartNext");
+    if (sn) sn.textContent = isSpanish ? "Semana de inicio (siguiente año escolar)" : "Start week (next school year)";
+    var enf = document.getElementById("labelDe" + n + "EndNextFull");
+    if (enf) enf.textContent = isSpanish ? "Semana final (siguiente año escolar)" : "End week (next school year)";
+  });
+
   const skipBoxTitleEl = document.getElementById("skipBoxTitle");
   if (skipBoxTitleEl) skipBoxTitleEl.textContent = getText("Weeks You Plan to Skip - Current Year (Optional):");
 
@@ -2724,12 +2913,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Auto-calculate: dual enrollment inputs
   document.getElementById("deToggle").addEventListener("change", function() { updateDeUI(); calculateCredits(); });
-  ["de1Start", "de1End", "de1Credits", "de2Start", "de2End", "de2Credits", "de1EndNext", "de2EndNext"].forEach(function(id) {
-    document.getElementById(id).addEventListener("change", function() { updateDeUI(); calculateCredits(); });
-    document.getElementById(id).addEventListener("input", function() { updateDeUI(); calculateCredits(); });
+  ["de1Start", "de1End", "de1Credits", "de2Start", "de2End", "de2Credits", "de1EndNext", "de2EndNext", "de1StartNext", "de1EndNextFull", "de2StartNext", "de2EndNextFull"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("change", function() { updateDeUI(); calculateCredits(); });
+      el.addEventListener("input", function() { updateDeUI(); calculateCredits(); });
+    }
   });
-  ["de1CrossYear", "de2CrossYear"].forEach(function(id) {
-    document.getElementById(id).addEventListener("change", function() { updateDeUI(); calculateCredits(); });
+  // Radio timing change listeners
+  [1, 2].forEach(function(n) {
+    document.querySelectorAll('input[name="de' + n + 'Timing"]').forEach(function(radio) {
+      radio.addEventListener("change", function() { updateDeUI(); calculateCredits(); });
+    });
   });
   // Enter key in DE credit fields
   ["de1Credits", "de2Credits"].forEach(function(id) {
