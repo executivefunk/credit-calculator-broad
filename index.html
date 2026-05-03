@@ -2217,8 +2217,40 @@ function calculateCredits() {
     return;
   }
 
-  // Dual Enrollment + Outside Program credit subtraction
+  // Validate DE/OP week ranges fall within plan range
   const deData = getDualEnrollmentData();
+  const totalCurrentForRange = schoolYearData.totalWeeks;
+  let rangeErrors = [];
+  function checkClassRange(cls, label, isCrossYearPlan) {
+    if (!cls.active) return;
+    if (cls.nextYearOnly) {
+      if (!isCrossYearPlan) {
+        rangeErrors.push(label + (isSpanish ? ' está configurado para el próximo año escolar, pero no tienes activada la planificación entre años.' : ' is set for next school year, but you don\'t have cross-year planning enabled.'));
+      }
+      return;
+    }
+    // currentYear or crossYear timing: check if start/end overlap with plan range
+    var clsStart = cls.startWeek;
+    var clsEnd = cls.crossYear ? totalCurrentForRange : cls.endWeek;
+    if (clsEnd < startWeek || clsStart > endWeek) {
+      rangeErrors.push(label + (isSpanish ? ' (semanas ' + clsStart + '–' + clsEnd + ') cae fuera de tu rango de planificación (semanas ' + startWeek + '–' + endWeek + '). Ajusta las fechas o selecciona "Toma lugar el siguiente año escolar".' : ' (weeks ' + clsStart + '–' + clsEnd + ') falls outside your planning range (weeks ' + startWeek + '–' + endWeek + '). Adjust the dates or select "Takes place next school year".'));
+    }
+  }
+  const isCrossYearPlan = crossYearData && crossYearData.active;
+  if (deData.de1.active) checkClassRange(deData.de1, deData.de1.className || (isSpanish ? 'Clase DE 1' : 'DE Class 1'), isCrossYearPlan);
+  if (deData.de2.active) checkClassRange(deData.de2, deData.de2.className || (isSpanish ? 'Clase DE 2' : 'DE Class 2'), isCrossYearPlan);
+  if (opData.op1.active) checkClassRange(opData.op1, opData.op1.programName || (isSpanish ? 'Programa Externo 1' : 'Outside Program 1'), isCrossYearPlan);
+  if (opData.op2.active) checkClassRange(opData.op2, opData.op2.programName || (isSpanish ? 'Programa Externo 2' : 'Outside Program 2'), isCrossYearPlan);
+
+  if (rangeErrors.length > 0) {
+    document.getElementById("result").innerHTML = '<div class="warning" style="background:#ffcdd2;border:1px solid #ef9a9a;padding:12px;border-radius:8px;margin-top:10px;">' +
+      '<strong>' + (isSpanish ? '⚠️ Fechas Fuera de Rango' : '⚠️ Dates Out of Range') + '</strong><br>' +
+      rangeErrors.join('<br>') + '</div>';
+    document.getElementById("planButtons").style.display = "none";
+    return;
+  }
+
+  // Dual Enrollment + Outside Program credit subtraction
   let deSubtracted = 0;
   if (deData.de1.active) deSubtracted += deData.de1.credits;
   if (deData.de2.active) deSubtracted += deData.de2.credits;
@@ -2705,7 +2737,8 @@ function generatePlan(type) {
     }).join('');
     // Display: for cross-year, show actual week number (not the extended number)
     const displayWeek = w.actualWeek;
-    rows.push('<tr' + rowClass + ' data-week="' + w.week + '" data-skip="' + (w.skip ? '1' : '0') + '" data-soft-skip="' + (w.softSkip ? '1' : '0') + '" data-de1="' + (w.inDE1 ? '1' : '0') + '" data-de2="' + (w.inDE2 ? '1' : '0') + '" data-op1="' + (w.inOP1 ? '1' : '0') + '" data-op2="' + (w.inOP2 ? '1' : '0') + '">' +
+    var isRegularSkip = w.softSkip || skipWeeks.includes(w.week);
+    rows.push('<tr' + rowClass + ' data-week="' + w.week + '" data-skip="' + (w.skip ? '1' : '0') + '" data-soft-skip="' + (w.softSkip ? '1' : '0') + '" data-base-skip="' + (isRegularSkip ? '1' : '0') + '" data-de1="' + (w.inDE1 ? '1' : '0') + '" data-de2="' + (w.inDE2 ? '1' : '0') + '" data-op1="' + (w.inOP1 ? '1' : '0') + '" data-op2="' + (w.inOP2 ? '1' : '0') + '">' +
       '<td class="col-week">' + displayWeek + '</td>' +
       '<td class="' + dateCellClass + '">' + formatDateForCell(planDateRanges[w.week] || '') + '</td>' +
       '<td class="col-credits"><strong class="val">' + w.credits + '</strong></td>' +
@@ -2748,9 +2781,9 @@ function generatePlan(type) {
   '.de-note { padding: 4px 8px; border-radius: 6px; margin-top: 4px; font-size: 0.85rem; }' +
   '.de-note-1 { background: #ffe0b2; border: 1px solid #ffcc80; }' +
   '.de-note-2 { background: #c8e6c9; border: 1px solid #a5d6a7; }' +
-  'td.op1-cell { background: #ffcdd2; }' +
-  'td.op2-cell { background: #f8bbd0; }' +
-  'td.op-both { background: linear-gradient(to right, #ffcdd2 50%, #f8bbd0 50%); }' +
+  'td.op1-cell { background: #ef9a9a !important; }' +
+  'td.op2-cell { background: #f48fb1 !important; }' +
+  'td.op-both { background: linear-gradient(to right, #ef9a9a 50%, #f48fb1 50%) !important; }' +
   '.op-note { padding: 4px 8px; border-radius: 6px; margin-top: 4px; font-size: 0.85rem; background: #ffcdd2; border: 1px solid #ef9a9a; }' +
   '.de-toggle-wrap { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; margin-top: 4px; }' +
   '.de-toggle-wrap input { margin: 0; }' +
@@ -2938,12 +2971,16 @@ function generatePlan(type) {
     '  if (on2) on2.style.display = op2On ? "block" : "none";' +
     '  target = fullTarget - (de1On ? de1Credits : 0) - (de2On ? de2Credits : 0) - (op1On ? op1Credits : 0) - (op2On ? op2Credits : 0);' +
     '  document.getElementById("tgt").textContent = target;' +
-    '  redistCredits(target);' +
     '  eachRow(function(tr) {' +
     '    var d1 = tr.getAttribute("data-de1") === "1";' +
     '    var d2 = tr.getAttribute("data-de2") === "1";' +
     '    var o1 = tr.getAttribute("data-op1") === "1";' +
     '    var o2 = tr.getAttribute("data-op2") === "1";' +
+    '    var baseSkip = tr.getAttribute("data-base-skip") === "1";' +
+    '    var opSkip = (o1 && op1On) || (o2 && op2On);' +
+    '    tr.setAttribute("data-skip", (baseSkip || opSkip) ? "1" : "0");' +
+    '    if (!baseSkip && !opSkip) tr.classList.remove("skip-row");' +
+    '    if (baseSkip || opSkip) tr.classList.add("skip-row");' +
     '    var dateCell = tr.querySelector("td.col-date");' +
     '    if (!dateCell) return;' +
     '    dateCell.classList.remove("de1-cell", "de2-cell", "de-both", "op1-cell", "op2-cell", "op-both");' +
@@ -2958,6 +2995,7 @@ function generatePlan(type) {
     '    else if (showOP1) dateCell.classList.add("op1-cell");' +
     '    else if (showOP2) dateCell.classList.add("op2-cell");' +
     '  });' +
+    '  redistCredits(target);' +
     '  refreshSummary();' +
     '}' +
     'var dt1 = document.getElementById("deToggle1");' +
@@ -2968,7 +3006,7 @@ function generatePlan(type) {
     'var odt2 = document.getElementById("opToggle2");' +
     'if (odt1) odt1.addEventListener("change", updateDeToggles);' +
     'if (odt2) odt2.addEventListener("change", updateDeToggles);' +
-    'refreshSummary();' +
+    'updateDeToggles();' +
     // Prevent text input clicks from toggling the parent label's checkbox
     'document.querySelectorAll(".credit-line").forEach(function(inp) { inp.addEventListener("click", function(e) { e.stopPropagation(); }); });' +
     // Column swap logic
