@@ -1944,14 +1944,14 @@ function updateOpUI() {
 function showOpProgram2() {
   const class2 = document.getElementById("opClass2Box");
   const addBtn = document.getElementById("addOP2Btn");
-  if (class2) class2.classList.add("visible");
+  if (class2) { class2.classList.add("visible"); class2.style.display = "block"; }
   if (addBtn) addBtn.style.display = "none";
 }
 
 function hideOpProgram2() {
   const class2 = document.getElementById("opClass2Box");
   const addBtn = document.getElementById("addOP2Btn");
-  if (class2) class2.classList.remove("visible");
+  if (class2) { class2.classList.remove("visible"); class2.style.display = "none"; }
   if (addBtn) addBtn.style.display = "block";
   var c2 = document.getElementById("op2Credits");
   if (c2) c2.value = "";
